@@ -11,7 +11,7 @@ def materials():
     return {
         k: MaterialSpec.model_validate(v)
         for k, v in json.loads(
-            files("epsm_workflows").joinpath("data/materials.json").read_text()
+            files("epsm_studies.legacy_workflows").joinpath("data/materials.json").read_text()
         ).items()
     }
 
