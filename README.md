@@ -18,6 +18,9 @@ study.save("outputs/renovation-alternatives/protocol.json")
 
 These illustrative values are explicit protocol choices, not scientific defaults.
 Changing the question or assumptions creates another protocol identity.
+`configuration` and `sources` return independent copies for inspection; editing
+those copies does not change the protocol or its identity. Construct another
+`PaperStudy` to record changed assumptions.
 
 ## Historical Workflows transfer
 
