@@ -4,18 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "epsm_studies"
-version = "0.1.0.dev0"
-description = "Named EPSM research studies and reproducible historical study archives"
+version = "0.1.0"
+description = "EPSM research protocol records and historical study archives"
 requires-python = ">=3.11"
-
-[project.optional-dependencies]
-legacy = ["epsm_workflows[campaign,stock,weather]", "epsm_data"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-"epsm_studies.legacy_workflows" = ["data/*.json"]
+include = ["epsm_studies"]
+namespaces = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+norecursedirs = ["archive", "imports", ".*", "build", "dist", "venv"]

@@ -1,7 +1,9 @@
 # epsm_studies
 
-Named EPSM research protocols, paper-specific implementations and historical study
-archives. Reusable designs, optimisation and execution belong to `epsm_workflows`.
+Generic EPSM research protocol records and historical study archives.
+`PaperStudy` records a study setup; reusable designs, optimisation and execution
+belong to `epsm_workflows`. Existing named study implementations are archived
+pending later decisions by the maintainer.
 
 ```python
 from epsm_studies import PaperStudy
@@ -29,19 +31,25 @@ examples and documentation from Workflows commit
 `1e49fa212f26ed80e6c2dce173cf5caa87a8b5b2`. `ARCHIVE.json` lists SHA256 checksums.
 Simulation outputs and external raw datasets are not copied.
 
-`src/epsm_studies/legacy_workflows/` contains the corresponding importable historical
-implementations. Old Workflows study imports delegate here for compatibility. Install
-the legacy extra and original prerequisites to use them. New protocols use the reusable
-Workflows API; the archive is not a second evolving architecture.
+The formerly importable `src/epsm_studies/legacy_workflows/` implementations
+now reside in `archive/2026-10-14/src/epsm_studies/legacy_workflows/`. Their
+original bytes and package metadata are recorded in
+[ARCHIVE.json](archive/2026-10-14/ARCHIVE.json).
+The legacy extra and compatibility imports have been retired. These files are
+unsupported historical material, excluded from the installed package and normal
+test discovery. They have no execution, repair or reproduction commitment.
+The generic `PaperStudy` API and its tests remain active.
 
 The transfer includes national stock exploration, MF revisions, cohort transfer,
 archetype diagnosis, the surrogate campaign and weather-imputation study sources.
-Old assumptions and source hashes remain inspectable. Running them against newer
-packages does not automatically reproduce or validate a previous scientific result.
+Old assumptions and source hashes remain inspectable. See the
+[archive index](archive/README.md) for the retained collections and their scope.
 
 ## Data validation transfer
 
 `imports/epsm_data_harmonisation/` retains historical LoD2 fitting/validation,
 frozen-baseline and cohort-profile evidence transferred from Data. `TRANSFER.json`
-records original relative paths and verified checksums. Current construction defaults
-and original source evidence remain owned by Data.
+records original relative paths and verified checksums. This collection is archived
+evidence: its location is retained because Data source provenance refers to these
+paths. It is excluded from installation and normal test discovery. Current
+construction defaults and original source evidence remain owned by Data.
