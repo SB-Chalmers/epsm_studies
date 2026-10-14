@@ -1,0 +1,1238 @@
+{
+  "repository": "SB-Chalmers/epsm_workflows",
+  "commit": "1e49fa212f26ed80e6c2dce173cf5caa87a8b5b2",
+  "date": "2026-10-14",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "10005a217cea7495508543c090df5d907a3bf213d28691cdf8dec3427122945c",
+      "bytes": 6360
+    },
+    {
+      "path": "campaigns/VERA.md",
+      "sha256": "81f9e59538bcff920ea2e2e393e50427e29d104a802aa661cf1bae94d36295a1",
+      "bytes": 6976
+    },
+    {
+      "path": "campaigns/VERA_60K_HANDOFF.md",
+      "sha256": "f4a0d31c20f9ca56d2a1f29a10ada279efa71ce9279eaf8a83ab230545d4ea3e",
+      "bytes": 14230
+    },
+    {
+      "path": "campaigns/progress_mail.py",
+      "sha256": "2e063ba5ef2a30dbf55f979e5f8547511235c62312cd75daf63bd7ef191e1377",
+      "bytes": 13800
+    },
+    {
+      "path": "campaigns/vera.sh",
+      "sha256": "fcf1b27adb6f4a7719e46fe199bc62104776831aa3b37aaf71f34d3720a6f7ea",
+      "bytes": 3606
+    },
+    {
+      "path": "campaigns/vera_60000.json",
+      "sha256": "5ea62cf907517ed2ba56909ad681e525d96f6371efbc64d42e10749b741e6b09",
+      "bytes": 3082
+    },
+    {
+      "path": "configs/archetype-diagnosis-mf-se02.json",
+      "sha256": "6f4360d447d90f1cc567fb15b5db1cd68dd46aaa6ba2ddbbc12b2dbf02f09fe6",
+      "bytes": 660
+    },
+    {
+      "path": "configs/catalogue-diagnosis-national.json",
+      "sha256": "d740aebdfe650f0baa30651faa7abc87a5413138b042d26f4533da238a72dbc2",
+      "bytes": 1482
+    },
+    {
+      "path": "configs/cohort-transfer-gothenburg-weather.json",
+      "sha256": "b0747113f1c46514be18673f736c94479b583c3606d13e9cd3f6f5b69fd185f0",
+      "bytes": 5364
+    },
+    {
+      "path": "configs/cohort-transfer-mf-se02-data15-rerun.json",
+      "sha256": "0a261b0fde0888ca94e9ac42db0e359bdc362cb48e619acb9de1bdd03f29d254",
+      "bytes": 1373
+    },
+    {
+      "path": "configs/cohort-transfer-mf-se02-full.json",
+      "sha256": "b4a4881aa0cbccac6c91c3a4da439672f85716c81e2d345a3972b082d73be7a7",
+      "bytes": 731
+    },
+    {
+      "path": "configs/cohort-transfer-mf-se02-parent-validated.json",
+      "sha256": "73c52ecc78dbb41c8d3100dee10b80ca12ccd6dc034840d8c3291dbc2b9658a3",
+      "bytes": 1395
+    },
+    {
+      "path": "configs/cohort-transfer-mf-se02-pilot.json",
+      "sha256": "aeaaea005af6f23cf6497160954bec0c1a422f72c6b76ce1fd86d3e7a20e2040",
+      "bytes": 831
+    },
+    {
+      "path": "configs/evidence/bbr19-climate-zones.json",
+      "sha256": "f8945ec567391f3bb14a5d0e4d156b7bbf57697035adffc45fb05521fe4ee7e4",
+      "bytes": 779
+    },
+    {
+      "path": "configs/mf-revision-national.json",
+      "sha256": "7669b621c5350ed78b2187ee8b2fdc9e0d104c337523ecd519f7c3fc92a2a89c",
+      "bytes": 1324
+    },
+    {
+      "path": "configs/stock-national.json",
+      "sha256": "1fb3d1c30d9aca90c8d92437a357f77b906823ded8e197b4c84b739cddce2d19",
+      "bytes": 1046
+    },
+    {
+      "path": "docs/archetype-application.md",
+      "sha256": "a10bf6cdf217536a738bc0d63e5e887fbb8ed363827b8080e5cae28d9148191a",
+      "bytes": 7431
+    },
+    {
+      "path": "docs/archetype-diagnosis.md",
+      "sha256": "db127bc2b8075aaccfd718892ae6fb96832f780e0a49659e2e1f9cae419ec438",
+      "bytes": 3306
+    },
+    {
+      "path": "docs/archetype-diagnostics.md",
+      "sha256": "caabb944fe7fba1415f71f5f209d8098c1b79781e79d320379c9c789a4887c02",
+      "bytes": 8517
+    },
+    {
+      "path": "docs/archetype-implementation-log.md",
+      "sha256": "d696efa75a6f46e285723aa19276bfe6ac2debf671dd4d6dc1b86f4ccc9ff445",
+      "bytes": 80800
+    },
+    {
+      "path": "docs/archetype-membership.md",
+      "sha256": "dd742ef34dc8ff527dc0b347d9af3bfd5053ddff4964942a64324103f76d567d",
+      "bytes": 7625
+    },
+    {
+      "path": "docs/archetype-pilot.md",
+      "sha256": "f08ef1205dd3377f8c3091f22bb41d27a2a384da295137922f046cd304c3a534",
+      "bytes": 7792
+    },
+    {
+      "path": "docs/clean-cohort-selection.md",
+      "sha256": "8c2d2aa51ff2bbb8029dff27a8e4053c97fe0b2fa4c7cfd2cb5345f8c371076c",
+      "bytes": 4090
+    },
+    {
+      "path": "docs/cohort-transfer.md",
+      "sha256": "7e4857ad01acfbf1721f10196dda662ad50af72de1625cc7d99161df93a76abe",
+      "bytes": 21621
+    },
+    {
+      "path": "docs/heat-balance-diagnostics.md",
+      "sha256": "b0b91023f75525d7b66560c8cd99bc56ba1bdd0ad26e77f47450338ec7d68c3d",
+      "bytes": 2843
+    },
+    {
+      "path": "docs/lhs-sensitivity.md",
+      "sha256": "36afcaf69bf0f71ecdd5b30313917baea74cbf2711245da85ec198b58fa8ce41",
+      "bytes": 2623
+    },
+    {
+      "path": "docs/mf-parent-dynamic-comparison.md",
+      "sha256": "358abb65beb00274909028f86f61d6265f419c5df56bb153f22e89d203384785",
+      "bytes": 27458
+    },
+    {
+      "path": "docs/mf-parent-dynamic-implementation-checklist.md",
+      "sha256": "697e58031a4cf3b6f34a69e1e3a762dc4019bfab498ecb53954992ec0b1485ad",
+      "bytes": 10839
+    },
+    {
+      "path": "docs/mf-regional-construction-evidence.md",
+      "sha256": "4a7a5e87a0405e8946a877139d10c5cfd67d2948655ec04321864464633cbb1f",
+      "bytes": 2768
+    },
+    {
+      "path": "docs/mf-revision-results.md",
+      "sha256": "f1386c41099743ff766c3baa6eb353b5de3e22e8daf6a8a77befb594a18a78af",
+      "bytes": 10433
+    },
+    {
+      "path": "docs/mf-revision.md",
+      "sha256": "664888456d6ea623e9c10bf708e000ae94f671f8b21e1b575d2c9d8be82e9bd0",
+      "bytes": 12063
+    },
+    {
+      "path": "docs/mf-se02-archetype-note.md",
+      "sha256": "0dd01233824486591a057bb97f8b4fae38560747950dabc4f3184e1a1e9e99d6",
+      "bytes": 6356
+    },
+    {
+      "path": "docs/parameter-sensitivity.md",
+      "sha256": "167e5b1aad3b0292126474ce263a667d2ba54301d194576268a2880f4ba15596",
+      "bytes": 5052
+    },
+    {
+      "path": "docs/stock-exploration.md",
+      "sha256": "30c179dedb4bf81677764c7e26e51d9fca9dd1c77a9d6f0cc8a90f4e70eac2b5",
+      "bytes": 9297
+    },
+    {
+      "path": "docs/weather-imputation-campaign.md",
+      "sha256": "6b3e4f90ae79c90cd643bd214697d8f7e60ca8ee9a7bc19bf02e02dc5bb826c7",
+      "bytes": 46126
+    },
+    {
+      "path": "docs/weather-imputation-sensitivity.md",
+      "sha256": "02506ba2fa523246e0c90ef0315d8b87c057d7ca9c825bb8e5e7930790045415",
+      "bytes": 8708
+    },
+    {
+      "path": "docs/weather-recovery.md",
+      "sha256": "005e7bf968fa71e9bb23cce9359197e2d9dad95c4df0a59f34de59a90299a234",
+      "bytes": 5043
+    },
+    {
+      "path": "docs/wwr-sensitivity.md",
+      "sha256": "d4b32c81b8dbf35730acec836a1d9aac7717b1d70c239fb85f5e97c44268df23",
+      "bytes": 1978
+    },
+    {
+      "path": "examples/analyze_weather_imputation_campaign.py",
+      "sha256": "af9771e9cb199b0c402ec33ea18a7dd743885d68b038a69337fe88703d627c94",
+      "bytes": 40252
+    },
+    {
+      "path": "examples/archive_weather_campaign_files.py",
+      "sha256": "b2d508c49c0f8d0a1d6864ff97f66ff79de4053d8128fcfbde98cb18aebfbb75",
+      "bytes": 19032
+    },
+    {
+      "path": "examples/epc_validation/README.md",
+      "sha256": "e7362049a6b35df2df1a8b272bb3ec2952667f43691bb55ebfd48f5091ad08aa",
+      "bytes": 5365
+    },
+    {
+      "path": "examples/epc_validation/analyze_archetype_residuals.py",
+      "sha256": "da35c548e895254072ca18ad1a92de1a7133585f38cf2ec68e74827a911b4780",
+      "bytes": 21279
+    },
+    {
+      "path": "examples/epc_validation/apply_cohort_profile.py",
+      "sha256": "d40324e12e41a77aed5c128acd468cd316c7524f73671114fcdb1d76dcfa8b35",
+      "bytes": 4883
+    },
+    {
+      "path": "examples/epc_validation/archive_campaign_outputs.py",
+      "sha256": "0c4082c16b51f179082098ef3009c7be5a1b02016595bec3c2a51d7e6d6386b9",
+      "bytes": 3089
+    },
+    {
+      "path": "examples/epc_validation/audit_archetype_membership.py",
+      "sha256": "c642c8071966c2f31b4582b7c0d4c6cd5ce9eba61402e1c9a26ad545883cf91c",
+      "bytes": 5250
+    },
+    {
+      "path": "examples/epc_validation/audit_sources.py",
+      "sha256": "08c1c4598056ace8c6b5f575dbdcb0252dada982b38c57090c36030de1dba137",
+      "bytes": 2380
+    },
+    {
+      "path": "examples/epc_validation/compile_weather.py",
+      "sha256": "9fbf27c6bb5691ca92d255e12c19e14a01913a3afcc14e3b16d8c1131fc08670",
+      "bytes": 1339
+    },
+    {
+      "path": "examples/epc_validation/complete_parent_campaign.py",
+      "sha256": "1f2d5e6c9cbd4e0d01d536f423e6e05e849f7f8eb048e97612b6cf2f6019c55a",
+      "bytes": 9507
+    },
+    {
+      "path": "examples/epc_validation/diagnose_calibrated_misses.py",
+      "sha256": "1f8d604f4149a41b7347808c3aaf31f22c0bd484974730988bef3778c669ec11",
+      "bytes": 19778
+    },
+    {
+      "path": "examples/epc_validation/finish_cohort_transfer.py",
+      "sha256": "cda2a73ff17ca83721594c4c1fcd0326965c502c5bfc9089ac8ea09d901dcb97",
+      "bytes": 7111
+    },
+    {
+      "path": "examples/epc_validation/plot_cohort_transfer.py",
+      "sha256": "59fd2c31a0379e0d2a9d1450d6eee549160918b985c8180476637b7837c5ae6c",
+      "bytes": 3618
+    },
+    {
+      "path": "examples/epc_validation/plot_national_completeness.py",
+      "sha256": "9d1e867eea6c7e6df1fb03f8b7aba61f578d94bc610934e791a920fb77ee1bf5",
+      "bytes": 32474
+    },
+    {
+      "path": "examples/epc_validation/prepare_mf_zero_flow_screen.py",
+      "sha256": "00836ac118a747fb1b04325aca01f68536e6a62ae88b5a14e7e0fcd2098e5808",
+      "bytes": 6183
+    },
+    {
+      "path": "examples/epc_validation/prepare_national_completeness.py",
+      "sha256": "a933c762a798e5dbda4eb8f45b755b1aa5e5db108d2b6d2e77d5970bd2aa6ec0",
+      "bytes": 25872
+    },
+    {
+      "path": "examples/epc_validation/prepare_study.py",
+      "sha256": "cfc788204eb53800688a094190de0a319b0c5e3acd20266293206d47ba8c4139",
+      "bytes": 12507
+    },
+    {
+      "path": "examples/epc_validation/read_mappings.mjs",
+      "sha256": "b01a68ffb3bd519baa5b3d751d63ad5115e816d898aae04aef0888e2d89d84ac",
+      "bytes": 756
+    },
+    {
+      "path": "examples/epc_validation/render_archetype_residual_diagnosis.py",
+      "sha256": "cf157dee4b4e2b3b613cb4f13655aaffe02e7fa93ce5132117d7fd091a90bd69",
+      "bytes": 32411
+    },
+    {
+      "path": "examples/epc_validation/report_study.py",
+      "sha256": "9f1d8f62f04e63c9aab2534c0e6235ff3a33c81d70d393739aa18cd07ba102b3",
+      "bytes": 17591
+    },
+    {
+      "path": "examples/epc_validation/run_cohort_baseline.py",
+      "sha256": "dda3b7f7719e173a770e2f6c79682b2774b9f3ef2ef35a6fe826dae9b8095ff5",
+      "bytes": 2682
+    },
+    {
+      "path": "examples/epc_validation/run_diagnostics_processes.py",
+      "sha256": "cce87bd321862376ae4ab1f59723f49126e60d92a985d887faff96599dd38ba8",
+      "bytes": 1938
+    },
+    {
+      "path": "examples/epc_validation/run_national_random_baseline.py",
+      "sha256": "1bf103966cd33c63594e6f664588d48b200b9d187be1297763c0d3105b7d2a3e",
+      "bytes": 30687
+    },
+    {
+      "path": "examples/epc_validation/run_study.py",
+      "sha256": "1e1607e4ef62b1288a9df575b2a904c09226b556715bc2acea83b3d9c76f48ba",
+      "bytes": 5138
+    },
+    {
+      "path": "examples/epc_validation/scan_sources.py",
+      "sha256": "3891f5aa188fa04a4df31f9287de77ae463cb4ff90eb19a972800dcec3292cca",
+      "bytes": 2000
+    },
+    {
+      "path": "examples/epc_validation/select_cohort.py",
+      "sha256": "01756de962277a5dd77eac3958ba610eb551208e9acbbcafbbc7d23a7d6c59c2",
+      "bytes": 5446
+    },
+    {
+      "path": "examples/epc_validation/summarize_parent_misses.py",
+      "sha256": "1ea1c4a52cd6d988eb4502d0354efc699abe388957a37bd4f111e5c397007ece",
+      "bytes": 5399
+    },
+    {
+      "path": "examples/plot_weather_campaign_events.py",
+      "sha256": "23e245f39bb7b931d7a4fddd75d3198ee5aa7d72c4a0fabb6773c240a679779c",
+      "bytes": 16886
+    },
+    {
+      "path": "examples/plot_weather_campaign_methods.py",
+      "sha256": "a8d36050f31e91be7704953c4b47ffb5fb8887e3e1bf168d4ade2f445d81e10b",
+      "bytes": 15479
+    },
+    {
+      "path": "examples/plot_weather_campaign_summary.py",
+      "sha256": "199618f0c16b560d966d8f430d7f8c2c571f443c13f2808ec82f37817ecd89ca",
+      "bytes": 27199
+    },
+    {
+      "path": "examples/plot_weather_imputation_campaign.py",
+      "sha256": "da2e21412471f0b7967f63c4d8af4b980fb644a868dabf8e832e830f121b0f68",
+      "bytes": 22329
+    },
+    {
+      "path": "examples/qualify_weather_campaign_results.py",
+      "sha256": "aa952f4a887904160fd1072987d3d525d0a623e7623b448ba17fd3395acd0701",
+      "bytes": 22064
+    },
+    {
+      "path": "examples/report_weather_campaign_paper.py",
+      "sha256": "4174d6ac3b4ddb6003efe3e74af60247ed587023241c9f2cd2ea94be27e550b1",
+      "bytes": 28016
+    },
+    {
+      "path": "examples/report_weather_imputation_campaign.py",
+      "sha256": "03d12126257186f3c53d7bb94ddc7805f65935eded5614d45eb8ae85cd78e951",
+      "bytes": 31234
+    },
+    {
+      "path": "examples/resume_weather_imputation_campaign.py",
+      "sha256": "1b340e3217caad832f42aa8ba1c343fdba38aa5d2407b1adb8f000362a38baff",
+      "bytes": 14602
+    },
+    {
+      "path": "examples/summarize_weather_campaign_uncertainty.py",
+      "sha256": "7c086a163f5b505d0f04b23e139f7295199558c53e4030b9ed312f9c36780fca",
+      "bytes": 11383
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/README.md",
+      "sha256": "88bd1d1e2f353c203ec9132272d349a3ffcdbd6754fa66f341fffe78a0be9108",
+      "bytes": 16600
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/__init__.py",
+      "sha256": "6d007d527b10dd8f96eef0eb04777b9864d2c00325f133d53ce19a7c2c6445cb",
+      "bytes": 79
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/anomalies.py",
+      "sha256": "a0eef1dfff7eb9dae2ae5f7f3b18db3d0a948cc9e0b3aad483c5271d87f97bfc",
+      "bytes": 19626
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/archetypes.py",
+      "sha256": "2c28addfbe9f3b3e3d0a7b48e5f44f883ce5848172f75057ca666222c0374a41",
+      "bytes": 24144
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/artifact_storage.py",
+      "sha256": "cb9cb2706f17a927bf6b160b44ebe98545ebe0adcbbf7650d0bfe864f34949a6",
+      "bytes": 10977
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/building.py",
+      "sha256": "e70c3ec328c7d8081b6ab283d1a2a12d232fe01519042b253040f9033b97616c",
+      "bytes": 12571
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/campaign_analysis.py",
+      "sha256": "dbd9e2fb0d9ce0346777d71fb773046a4a7fa4449d453427c160fa70390ce9e4",
+      "bytes": 4274
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/campaign_design.py",
+      "sha256": "3f8247202d2bd79d0ffef5f81e95fa1cf643eb26e28337a6e782ae7c065ac8f5",
+      "bytes": 19702
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/campaign_sources.py",
+      "sha256": "3eabc5911bb70a49eb73ec4bc43f209de0ebc0451a19d9d56a83c9c9692ff679",
+      "bytes": 25821
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/event_anchors.py",
+      "sha256": "3328ac0a13131e1940c85cbaf00ece7652dc1c028528a0b4928c93f07b6a3479",
+      "bytes": 4739
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/metrics.py",
+      "sha256": "f21717f6ac45ed16531e5ed6b6d109481e29a2d1f0431aa478b38ee3e675c199",
+      "bytes": 6170
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/run_campaign.py",
+      "sha256": "24dff2bac9e70a642fa139d02720889a6b573cddc70960ca7f6b14246c1b2a8b",
+      "bytes": 42429
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/run_study.py",
+      "sha256": "d4f267f6839d3e38670336a46af94217c47dc71e106b170841fcbfadb92bd804",
+      "bytes": 24803
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/sql_archive.py",
+      "sha256": "a1d1b0fb3c99b6f621fcc129c85c446fae9708ae54fd39e0596e1642f9361dea",
+      "bytes": 8868
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/validate_solar_revision.py",
+      "sha256": "26ef50cabcdb2662ebb0e7a1b4d73eb5fbac3073e954a42a06f663283195a0f0",
+      "bytes": 19754
+    },
+    {
+      "path": "examples/weather_imputation_sensitivity/weather.py",
+      "sha256": "8c214f6e2fed4fac6bfed908e3f7f96251c318cf98d334ce74d10887191e312b",
+      "bytes": 20647
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "18c342cc06c072d2f43cb3bb7eeb0f8abf9313a07fa4209ea3270fe27e785fd0",
+      "bytes": 1270
+    },
+    {
+      "path": "src/epsm_workflows/__init__.py",
+      "sha256": "166ef86b942dd14dd7a22de0e639adb887412861e19a7f98d5e9b3af783f3bcb",
+      "bytes": 108,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/__init__.py"
+    },
+    {
+      "path": "src/epsm_workflows/_version.py",
+      "sha256": "31bf54519656d0e6f903c34f483873631b976f8733c3c984f11f2f287b514498",
+      "bytes": 102,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/_version.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_application.py",
+      "sha256": "36de0e797f5fdafd4b6e078384393442e6e24da3024ce9c79e035591d45c886f",
+      "bytes": 29781,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_application.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnosis/__init__.py",
+      "sha256": "ac1bef6249cbbf46f9ec3445b3c03f1b9012007c606dfd98b49cb68070b57267",
+      "bytes": 67,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnosis/__init__.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnosis/__main__.py",
+      "sha256": "d73766ba50f6aea601cdc9493aec0e0142cf9a1716eb040cf34181865567492f",
+      "bytes": 1228,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnosis/__main__.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnosis/audit.py",
+      "sha256": "4881a58034506abb97bca99acdfffc118126689a9698a2bd1d402eea99847d3d",
+      "bytes": 10050,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnosis/audit.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnosis/physics.py",
+      "sha256": "138917bd7374aa06b431c88387f4ca68e92478fb08a6559c3412bd61491db857",
+      "bytes": 11707,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnosis/physics.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnosis/regression.py",
+      "sha256": "2174ea4efc49b2f12a00074d6a77ba24e4fa0b4ba44f60ebef1bf0bf6b66a4c9",
+      "bytes": 12369,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnosis/regression.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnosis/report.py",
+      "sha256": "dbf9b41a3448251f33a282ea7ee4d8ac57fb1c7c12db4d2c88abb3da75128254",
+      "bytes": 7959,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnosis/report.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_diagnostics.py",
+      "sha256": "dc12b8bc63f19844fd677e8e5de9f17c417f464ef0f058d126df8f03d5648072",
+      "bytes": 37474,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_diagnostics.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_exploration.py",
+      "sha256": "f1eb91f6e20b5214d23c12e99da26a076895fc2a491af468eebce60478bca6cc",
+      "bytes": 7815,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_exploration.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_exploration_selection.py",
+      "sha256": "fa107e505bcd455972ab430aaf99b681eb0146f00c0f5f42902e6b8319a450e2",
+      "bytes": 10525,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_exploration_selection.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_membership.py",
+      "sha256": "fcb2b1e47281ece2ca2a4b091fcdfa0f4478483ad51950cc742e30f20b010d35",
+      "bytes": 19217,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_membership.py"
+    },
+    {
+      "path": "src/epsm_workflows/archetype_pilot.py",
+      "sha256": "bb26446f50ca34a86cdd8eb5f6e784228f12496ab2364e7aee30ab85b0fbd6e4",
+      "bytes": 45976,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/archetype_pilot.py"
+    },
+    {
+      "path": "src/epsm_workflows/area_gains_audit.py",
+      "sha256": "86b8dd9ff6150afe8d0a56526363f90c32cacaad84a9f858efd89c57c70a840c",
+      "bytes": 10484,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/area_gains_audit.py"
+    },
+    {
+      "path": "src/epsm_workflows/campaign.py",
+      "sha256": "b118399a30300efbff3498d2eab9c4fd36db0be64e988fa4e94488512099254d",
+      "bytes": 48511,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/campaign.py"
+    },
+    {
+      "path": "src/epsm_workflows/clean_cohort.py",
+      "sha256": "09e9cc8f15497fd08aa852569a260fbf814a4b3acda4361471394b96dba61869",
+      "bytes": 10808,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/clean_cohort.py"
+    },
+    {
+      "path": "src/epsm_workflows/clean_cohort_test.py",
+      "sha256": "eb035fed34d6eeeb355ce74a91435b4ff6eab33806eb18c1764920d09d897385",
+      "bytes": 10071,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/clean_cohort_test.py"
+    },
+    {
+      "path": "src/epsm_workflows/cli.py",
+      "sha256": "4f2a7da26fccfe6786715b8b8c36d5743febfd4ac57763111469d2957ee5d5f7",
+      "bytes": 21699,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cli.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/__init__.py",
+      "sha256": "4c46f8a0aa8c3975951353b2581afeee91d317bee8db2c9ff7696dff1b923065",
+      "bytes": 81,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/__init__.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/__main__.py",
+      "sha256": "d3e5f343eec48a37ddd75270271f73163573367bd07a3ddda98602b16b2bcb82",
+      "bytes": 1924,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/__main__.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/audit.py",
+      "sha256": "0d67c5fec2be69fd8c1778850d89078f26138a7c0d3a5b1de3a6dcb741ac27d0",
+      "bytes": 9253,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/audit.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/cache.py",
+      "sha256": "f1556bfa08feefd18dfaa193b6758a703fbae353755ededdb4e0bfa2b312e0a6",
+      "bytes": 5789,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/cache.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/calibration.py",
+      "sha256": "56cac70d831ac51149545ef22028ccbcdf62fb79b921a3b9d516ec355c17316c",
+      "bytes": 37218,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/calibration.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/common.py",
+      "sha256": "0abb625615386edbca72b7c853a5d535df6de4294f1a5c4c5be7982d4abdee07",
+      "bytes": 8494,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/common.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/context.py",
+      "sha256": "6cb959bf925849df01cf623106d9d66da610039b9effdf5d485fb720d0904fba",
+      "bytes": 7894,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/context.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/grouping.py",
+      "sha256": "e3df9a46947d24a64ecaec5a4cc338de7e235ef0af65216711e49decb4c59c0a",
+      "bytes": 5103,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/grouping.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/inventory.py",
+      "sha256": "b710540ffa7792f3dc8872887c0d60d68657a07eb42cb35e63651e6f4df11499",
+      "bytes": 4447,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/inventory.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/parameters.py",
+      "sha256": "8d68fff0748d008088b136b2b1c7130a8fbb11a01896d821ba7a1f7797217a6d",
+      "bytes": 10872,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/parameters.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/preparation.py",
+      "sha256": "e4b6d0883b228aa4930d258e94454708b64ad54ea65a7151a15634555afe949a",
+      "bytes": 32801,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/preparation.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/rerun.py",
+      "sha256": "c94121feadc66773b8b7b6d21bec2f80b333ab639f04726e1312ec3f4cc2b36d",
+      "bytes": 12179,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/rerun.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/simulation.py",
+      "sha256": "cb46bf596180fc3eda2cb6db46a97b111a5a4a3db31faf9a34d65748dd4fdbe0",
+      "bytes": 12404,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/simulation.py"
+    },
+    {
+      "path": "src/epsm_workflows/cohort_transfer/weather.py",
+      "sha256": "ed59195bae323a7c468570a9f7ad0de0be6491486cf1543e296f41681813e26d",
+      "bytes": 4799,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/cohort_transfer/weather.py"
+    },
+    {
+      "path": "src/epsm_workflows/confirmation_inventory.py",
+      "sha256": "b3d62f4109eea65b4e5fe076401feb9a91704965962d4144ee0f41eb7d8505ef",
+      "bytes": 3444,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/confirmation_inventory.py"
+    },
+    {
+      "path": "src/epsm_workflows/context_diagnostics.py",
+      "sha256": "93709357ffe4c3988eae817420f522e19914ecc2b9a80a4111b849c46047f1f7",
+      "bytes": 27039,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/context_diagnostics.py"
+    },
+    {
+      "path": "src/epsm_workflows/data/materials.json",
+      "sha256": "11e8a28f3312ef8e17dd116b6fb4f5270d355c5ba2b9a18f47e095ddaae7dd0e",
+      "bytes": 2770,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/data/materials.json"
+    },
+    {
+      "path": "src/epsm_workflows/epc.py",
+      "sha256": "e13b85685dfb8a72401cb88b9dfdb23009cb931e7977d8d7333b222c800634d5",
+      "bytes": 13187,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/epc.py"
+    },
+    {
+      "path": "src/epsm_workflows/fabric.py",
+      "sha256": "86d8d2565afc0264dbcc49d8c77f67ee0cf76fde1abb2f94e523a0f2902127fa",
+      "bytes": 2204,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/fabric.py"
+    },
+    {
+      "path": "src/epsm_workflows/heat_balance_diagnostics.py",
+      "sha256": "eea9877ce798b9136ffce40c2da5fbcbc21a9e2f9022d43667d2c4b224479a63",
+      "bytes": 22465,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/heat_balance_diagnostics.py"
+    },
+    {
+      "path": "src/epsm_workflows/improvement_report.py",
+      "sha256": "7053b20a68824457ad9f8a42b65cd64da84c8b1c0e684cd82304482ecc03a0ad",
+      "bytes": 5748,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/improvement_report.py"
+    },
+    {
+      "path": "src/epsm_workflows/lhs_sensitivity.py",
+      "sha256": "2b15d8567106f40a2168e23a6139d43386e9c686de4b8e7985cd0e01b31785d6",
+      "bytes": 14091,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/lhs_sensitivity.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_comparison.py",
+      "sha256": "9b240c5f89ed1381334d87e8faaabc2acde4cd13047c70bb2c69d7242d8805a8",
+      "bytes": 30640,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_comparison.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_emulator.py",
+      "sha256": "92e2f3e7b893311228ce66b7273c042642bd481785650ac26f1cb5f549bc20a1",
+      "bytes": 9604,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_emulator.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_evidence.py",
+      "sha256": "5fefb523b74a4ab38ce31b34b50d679ad9e6dfdc56234d0c6884449e6038e972",
+      "bytes": 7000,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_evidence.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_normal_use.py",
+      "sha256": "3c8037cd3162e4cbe1c7741cdc48d5226be8af349222d0a4f619d7492720c7df",
+      "bytes": 5877,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_normal_use.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_parent_dynamic.py",
+      "sha256": "ef9f6c33a921a6cb76efe72acfc93f6371b57488eec1f453f3f40402125f0fe4",
+      "bytes": 107054,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_parent_dynamic.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_parent_emulator_blocks.py",
+      "sha256": "a34cad713a777ce73a222198b1954f71210679c06b1f823eb54f30e3ff1d69c1",
+      "bytes": 8828,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_parent_emulator_blocks.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_parent_subdivision.py",
+      "sha256": "153507dc65b0a38b40c131e9e24b709f8cf6f3abbc543e9d97a459ffea20ae63",
+      "bytes": 24271,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_parent_subdivision.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_physics.py",
+      "sha256": "45aaa0070ea07b5de507c9ae6a267ccd31f44da2208212813d88a37832bfd39c",
+      "bytes": 13550,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_physics.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_renovation_eda.py",
+      "sha256": "5996c69c1ee844a99540ea3f199e5a9a980d3cb98ca6e5f0a1bbc7eaed4fc587",
+      "bytes": 28629,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_renovation_eda.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_revision.py",
+      "sha256": "6463a4d387577d0d61a280263e6466864e8fc679c90994f1d87e299916b25550",
+      "bytes": 55562,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_revision.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_stock_history.py",
+      "sha256": "04dfc5bb47e2094c553b450f96fb78f4417295dd9b7cfd37758cb80e43ab1bc7",
+      "bytes": 39830,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_stock_history.py"
+    },
+    {
+      "path": "src/epsm_workflows/mf_weather_recovery.py",
+      "sha256": "660b6a0785b11ea88f92dbf16dfc4082204aba0a73355b7cd439ff327db331b1",
+      "bytes": 12913,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mf_weather_recovery.py"
+    },
+    {
+      "path": "src/epsm_workflows/mixed_programmes.py",
+      "sha256": "4ccf9837252f08379f36c4840ed3417ad84366d726c55bc9c85c25aae27ad348",
+      "bytes": 3144,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/mixed_programmes.py"
+    },
+    {
+      "path": "src/epsm_workflows/multifamily_improvement.py",
+      "sha256": "8a8d253e63a52f695635acf04e839b01e44bf9c6cd6a453449c8954bbcfc3ee0",
+      "bytes": 18204,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/multifamily_improvement.py"
+    },
+    {
+      "path": "src/epsm_workflows/parameter_sensitivity.py",
+      "sha256": "e4d70fb64e394f4396a9a4369a738c52c26e8f3f98be3d7c9d0f995ce4f2ba1f",
+      "bytes": 21073,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/parameter_sensitivity.py"
+    },
+    {
+      "path": "src/epsm_workflows/shared_candidate.py",
+      "sha256": "4d52f759c7afc8a5d1367d1936ad6e67c8ee2cb2293b9fdaa91c7d7d91abee0e",
+      "bytes": 13163,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/shared_candidate.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/__init__.py",
+      "sha256": "fea5ad5612489b7a39c23c33248209943dd40c2b7a52d2cf64b49296b1467c55",
+      "bytes": 74,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/__init__.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/__main__.py",
+      "sha256": "418670e0235f3be841e5f4962bdb79c2c6367e6cb44d3f758f4ae303aead5786",
+      "bytes": 1421,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/__main__.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/calibration.py",
+      "sha256": "9fc92fc804ec9dd2dc293f24a94612f959f058b814877bacefe110204b91579a",
+      "bytes": 12315,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/calibration.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/clustering.py",
+      "sha256": "3e601de62db24f87da6e3b56d25289fa2e0831ccec764315e98792c7d0e6f76c",
+      "bytes": 7242,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/clustering.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/common.py",
+      "sha256": "7e3937de03274d539986d4cc739725dd0b4438d1894fa175ded079346f7eb23e",
+      "bytes": 6960,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/common.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/evaluation.py",
+      "sha256": "a53b4fdbf06750522b5310b7e251d68d8b39371b2a3f21aa5fdc246613f4f9f0",
+      "bytes": 16458,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/evaluation.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/evidence.py",
+      "sha256": "fe4a9af8c7ec04c80ded5d8053d5ed4bd3303cc9a297495a5b106f1074b320c0",
+      "bytes": 4008,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/evidence.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/prepare.py",
+      "sha256": "3d1dfe7da82bab3b9206e2b7563becef549160ceb588e36d5a9c2525a08d3dc7",
+      "bytes": 28927,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/prepare.py"
+    },
+    {
+      "path": "src/epsm_workflows/stock/regression.py",
+      "sha256": "0d8ec7405bd811db93b4a59b3dba237ca7c2e0927976c87780d1c994b3ee2426",
+      "bytes": 8510,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/stock/regression.py"
+    },
+    {
+      "path": "src/epsm_workflows/surrogate/__init__.py",
+      "sha256": "f8645cfc7ff5655cc43a6c722932b8c873e83b93508e1aa3886bbd9eddc95295",
+      "bytes": 77,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/surrogate/__init__.py"
+    },
+    {
+      "path": "src/epsm_workflows/surrogate/__main__.py",
+      "sha256": "5b945f8bdc721f93110a4cb68b532b43b1957999ff0af0d4cfa030df914979df",
+      "bytes": 142,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/surrogate/__main__.py"
+    },
+    {
+      "path": "src/epsm_workflows/surrogate/common.py",
+      "sha256": "37f1e0377a0130d2dce1af38b822099713acc0c3a8c514d734b4a631a95516ad",
+      "bytes": 320,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/surrogate/common.py"
+    },
+    {
+      "path": "src/epsm_workflows/surrogate/design.py",
+      "sha256": "d57ddea18e5ac21bde8d3c4a74226178932b2cf3dda94defea9e30a7fac776ef",
+      "bytes": 15845,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/surrogate/design.py"
+    },
+    {
+      "path": "src/epsm_workflows/surrogate/geometry.py",
+      "sha256": "a2bf0f74617e64e0e988d277235847568159415e2b2ca73f579a4cec8233e52e",
+      "bytes": 6471,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/surrogate/geometry.py"
+    },
+    {
+      "path": "src/epsm_workflows/surrogate/weather.py",
+      "sha256": "756579cf5115324e0575d1dc050b9c5c13f4fcca9f01f3b15c64f3cf446c7ca5",
+      "bytes": 3557,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/surrogate/weather.py"
+    },
+    {
+      "path": "src/epsm_workflows/validation.py",
+      "sha256": "baf0851d2315d39913b269725f26686ccc719aa75c9013bbe801326a22ee7c69",
+      "bytes": 8723,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/validation.py"
+    },
+    {
+      "path": "src/epsm_workflows/weather.py",
+      "sha256": "2d59918a7fc46779575d33035c8d80e4c8ba5a53ea55a668852d23088ab4a4eb",
+      "bytes": 2740,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/weather.py"
+    },
+    {
+      "path": "src/epsm_workflows/wwr_sensitivity.py",
+      "sha256": "a3735f2bc3c16a566aeadf784d6e49d2d677fd412b95b355f3ae48909a476417",
+      "bytes": 11935,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/wwr_sensitivity.py"
+    },
+    {
+      "path": "src/epsm_workflows/zoning_sensitivity.py",
+      "sha256": "6c7dda3bc60a3e47ac666b47645f7d66f0d1990969cab7a74c05bdd9c5eed480",
+      "bytes": 12692,
+      "historical_runtime": "src/epsm_studies/legacy_workflows/zoning_sensitivity.py"
+    },
+    {
+      "path": "tests/test_archetype_application.py",
+      "sha256": "53b219529bba8ec8327fc0d14da537f7ab9e477a131ae4b9273b794c728f8562",
+      "bytes": 10781
+    },
+    {
+      "path": "tests/test_archetype_diagnosis.py",
+      "sha256": "b7c1bfaf0fb41f1cf7c6eeee01324c6b8ee646da988d2203704bd57b857daafe",
+      "bytes": 6125
+    },
+    {
+      "path": "tests/test_archetype_diagnostics.py",
+      "sha256": "977f9c5529ceefdd0c625514815b67449e28e43e8fab0bcc2906c461a9b8e6ff",
+      "bytes": 10744
+    },
+    {
+      "path": "tests/test_archetype_membership.py",
+      "sha256": "6e928f05912adccf5452c3fd805bd216f78a7f06dddf299ba7e6236149b7bdf1",
+      "bytes": 9639
+    },
+    {
+      "path": "tests/test_archetype_pilot.py",
+      "sha256": "0c9e4ed3e97877f60b86b4db652c1c9ffd503287abab2b391b7a92a7246fa423",
+      "bytes": 8892
+    },
+    {
+      "path": "tests/test_area_gains_audit.py",
+      "sha256": "1d8e3da8e665e6dfc68bb3edbddb27f0f02724bb293cdf3ab285549f1ea69f5a",
+      "bytes": 2594
+    },
+    {
+      "path": "tests/test_clean_cohort_test.py",
+      "sha256": "a8d81026ea19eaa5302a7d3ce314285bb4cca83f0b8b8a7bfb0a60a47f565e61",
+      "bytes": 2709
+    },
+    {
+      "path": "tests/test_cohort_rerun.py",
+      "sha256": "2ff3e471fa497a22d4c4bb2c0a8856e1f3baae07e5ff4af5d2cf2dd486139ded",
+      "bytes": 1221
+    },
+    {
+      "path": "tests/test_cohort_transfer.py",
+      "sha256": "f5b29d1217e4a3d0786e6c965fbe6040933a047ffe21b89a7e921688dd92077d",
+      "bytes": 31152
+    },
+    {
+      "path": "tests/test_confirmation_inventory.py",
+      "sha256": "339d37bf6be1ec81a66b9c133eabc9029f4de808c36d41d5f028c2ff8089d2f3",
+      "bytes": 1582
+    },
+    {
+      "path": "tests/test_context_diagnostics.py",
+      "sha256": "b5ed5cd2e30109ae1682854c543f2fed513eb33e508052c32fbf355487d46b50",
+      "bytes": 3753
+    },
+    {
+      "path": "tests/test_epc_publication.py",
+      "sha256": "431d9889a7895706a2d14002253c5f093a4a5fce6ef206ac5706021a5c449757",
+      "bytes": 2467
+    },
+    {
+      "path": "tests/test_heat_balance_diagnostics.py",
+      "sha256": "bc9f1f9308104a8e9d3bd9e677a6e77037a4923219618b4bfe4c3f789daaaa18",
+      "bytes": 3981
+    },
+    {
+      "path": "tests/test_improvement_report.py",
+      "sha256": "3ea0b97c8f5aead4f13b8353d835bd299be0ba1e5b0bbe8fd97c29850b3a58d9",
+      "bytes": 2088
+    },
+    {
+      "path": "tests/test_lhs_sensitivity.py",
+      "sha256": "718607e8af1d05381384456f4c010c57e47a8551dd3a1b0287c70f3dc9b3f825",
+      "bytes": 3028
+    },
+    {
+      "path": "tests/test_measurement_weather.py",
+      "sha256": "6d783254ece18f80ea77ccaadcba65a968cd10c7a8fcfd86f7180b36cbc16ae4",
+      "bytes": 385
+    },
+    {
+      "path": "tests/test_mf_certificate_scope.py",
+      "sha256": "d34d7f9886e7349974dc5c4a968b69e300fd921b73031990752ba1b905a9c51a",
+      "bytes": 2213
+    },
+    {
+      "path": "tests/test_mf_comparison.py",
+      "sha256": "72fdef40b1c8532645923897dd80ae9fe81e1ba409bc09fac3a134c15bff5cfb",
+      "bytes": 12928
+    },
+    {
+      "path": "tests/test_mf_emulator.py",
+      "sha256": "09e2e643cf67ce71f16da7315e66b1015d53f93ca9ce1cb4d6396d5f668483f2",
+      "bytes": 8087
+    },
+    {
+      "path": "tests/test_mf_normal_use.py",
+      "sha256": "c36336a57e1af2eeae17ac89c436c2632dc80a54419d7211d4e2cbd3c1181f43",
+      "bytes": 7445
+    },
+    {
+      "path": "tests/test_mf_original_reference_transfer.py",
+      "sha256": "583d30c6937b5df8de72b9cb5878ae05f6d0aa69038a58b8638e22b42ea86687",
+      "bytes": 3337
+    },
+    {
+      "path": "tests/test_mf_parent_dynamic.py",
+      "sha256": "155b0269b9e9bb4e5beec918bb21804676cf9ae83113e37e2c99c4ffd95fdfea",
+      "bytes": 22767
+    },
+    {
+      "path": "tests/test_mf_parent_dynamic_exports.py",
+      "sha256": "e3cc4cb368c0b1555781f5877c60ad19613d29c160262f565392c92dc41578b8",
+      "bytes": 8979
+    },
+    {
+      "path": "tests/test_mf_parent_emulator_blocks.py",
+      "sha256": "93f6db94e1e8452d3bad74ed987cd13ab86862eb8a0caccd4ac8a7545c6b6d0f",
+      "bytes": 8521
+    },
+    {
+      "path": "tests/test_mf_parent_joint_controls.py",
+      "sha256": "438bf1526b0e27d5dcca0fba23e6839a303e3d91e544063f34def7d7a730cdb3",
+      "bytes": 7164
+    },
+    {
+      "path": "tests/test_mf_parent_subdivision.py",
+      "sha256": "188776c2ef39bb91fc75ae4091607b94aeeaa2edf48c4b5177f38eb6153ac2bc",
+      "bytes": 21710
+    },
+    {
+      "path": "tests/test_mf_physics.py",
+      "sha256": "258f3ec2c2d4dff42c38160230196b1b53bc9e246ce6253c5fe6257675254743",
+      "bytes": 14251
+    },
+    {
+      "path": "tests/test_mf_renovation_eda.py",
+      "sha256": "ca8907f23966a5068d69846c0d6fdf9dbc66572c3b2bfdaee48975dfef478abb",
+      "bytes": 8015
+    },
+    {
+      "path": "tests/test_mf_revision.py",
+      "sha256": "2032da7ac3184c65babacdc4a7ce39379b7fb44d3ad1349f20036af8d445ea3d",
+      "bytes": 13627
+    },
+    {
+      "path": "tests/test_mf_selected_assignments.py",
+      "sha256": "0376b45cf13d690e29ca5cb871427bae56016ef746f71dfdb6bd5c5c0fcd0e24",
+      "bytes": 14392
+    },
+    {
+      "path": "tests/test_mf_stock_history.py",
+      "sha256": "21481f985c3e946121ab9899e4d69f5feec1e8309c7f6be9f5339cde47a93e3a",
+      "bytes": 21781
+    },
+    {
+      "path": "tests/test_mf_template_weather.py",
+      "sha256": "b2ed17fac161fa274c05cf32b2d83a1d726283b3fc34115eeab91b9d7d4303f2",
+      "bytes": 11444
+    },
+    {
+      "path": "tests/test_mf_weather_recovery.py",
+      "sha256": "07ba441021a470f398996cfbb95b16d38f1a737995c95d5abcdaae5b4a7d10c4",
+      "bytes": 4195
+    },
+    {
+      "path": "tests/test_minimal_campaign.py",
+      "sha256": "090886f5f3cbf1f0693199034fba7fed759e956cbda069186429a773181d9032",
+      "bytes": 17127
+    },
+    {
+      "path": "tests/test_mixed_programmes.py",
+      "sha256": "f858acd4eafedafd764d69234ad3db92248cb4d6d89a9710d24a7d53aae2ac82",
+      "bytes": 1982
+    },
+    {
+      "path": "tests/test_national_random_baseline.py",
+      "sha256": "903454a60eab1a2bcd3d822edfdc286beb68f92552ba585323ba3cfabf2a594d",
+      "bytes": 11630
+    },
+    {
+      "path": "tests/test_parameter_sensitivity.py",
+      "sha256": "d4eaae2e525f1e980a0f46ce3cd0532be6fe68de5344d6bf75062bccbb3fab74",
+      "bytes": 5574
+    },
+    {
+      "path": "tests/test_progress_mail.py",
+      "sha256": "da752530e18dcf6c604c1f9db4711256b51b48699cccb4eee02ce755e88bfe79",
+      "bytes": 4493
+    },
+    {
+      "path": "tests/test_shared_candidate.py",
+      "sha256": "16d7a108301a554d16ba771ca1bfc35bfc6efbb122d2bef2c491bdd0874fcbcb",
+      "bytes": 3682
+    },
+    {
+      "path": "tests/test_stock_workflow.py",
+      "sha256": "0e04b7deefc75c32457441c327f7eaf6a6b37c63b3fe6f79c8755b59d1127520",
+      "bytes": 10671
+    },
+    {
+      "path": "tests/test_validation.py",
+      "sha256": "ae3e557ecc7388a8e3fb068195018400e5b60691a4004129ac7a39bf03302c47",
+      "bytes": 2899
+    },
+    {
+      "path": "tests/test_weather_anomalies.py",
+      "sha256": "db88c1c463016211e5e0d9782ff3360ab154e555763dc9ce29806c79e3d883bc",
+      "bytes": 13328
+    },
+    {
+      "path": "tests/test_weather_archetypes.py",
+      "sha256": "bb3b9cca8e8c429e7ac4acb0bd982e7fdf1a93ca4036b7fb6897ff1d8f7a154a",
+      "bytes": 8181
+    },
+    {
+      "path": "tests/test_weather_artifact_storage.py",
+      "sha256": "0a748828b6256a6cfc9c9bf38d73cd8897324fcfb70d94267b199e1a94fa3faa",
+      "bytes": 11438
+    },
+    {
+      "path": "tests/test_weather_campaign_analysis.py",
+      "sha256": "cf311fd716e205c1fbbaf357db1146f3ea47e2c9adc1a621693cd48908a5a612",
+      "bytes": 2393
+    },
+    {
+      "path": "tests/test_weather_campaign_archival.py",
+      "sha256": "d281f275c25621316e795a8ecb22aa2612152a055a26343848f698db804ab67f",
+      "bytes": 18873
+    },
+    {
+      "path": "tests/test_weather_campaign_design.py",
+      "sha256": "e89d0c3f837e6578bb848b1ecc936a106c273afd3f3425985ec2cead7e3152b7",
+      "bytes": 14478
+    },
+    {
+      "path": "tests/test_weather_campaign_events_plot.py",
+      "sha256": "fee928b5a73459b4cc9b0de4cb926b62b942bd0de009c1bff2e0d544d8c8cb84",
+      "bytes": 7570
+    },
+    {
+      "path": "tests/test_weather_campaign_methods_plot.py",
+      "sha256": "e3b6ebf361b850ff930976a0ef13f73c9e53bb1a2bd8b960b516b6a9242b9fa1",
+      "bytes": 9902
+    },
+    {
+      "path": "tests/test_weather_campaign_paper_report.py",
+      "sha256": "6dd6689611965bd397e644ffdca25807271caeedd6a92e3415169e5de77f8bfb",
+      "bytes": 7903
+    },
+    {
+      "path": "tests/test_weather_campaign_postanalysis.py",
+      "sha256": "c30182cc016817b9ca040633e9f4383a3a09d5d2b453c60eafa9e0c27430635d",
+      "bytes": 13899
+    },
+    {
+      "path": "tests/test_weather_campaign_process_resume.py",
+      "sha256": "0216b401f35d32e18817692ac0c3885941c61e0d0e31e70f9555fc922ceff2f5",
+      "bytes": 28846
+    },
+    {
+      "path": "tests/test_weather_campaign_qualification.py",
+      "sha256": "f3def1f923abd3197172256692310d0214a0c63c6f0ae95f2e96d8a6ebbb05d9",
+      "bytes": 32047
+    },
+    {
+      "path": "tests/test_weather_campaign_report.py",
+      "sha256": "c6aa723d560a016c3f510e86186e054fce9dff4d189e7985d27fc9862a024c86",
+      "bytes": 38419
+    },
+    {
+      "path": "tests/test_weather_campaign_runner.py",
+      "sha256": "a6736d807c0ea362e19450d81e26464c06dd968887138321b5428156713208cf",
+      "bytes": 18781
+    },
+    {
+      "path": "tests/test_weather_campaign_sources.py",
+      "sha256": "5cfd0276ef0138c4120ab3bd945547222066abdefdce8fec6d74b7267b9d098a",
+      "bytes": 14060
+    },
+    {
+      "path": "tests/test_weather_campaign_summary_plot.py",
+      "sha256": "f329326fa2ad61a1ea284c62902e2403bed8e193c6bf3022162d88bed6215aba",
+      "bytes": 12050
+    },
+    {
+      "path": "tests/test_weather_campaign_uncertainty.py",
+      "sha256": "1ed30e5aa4231e4db3e6e7a51f525c0b31452c8deba35cd182305c23089679cd",
+      "bytes": 9041
+    },
+    {
+      "path": "tests/test_weather_event_anchors.py",
+      "sha256": "e3e99e75e6f87d4456a1044a4f73fd28e701ee4ce0b2b3a0c23ca7505d9ab252",
+      "bytes": 6374
+    },
+    {
+      "path": "tests/test_weather_prediction_context.py",
+      "sha256": "833e805c826728691b16f46476c5609cd223a69aded4ba0a3d89623c2e941244",
+      "bytes": 4873
+    },
+    {
+      "path": "tests/test_weather_sensitivity.py",
+      "sha256": "f412978f2ead6f6af89f411dfc78bb44d6fde97139bc4627ae2990c7cd7f6b13",
+      "bytes": 10503
+    },
+    {
+      "path": "tests/test_weather_sql_archive.py",
+      "sha256": "1833bd1c6e7425e8fc3cbea594c6d27b16548b64e39a1d3928eca0d21fc9be50",
+      "bytes": 9618
+    },
+    {
+      "path": "tests/test_wwr_sensitivity.py",
+      "sha256": "b38112ead8d22ad781091c551d8b3ba96a0923a50ef5e107e74be08894a58784",
+      "bytes": 1782
+    },
+    {
+      "path": "tests/test_zoning_sensitivity.py",
+      "sha256": "65dfb6c03304eb5e6d8d8dd9fabe4122a2a9a9b1514de6d3c84e1021f2e394ae",
+      "bytes": 1481
+    }
+  ]
+}

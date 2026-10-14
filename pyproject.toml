@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "epsm_studies"
+version = "0.1.0"
+description = "EPSM research protocol records and historical study archives"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["epsm_studies"]
+namespaces = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["archive", "imports", ".*", "build", "dist", "venv"]

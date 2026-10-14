@@ -16,6 +16,7 @@ __pycache__/
 /data/raw/
 /data/local/
 /output/
+/outputs/
 /results/
 /runs/
 /simulation_results/
