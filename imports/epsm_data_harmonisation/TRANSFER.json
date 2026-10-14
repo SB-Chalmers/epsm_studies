@@ -1,0 +1,166 @@
+{
+  "source_repository": "SB-Chalmers/epsm_data",
+  "purpose": "Historical validation and cohort study archive; not current Data defaults",
+  "files": [
+    {
+      "path": "evidence/lod2_v1/report.json",
+      "sha256": "5f67386aa3b81b4534300b506111fc27a75347e69e8bc10c744617beebaff427",
+      "bytes": 2304210
+    },
+    {
+      "path": "evidence/lod2_v1/sources/boverket_roof_board.json",
+      "sha256": "fb383ffd4f996c7d1c78ce77eb6b67e27ba102835346e949f9a11952f9850829",
+      "bytes": 4932
+    },
+    {
+      "path": "evidence/lod2_v1_1/policy.json",
+      "sha256": "999322493d2d477a80f06f8cdbfaf3978bc4ab98c4b1c4e4f9751cb8f26db868",
+      "bytes": 936
+    },
+    {
+      "path": "evidence/lod2_v1_1/report.json",
+      "sha256": "02d22d98873a615fc1d1bf6ef9d6c20705f1eb6f8ea3083e38c06fe1330a2aeb",
+      "bytes": 3099575
+    },
+    {
+      "path": "evidence/lod2_v1_2/policy.json",
+      "sha256": "cd36246ec22d1a2297487a07a0ed7760a28ac0d6066943e2de859534e0916789",
+      "bytes": 2962
+    },
+    {
+      "path": "evidence/lod2_v1_2/release/layered/assemblies.json",
+      "sha256": "0e18b1df055158f3f1da6c6ab6b20d3cf365d740a58eb0d770bc089c83650bbb",
+      "bytes": 2679039
+    },
+    {
+      "path": "evidence/lod2_v1_2/report.json",
+      "sha256": "fdacd1612178b056c4bc55c5fcdde359bc8781a2b5b5e3e6b93c0c0f643a33c0",
+      "bytes": 3155734
+    },
+    {
+      "path": "evidence/lod2_v1_3/README.md",
+      "sha256": "f4d1a3207f3d1864988988472fb1b616ee2db8d6df2e4a38a22732495c0284f4",
+      "bytes": 4373
+    },
+    {
+      "path": "evidence/lod2_v1_3/claims.json",
+      "sha256": "8bd2a3f189b855130d7e28ee835b900f8326270d5a687a15c28426d7ffb3f0b4",
+      "bytes": 2804060
+    },
+    {
+      "path": "evidence/lod2_v1_3/decisions.json",
+      "sha256": "96de9814d7cdfdcc23ac2362f9c97aa9ea4433308f9980db46da2de0cdd2b94d",
+      "bytes": 1311423
+    },
+    {
+      "path": "evidence/lod2_v1_3/manifest.json",
+      "sha256": "d2cd2b9a85df1c27f2c1feb1942cca1ca6d09b813ba9be6e22f694851ed311ca",
+      "bytes": 3041
+    },
+    {
+      "path": "evidence/lod2_v1_3/policy.json",
+      "sha256": "e1c7c006d25ffb391ad07789ed9e59fb3ad338aadeae194d5077d0595972d062",
+      "bytes": 2529
+    },
+    {
+      "path": "evidence/lod2_v1_4/README.md",
+      "sha256": "75f9a254a6b109c99060e4d9ccf515d43b7d92867a866fa8f5e4322fa3af7e16",
+      "bytes": 1300
+    },
+    {
+      "path": "evidence/lod2_v1_4/prior/BASELINE.json",
+      "sha256": "041aebf6c83d40ce41236aa101468cb30ca5d7604f39c5fe3a1416e95f067304",
+      "bytes": 1801
+    },
+    {
+      "path": "evidence/lod2_v1_4/prior/catalogue.json",
+      "sha256": "b24446677d838b0193e6e9d624d91c900e4ab43f174102b7d4dfed2af0a1d7bb",
+      "bytes": 1080898
+    },
+    {
+      "path": "evidence/lod2_v1_4/window-diagnostic.json",
+      "sha256": "40b38191fcb837d11b8dc9f95964c7f1bdaf57d35fec413bc67d77f8d3566285",
+      "bytes": 2562
+    },
+    {
+      "path": "evidence/lod2_fitting/before/assemblies.json",
+      "sha256": "1fcff7447ba3197997ea9e6acd7cde6fa61b05777c1469c11d717972174b5c45",
+      "bytes": 611921
+    },
+    {
+      "path": "evidence/lod2_fitting/policy.json",
+      "sha256": "d020cd44cae0563f86c76dcf74c61d8d897a11f0f94009059fc2b7c6cac2f287",
+      "bytes": 3530
+    },
+    {
+      "path": "evidence/freeze-v1.5.0.json",
+      "sha256": "b651b6474bbc14f6a6c7df80bf9122e2291235e905af6ab558bb9f81ca6e752f",
+      "bytes": 109983
+    },
+    {
+      "path": "docs/frozen-baseline.md",
+      "sha256": "1b8fb45639ca906294810e99824e69fc70e0a390fbe3ce7687b41ade2c052055",
+      "bytes": 4318
+    },
+    {
+      "path": "BASELINE.json",
+      "sha256": "12c9c273c3a4b8b338a04b7e9c4485f5e701451f4c973194695ca48a0e1fdf89",
+      "bytes": 3677
+    },
+    {
+      "path": "cohort_profiles/2026-10-04-v1/README.md",
+      "sha256": "0c22908522ab4f44d1a1ee941fb140fa38052e8cb861c33d1fe40fca9aac824e",
+      "bytes": 1969
+    },
+    {
+      "path": "cohort_profiles/2026-10-04-v1/mf-se02-gothenburg.json",
+      "sha256": "832a32f65a01c76366be76b38fd07c28b6fd69d57cf448a1dc1bcedd1cc63f92",
+      "bytes": 10381
+    },
+    {
+      "path": "cohort_profiles/2026-10-05-v2/README.md",
+      "sha256": "e989b4701ef73cf7f9a0f9c304a3a5d008df1e7c20f8587257ed806a9527ec7c",
+      "bytes": 1612
+    },
+    {
+      "path": "cohort_profiles/2026-10-05-v2/mf-se02-gothenburg.json",
+      "sha256": "37ffc6a67f067b9f1bf12f93fa451f3f013fc7cc4b1f8cc406b2ebbd853e2076",
+      "bytes": 10393
+    },
+    {
+      "path": "cohort_profiles/current.json",
+      "sha256": "7e09f3d45b532134fc963cd2f3b2c5f6504bc2af03cbae5dcdd842262f146b06",
+      "bytes": 525
+    },
+    {
+      "path": "src/epsm_data/datasets/parametric/mf_se02_data15_validation.json",
+      "sha256": "63aef406042368d6d0db7437f2c89bb5bea701994e165a60daab17537f8c93c9",
+      "bytes": 9604
+    },
+    {
+      "path": "docs/mf-se02-data15-validation.md",
+      "sha256": "9febd08a01f1921db17fc81ad26fdec4cda24b67bd2f7a5f39019a951f09754d",
+      "bytes": 2491
+    },
+    {
+      "path": "src/epsm_data/datasets/parametric/calibration.json",
+      "sha256": "10d9d11cb446e48e43b09b297d881bf6754b797afbec196b74f974e58e9894fb",
+      "bytes": 317975
+    },
+    {
+      "path": "src/epsm_data/datasets/layered/evidence/mf_se02_window_v1_4_diagnostic.json",
+      "sha256": "40b38191fcb837d11b8dc9f95964c7f1bdaf57d35fec413bc67d77f8d3566285",
+      "bytes": 2562
+    },
+    {
+      "path": "tools/recalibrate_mf_se02.py",
+      "sha256": "c87814c69cc0dfb74aec7b4f301070991dce3210db6cc9bff30e1584b88c937a",
+      "bytes": 6613
+    },
+    {
+      "path": "tests/test_nominal.py",
+      "sha256": "5a6d96e59fcad87a15ebb8d3aab3cfa67ee66a17da758dcdcf7550cfcc52f9dd",
+      "bytes": 10233
+    }
+  ]
+}

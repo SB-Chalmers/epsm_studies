@@ -1,0 +1,399 @@
+{
+  "repository": "SB-Chalmers/epsm_studies",
+  "commit": "92f3f970a41fc9b9ef797c25ae8c7f6ac7757875",
+  "date": "2026-10-14",
+  "purpose": "Archive named historical workflow implementations at the maintainer request; no execution, compatibility or reproduction commitment.",
+  "scope": "legacy_workflows source and resources, plus original README and package metadata for context. Generic PaperStudy remains active.",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "d34b854826601cb90c2a4168f003e302f473d94927e3cf795c17d3ff846a6a6c",
+      "bytes": 2243
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "281b43dc36cf84a0f0012a8412524cc5ddb878a743e157794e52cc7f357fc9d3",
+      "bytes": 533
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/__init__.py",
+      "sha256": "166ef86b942dd14dd7a22de0e639adb887412861e19a7f98d5e9b3af783f3bcb",
+      "bytes": 108
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/_version.py",
+      "sha256": "31bf54519656d0e6f903c34f483873631b976f8733c3c984f11f2f287b514498",
+      "bytes": 102
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_application.py",
+      "sha256": "36de0e797f5fdafd4b6e078384393442e6e24da3024ce9c79e035591d45c886f",
+      "bytes": 29781
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnosis/__init__.py",
+      "sha256": "ac1bef6249cbbf46f9ec3445b3c03f1b9012007c606dfd98b49cb68070b57267",
+      "bytes": 67
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnosis/__main__.py",
+      "sha256": "d73766ba50f6aea601cdc9493aec0e0142cf9a1716eb040cf34181865567492f",
+      "bytes": 1228
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnosis/audit.py",
+      "sha256": "4881a58034506abb97bca99acdfffc118126689a9698a2bd1d402eea99847d3d",
+      "bytes": 10050
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnosis/physics.py",
+      "sha256": "138917bd7374aa06b431c88387f4ca68e92478fb08a6559c3412bd61491db857",
+      "bytes": 11707
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnosis/regression.py",
+      "sha256": "2174ea4efc49b2f12a00074d6a77ba24e4fa0b4ba44f60ebef1bf0bf6b66a4c9",
+      "bytes": 12369
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnosis/report.py",
+      "sha256": "dbf9b41a3448251f33a282ea7ee4d8ac57fb1c7c12db4d2c88abb3da75128254",
+      "bytes": 7959
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_diagnostics.py",
+      "sha256": "dc12b8bc63f19844fd677e8e5de9f17c417f464ef0f058d126df8f03d5648072",
+      "bytes": 37474
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_exploration.py",
+      "sha256": "f1eb91f6e20b5214d23c12e99da26a076895fc2a491af468eebce60478bca6cc",
+      "bytes": 7815
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_exploration_selection.py",
+      "sha256": "fa107e505bcd455972ab430aaf99b681eb0146f00c0f5f42902e6b8319a450e2",
+      "bytes": 10525
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_membership.py",
+      "sha256": "fcb2b1e47281ece2ca2a4b091fcdfa0f4478483ad51950cc742e30f20b010d35",
+      "bytes": 19217
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/archetype_pilot.py",
+      "sha256": "bb26446f50ca34a86cdd8eb5f6e784228f12496ab2364e7aee30ab85b0fbd6e4",
+      "bytes": 45976
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/area_gains_audit.py",
+      "sha256": "86b8dd9ff6150afe8d0a56526363f90c32cacaad84a9f858efd89c57c70a840c",
+      "bytes": 10484
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/campaign.py",
+      "sha256": "b118399a30300efbff3498d2eab9c4fd36db0be64e988fa4e94488512099254d",
+      "bytes": 48511
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/clean_cohort.py",
+      "sha256": "09e9cc8f15497fd08aa852569a260fbf814a4b3acda4361471394b96dba61869",
+      "bytes": 10808
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/clean_cohort_test.py",
+      "sha256": "eb035fed34d6eeeb355ce74a91435b4ff6eab33806eb18c1764920d09d897385",
+      "bytes": 10071
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cli.py",
+      "sha256": "4f2a7da26fccfe6786715b8b8c36d5743febfd4ac57763111469d2957ee5d5f7",
+      "bytes": 21699
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/__init__.py",
+      "sha256": "4c46f8a0aa8c3975951353b2581afeee91d317bee8db2c9ff7696dff1b923065",
+      "bytes": 81
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/__main__.py",
+      "sha256": "d3e5f343eec48a37ddd75270271f73163573367bd07a3ddda98602b16b2bcb82",
+      "bytes": 1924
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/audit.py",
+      "sha256": "0d67c5fec2be69fd8c1778850d89078f26138a7c0d3a5b1de3a6dcb741ac27d0",
+      "bytes": 9253
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/cache.py",
+      "sha256": "f1556bfa08feefd18dfaa193b6758a703fbae353755ededdb4e0bfa2b312e0a6",
+      "bytes": 5789
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/calibration.py",
+      "sha256": "56cac70d831ac51149545ef22028ccbcdf62fb79b921a3b9d516ec355c17316c",
+      "bytes": 37218
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/common.py",
+      "sha256": "0abb625615386edbca72b7c853a5d535df6de4294f1a5c4c5be7982d4abdee07",
+      "bytes": 8494
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/context.py",
+      "sha256": "6cb959bf925849df01cf623106d9d66da610039b9effdf5d485fb720d0904fba",
+      "bytes": 7894
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/grouping.py",
+      "sha256": "e3df9a46947d24a64ecaec5a4cc338de7e235ef0af65216711e49decb4c59c0a",
+      "bytes": 5103
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/inventory.py",
+      "sha256": "b710540ffa7792f3dc8872887c0d60d68657a07eb42cb35e63651e6f4df11499",
+      "bytes": 4447
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/parameters.py",
+      "sha256": "8d68fff0748d008088b136b2b1c7130a8fbb11a01896d821ba7a1f7797217a6d",
+      "bytes": 10872
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/preparation.py",
+      "sha256": "e4b6d0883b228aa4930d258e94454708b64ad54ea65a7151a15634555afe949a",
+      "bytes": 32801
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/rerun.py",
+      "sha256": "c94121feadc66773b8b7b6d21bec2f80b333ab639f04726e1312ec3f4cc2b36d",
+      "bytes": 12179
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/simulation.py",
+      "sha256": "cb46bf596180fc3eda2cb6db46a97b111a5a4a3db31faf9a34d65748dd4fdbe0",
+      "bytes": 12404
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/cohort_transfer/weather.py",
+      "sha256": "ed59195bae323a7c468570a9f7ad0de0be6491486cf1543e296f41681813e26d",
+      "bytes": 4799
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/confirmation_inventory.py",
+      "sha256": "b3d62f4109eea65b4e5fe076401feb9a91704965962d4144ee0f41eb7d8505ef",
+      "bytes": 3444
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/context_diagnostics.py",
+      "sha256": "93709357ffe4c3988eae817420f522e19914ecc2b9a80a4111b849c46047f1f7",
+      "bytes": 27039
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/data/materials.json",
+      "sha256": "11e8a28f3312ef8e17dd116b6fb4f5270d355c5ba2b9a18f47e095ddaae7dd0e",
+      "bytes": 2770
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/epc.py",
+      "sha256": "e13b85685dfb8a72401cb88b9dfdb23009cb931e7977d8d7333b222c800634d5",
+      "bytes": 13187
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/fabric.py",
+      "sha256": "2681ba0d80e796615d36c3830ef1198f004b5fdf267962692cb896536a5a45ed",
+      "bytes": 2219
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/heat_balance_diagnostics.py",
+      "sha256": "eea9877ce798b9136ffce40c2da5fbcbc21a9e2f9022d43667d2c4b224479a63",
+      "bytes": 22465
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/improvement_report.py",
+      "sha256": "7053b20a68824457ad9f8a42b65cd64da84c8b1c0e684cd82304482ecc03a0ad",
+      "bytes": 5748
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/lhs_sensitivity.py",
+      "sha256": "2b15d8567106f40a2168e23a6139d43386e9c686de4b8e7985cd0e01b31785d6",
+      "bytes": 14091
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_comparison.py",
+      "sha256": "9b240c5f89ed1381334d87e8faaabc2acde4cd13047c70bb2c69d7242d8805a8",
+      "bytes": 30640
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_emulator.py",
+      "sha256": "92e2f3e7b893311228ce66b7273c042642bd481785650ac26f1cb5f549bc20a1",
+      "bytes": 9604
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_evidence.py",
+      "sha256": "5fefb523b74a4ab38ce31b34b50d679ad9e6dfdc56234d0c6884449e6038e972",
+      "bytes": 7000
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_normal_use.py",
+      "sha256": "3c8037cd3162e4cbe1c7741cdc48d5226be8af349222d0a4f619d7492720c7df",
+      "bytes": 5877
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_parent_dynamic.py",
+      "sha256": "ef9f6c33a921a6cb76efe72acfc93f6371b57488eec1f453f3f40402125f0fe4",
+      "bytes": 107054
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_parent_emulator_blocks.py",
+      "sha256": "a34cad713a777ce73a222198b1954f71210679c06b1f823eb54f30e3ff1d69c1",
+      "bytes": 8828
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_parent_subdivision.py",
+      "sha256": "153507dc65b0a38b40c131e9e24b709f8cf6f3abbc543e9d97a459ffea20ae63",
+      "bytes": 24271
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_physics.py",
+      "sha256": "45aaa0070ea07b5de507c9ae6a267ccd31f44da2208212813d88a37832bfd39c",
+      "bytes": 13550
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_renovation_eda.py",
+      "sha256": "5996c69c1ee844a99540ea3f199e5a9a980d3cb98ca6e5f0a1bbc7eaed4fc587",
+      "bytes": 28629
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_revision.py",
+      "sha256": "6463a4d387577d0d61a280263e6466864e8fc679c90994f1d87e299916b25550",
+      "bytes": 55562
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_stock_history.py",
+      "sha256": "04dfc5bb47e2094c553b450f96fb78f4417295dd9b7cfd37758cb80e43ab1bc7",
+      "bytes": 39830
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mf_weather_recovery.py",
+      "sha256": "660b6a0785b11ea88f92dbf16dfc4082204aba0a73355b7cd439ff327db331b1",
+      "bytes": 12913
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/mixed_programmes.py",
+      "sha256": "4ccf9837252f08379f36c4840ed3417ad84366d726c55bc9c85c25aae27ad348",
+      "bytes": 3144
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/multifamily_improvement.py",
+      "sha256": "8a8d253e63a52f695635acf04e839b01e44bf9c6cd6a453449c8954bbcfc3ee0",
+      "bytes": 18204
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/parameter_sensitivity.py",
+      "sha256": "e4d70fb64e394f4396a9a4369a738c52c26e8f3f98be3d7c9d0f995ce4f2ba1f",
+      "bytes": 21073
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/shared_candidate.py",
+      "sha256": "4d52f759c7afc8a5d1367d1936ad6e67c8ee2cb2293b9fdaa91c7d7d91abee0e",
+      "bytes": 13163
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/__init__.py",
+      "sha256": "fea5ad5612489b7a39c23c33248209943dd40c2b7a52d2cf64b49296b1467c55",
+      "bytes": 74
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/__main__.py",
+      "sha256": "418670e0235f3be841e5f4962bdb79c2c6367e6cb44d3f758f4ae303aead5786",
+      "bytes": 1421
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/calibration.py",
+      "sha256": "9fc92fc804ec9dd2dc293f24a94612f959f058b814877bacefe110204b91579a",
+      "bytes": 12315
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/clustering.py",
+      "sha256": "3e601de62db24f87da6e3b56d25289fa2e0831ccec764315e98792c7d0e6f76c",
+      "bytes": 7242
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/common.py",
+      "sha256": "7e3937de03274d539986d4cc739725dd0b4438d1894fa175ded079346f7eb23e",
+      "bytes": 6960
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/evaluation.py",
+      "sha256": "a53b4fdbf06750522b5310b7e251d68d8b39371b2a3f21aa5fdc246613f4f9f0",
+      "bytes": 16458
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/evidence.py",
+      "sha256": "fe4a9af8c7ec04c80ded5d8053d5ed4bd3303cc9a297495a5b106f1074b320c0",
+      "bytes": 4008
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/prepare.py",
+      "sha256": "3d1dfe7da82bab3b9206e2b7563becef549160ceb588e36d5a9c2525a08d3dc7",
+      "bytes": 28927
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/stock/regression.py",
+      "sha256": "0d8ec7405bd811db93b4a59b3dba237ca7c2e0927976c87780d1c994b3ee2426",
+      "bytes": 8510
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/surrogate/__init__.py",
+      "sha256": "f8645cfc7ff5655cc43a6c722932b8c873e83b93508e1aa3886bbd9eddc95295",
+      "bytes": 77
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/surrogate/__main__.py",
+      "sha256": "5b945f8bdc721f93110a4cb68b532b43b1957999ff0af0d4cfa030df914979df",
+      "bytes": 142
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/surrogate/common.py",
+      "sha256": "37f1e0377a0130d2dce1af38b822099713acc0c3a8c514d734b4a631a95516ad",
+      "bytes": 320
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/surrogate/design.py",
+      "sha256": "d57ddea18e5ac21bde8d3c4a74226178932b2cf3dda94defea9e30a7fac776ef",
+      "bytes": 15845
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/surrogate/geometry.py",
+      "sha256": "a2bf0f74617e64e0e988d277235847568159415e2b2ca73f579a4cec8233e52e",
+      "bytes": 6471
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/surrogate/weather.py",
+      "sha256": "756579cf5115324e0575d1dc050b9c5c13f4fcca9f01f3b15c64f3cf446c7ca5",
+      "bytes": 3557
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/validation.py",
+      "sha256": "baf0851d2315d39913b269725f26686ccc719aa75c9013bbe801326a22ee7c69",
+      "bytes": 8723
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/weather.py",
+      "sha256": "2d59918a7fc46779575d33035c8d80e4c8ba5a53ea55a668852d23088ab4a4eb",
+      "bytes": 2740
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/wwr_sensitivity.py",
+      "sha256": "a3735f2bc3c16a566aeadf784d6e49d2d677fd412b95b355f3ae48909a476417",
+      "bytes": 11935
+    },
+    {
+      "path": "src/epsm_studies/legacy_workflows/zoning_sensitivity.py",
+      "sha256": "6c7dda3bc60a3e47ac666b47645f7d66f0d1990969cab7a74c05bdd9c5eed480",
+      "bytes": 12692
+    }
+  ]
+}

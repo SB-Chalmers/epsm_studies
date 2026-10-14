@@ -1,9 +1,55 @@
 # epsm_studies
 
-Planned home for named EPSM research studies, experiment definitions, analyses and reports. Candidate study transfers are being reviewed before implementation.
+Generic EPSM research protocol records and historical study archives.
+`PaperStudy` records a study setup; reusable designs, optimisation and execution
+belong to `epsm_workflows`. Existing named study implementations are archived
+pending later decisions by the maintainer.
 
-**Status:** Repository initialized on 14 October 2026. No Python package or runnable API is implemented here yet.
+```python
+from epsm_studies import PaperStudy
 
-See the [EPSM developer handbook](https://github.com/SB-Chalmers/epsm_development) and its [harmonisation review](https://github.com/SB-Chalmers/epsm_development/blob/main/docs/harmonisation.md) for agreed names, proposed responsibilities and the file-transfer discussion.
+study = PaperStudy(
+    name="renovation-alternatives",
+    question="Which physical renovation sequences improve energy and carbon?",
+    configuration={"max_depth": 2, "assessment_period_years": 50},
+    sources={"catalogue": "reviewed-release-id"},
+    plan_ids=("prepared-workflow-plan-id",),
+)
+study.save("outputs/renovation-alternatives/protocol.json")
+```
 
-`main` records the initial baseline; ordinary implementation work starts from `dev` and follows the handbook. Keep raw source data, local exploration outputs and simulation artifacts outside Git. Commit reusable study code, documented configuration and intentionally small test fixtures.
+These illustrative values are explicit protocol choices, not scientific defaults.
+Changing the question or assumptions creates another protocol identity.
+`configuration` and `sources` return independent copies for inspection; editing
+those copies does not change the protocol or its identity. Construct another
+`PaperStudy` to record changed assumptions.
+
+## Historical Workflows transfer
+
+`archive/workflows_2026_10_14/` preserves tracked source, tests, configurations,
+examples and documentation from Workflows commit
+`1e49fa212f26ed80e6c2dce173cf5caa87a8b5b2`. `ARCHIVE.json` lists SHA256 checksums.
+Simulation outputs and external raw datasets are not copied.
+
+The formerly importable `src/epsm_studies/legacy_workflows/` implementations
+now reside in `archive/2026-10-14/src/epsm_studies/legacy_workflows/`. Their
+original bytes and package metadata are recorded in
+[ARCHIVE.json](archive/2026-10-14/ARCHIVE.json).
+The legacy extra and compatibility imports have been retired. These files are
+unsupported historical material, excluded from the installed package and normal
+test discovery. They have no execution, repair or reproduction commitment.
+The generic `PaperStudy` API and its tests remain active.
+
+The transfer includes national stock exploration, MF revisions, cohort transfer,
+archetype diagnosis, the surrogate campaign and weather-imputation study sources.
+Old assumptions and source hashes remain inspectable. See the
+[archive index](archive/README.md) for the retained collections and their scope.
+
+## Data validation transfer
+
+`imports/epsm_data_harmonisation/` retains historical LoD2 fitting/validation,
+frozen-baseline and cohort-profile evidence transferred from Data. `TRANSFER.json`
+records original relative paths and verified checksums. This collection is archived
+evidence: its location is retained because Data source provenance refers to these
+paths. It is excluded from installation and normal test discovery. Current
+construction defaults and original source evidence remain owned by Data.
