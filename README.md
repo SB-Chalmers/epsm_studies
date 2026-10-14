@@ -1,9 +1,44 @@
 # epsm_studies
 
-Planned home for named EPSM research studies, experiment definitions, analyses and reports. Candidate study transfers are being reviewed before implementation.
+Named EPSM research protocols, paper-specific implementations and historical study
+archives. Reusable designs, optimisation and execution belong to `epsm_workflows`.
 
-**Status:** Repository initialized on 14 October 2026. No Python package or runnable API is implemented here yet.
+```python
+from epsm_studies import PaperStudy
 
-See the [EPSM developer handbook](https://github.com/SB-Chalmers/epsm_development) and its [harmonisation review](https://github.com/SB-Chalmers/epsm_development/blob/main/docs/harmonisation.md) for agreed names, proposed responsibilities and the file-transfer discussion.
+study = PaperStudy(
+    name="renovation-alternatives",
+    question="Which physical renovation sequences improve energy and carbon?",
+    configuration={"max_depth": 2, "assessment_period_years": 50},
+    sources={"catalogue": "reviewed-release-id"},
+    plan_ids=("prepared-workflow-plan-id",),
+)
+study.save("outputs/renovation-alternatives/protocol.json")
+```
 
-`main` records the initial baseline; ordinary implementation work starts from `dev` and follows the handbook. Keep raw source data, local exploration outputs and simulation artifacts outside Git. Commit reusable study code, documented configuration and intentionally small test fixtures.
+These illustrative values are explicit protocol choices, not scientific defaults.
+Changing the question or assumptions creates another protocol identity.
+
+## Historical Workflows transfer
+
+`archive/workflows_2026_10_14/` preserves tracked source, tests, configurations,
+examples and documentation from Workflows commit
+`1e49fa212f26ed80e6c2dce173cf5caa87a8b5b2`. `ARCHIVE.json` lists SHA256 checksums.
+Simulation outputs and external raw datasets are not copied.
+
+`src/epsm_studies/legacy_workflows/` contains the corresponding importable historical
+implementations. Old Workflows study imports delegate here for compatibility. Install
+the legacy extra and original prerequisites to use them. New protocols use the reusable
+Workflows API; the archive is not a second evolving architecture.
+
+The transfer includes national stock exploration, MF revisions, cohort transfer,
+archetype diagnosis, the surrogate campaign and weather-imputation study sources.
+Old assumptions and source hashes remain inspectable. Running them against newer
+packages does not automatically reproduce or validate a previous scientific result.
+
+## Data validation transfer
+
+`imports/epsm_data_harmonisation/` retains historical LoD2 fitting/validation,
+frozen-baseline and cohort-profile evidence transferred from Data. `TRANSFER.json`
+records original relative paths and verified checksums. Current construction defaults
+and original source evidence remain owned by Data.
