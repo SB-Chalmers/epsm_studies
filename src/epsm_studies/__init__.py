@@ -4,7 +4,7 @@ import logging as _stdlib_logging
 
 from .study import PaperStudy
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = ["PaperStudy"]
 
 # A library emits no output until its host selects handlers.
