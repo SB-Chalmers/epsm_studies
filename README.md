@@ -53,3 +53,25 @@ records original relative paths and verified checksums. This collection is archi
 evidence: its location is retained because Data source provenance refers to these
 paths. It is excluded from installation and normal test discovery. Current
 construction defaults and original source evidence remain owned by Data.
+
+## Operation logging
+
+Library calls use Python's standard `logging` module and install no console or
+file output. Instrumented operations accept optional keyword-only `log_context`
+with small identifier mappings; nested events carry operation and parent IDs.
+INFO describes major stages; DEBUG exposes selections, conversions and caches.
+Logging context does not change physical models or scientific cache inputs.
+
+For an application using EPSM's coordinated logging setup:
+
+```python
+from epsm import configure_logging, reset_logging
+
+configure_logging(directory="outputs/example")  # INFO stderr, DEBUG JSONL
+# Run operations here.
+configure_logging(enabled=False)  # Stop console and file logging.
+reset_logging()  # Restore the host application's settings.
+```
+
+EPSM is needed only for this combined configuration, not for ordinary library
+logging. Existing scripts can keep using `logging.basicConfig(level=logging.INFO)`.

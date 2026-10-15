@@ -7,6 +7,9 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from epsm_studies._logging import context_logger
+from epsm_studies._logging import operation as logged_operation
+
 
 @dataclass(frozen=True, init=False, repr=False)
 class PaperStudy:
@@ -92,14 +95,28 @@ class PaperStudy:
             raise ValueError("Study identity does not match its configuration")
         return study
 
+    @logged_operation("study.protocol.save")
     def save(self, path):
         """Write a protocol once; a different protocol cannot overwrite it."""
+        logger = context_logger(__name__)
+        logger.info(
+            "Saving study protocol",
+            extra={
+                "epsm_event": "study.protocol.selected",
+                "epsm_context": {"study_id": self.id},
+                "epsm_details": {"path": str(path)},
+            },
+        )
         path = Path(path)
         content = json.dumps(self.to_dict(), indent=2, allow_nan=False) + "\n"
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.exists():
             if self.from_dict(json.loads(path.read_text())).id != self.id:
                 raise ValueError("Existing study protocol is immutable")
+            logger.debug(
+                "Reused identical study protocol",
+                extra={"epsm_event": "study.protocol.reused"},
+            )
             return path
         with path.open("x") as stream:
             stream.write(content)
