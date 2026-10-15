@@ -24,6 +24,20 @@ Changing the question or assumptions creates another protocol identity.
 those copies does not change the protocol or its identity. Construct another
 `PaperStudy` to record changed assumptions.
 
+## Engine comparison reports
+
+`compare_energy_results` checks shared input identities, accepted results,
+complete expected hourly coverage, units and annual/hourly accounting before
+calculating annual, peak, monthly and hourly differences. `write_comparison_report`
+stores a study's portable HTML report, JSON and paired hourly CSV, retaining failed
+cases explicitly. Both APIs work without importing engine packages.
+
+The [Core/RC fixture study](examples/engine_comparison/README.md) runs real annual
+EnergyPlus 24.2 and RC cases from captured shared Building inputs. It demonstrates
+study-owned reporting while leaving simulation to Core/RC and reusable execution
+to Workflows. The fixture assumptions are explicit and do not establish empirical
+validation of either engine.
+
 ## Historical Workflows transfer
 
 `archive/workflows_2026_10_14/` preserves tracked source, tests, configurations,
