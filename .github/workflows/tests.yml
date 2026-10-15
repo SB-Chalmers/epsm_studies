@@ -19,7 +19,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install test and build tools
         run: python -m pip install build pytest && python -m pip install -e .
-      - name: Run protocol suite
+      - name: Run protocol and reporting suite
         run: python -m pytest -q
       - name: Build and inspect installed wheel
         run: |
@@ -27,4 +27,4 @@ jobs:
           python -m pip install --force-reinstall dist/epsm_studies-*.whl
           python -m pip check
           cd /tmp
-          python -c 'from epsm_studies import PaperStudy; import importlib.util; assert importlib.util.find_spec("epsm_studies.legacy_workflows") is None; print(PaperStudy)'
+          python -c 'from epsm_studies import PaperStudy, compare_energy_results, write_comparison_report; import importlib.util, sys; assert importlib.util.find_spec("epsm_studies.legacy_workflows") is None; assert "epsm_core" not in sys.modules and "epsm_rc" not in sys.modules; print(PaperStudy, compare_energy_results, write_comparison_report)'

@@ -1,0 +1,28 @@
+{
+  "description": "Illustrative fixtures adapted from RC shared-input annual and geometry regression cases; not measured buildings.",
+  "source": "SB-Chalmers/epsm_rc tests/unit/test_annual_engine_integration.py and test_core_engine_comparison.py at d8f42ab69e61cfe580f234b20ddc47cf6d056e59",
+  "preset": "illustrative-reference",
+  "storeys": 1,
+  "storey_height_m": 3,
+  "ground_temperatures_c": [18,18,18,18,18,18,18,18,18,18,18,18],
+  "gain_partitions": {
+    "policy": "explicit", "people_fraction_radiant": 0.25,
+    "equipment_fraction_radiant": 0.2, "equipment_fraction_latent": 0.1,
+    "lighting_fraction_radiant": 0.3, "lighting_fraction_visible": 0.2,
+    "lighting_return_air_fraction": 0
+  },
+  "equipment_fraction": 0.5,
+  "equipment_heat_fraction_schedule": [0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8],
+  "lighting_gain_w_m2": 1,
+  "rc_settings": {
+    "policy_version": "epsm_rc_5r1c_v1",
+    "airflow_policy": "sensible_only_unlimited_supply",
+    "self_shadowing_policy": "ignore"
+  },
+  "cases": [
+    {"case_id": "controlled_sensible_0", "vertices": [[0,0],[8,0],[8,6],[0,6]], "weather": "controlled", "reference_area_m2": 40, "people_sensible_fraction": 0},
+    {"case_id": "controlled_sensible_1", "vertices": [[0,0],[8,0],[8,6],[0,6]], "weather": "controlled", "reference_area_m2": 40, "people_sensible_fraction": 1},
+    {"case_id": "weather_rectangle", "vertices": [[0,0],[20,0],[20,10],[0,10]], "weather": "supplied", "reference_area_m2": 180, "people_sensible_fraction": 0.6},
+    {"case_id": "weather_concave", "vertices": [[0,0],[20,0],[20,10],[10,10],[10,20],[0,20]], "weather": "supplied", "reference_area_m2": 270, "people_sensible_fraction": 0.6}
+  ]
+}
