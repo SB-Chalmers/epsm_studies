@@ -1,3 +1,21 @@
+# Studies 0.3.0 — engine comparison reports
+
+The public interface includes `PaperStudy`, `compare_energy_results` and
+`write_comparison_report`. These protocol and reporting functions use the Python
+standard library and do not import Core or RC.
+
+Comparison checks accepted engine results, shared snapshot/physical/weather
+identities, complete expected hourly calendars, kWh units and annual/hourly
+accounting before calculating annual, peak, monthly and hourly differences.
+Reports retain failed cases explicitly and write portable HTML, JSON and paired
+hourly CSV alongside the study protocol. Existing report artifacts are not
+overwritten.
+
+The [shared-fixture study](examples/engine_comparison/README.md) supplies an
+explicit optional runner for actual Core and RC calculations. Its recorded
+observations retain their original dependencies and assumptions. Software
+agreement in these illustrative cases does not establish empirical accuracy.
+
 # Release 0.2.0 — 15 October 2026
 
 Protocol persistence and reuse identified by the existing immutable protocol identity.

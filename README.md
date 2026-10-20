@@ -1,6 +1,8 @@
 # epsm_studies
 
 Generic EPSM research protocol records and historical study archives.
+Version **0.3.0** adds validated engine-result comparisons and portable reports;
+see the [release notes](RELEASE_NOTES.md) for its public interface and scope.
 `PaperStudy` records a study setup; reusable designs, optimisation and execution
 belong to `epsm_workflows`. Existing named study implementations are archived
 pending later decisions by the maintainer.
