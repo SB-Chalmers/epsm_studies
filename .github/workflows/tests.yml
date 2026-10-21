@@ -71,7 +71,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install test and build tools
-        run: python -m pip install build pytest && python -m pip install -e .
+        run: python -m pip install build && python -m pip install -e ".[dev]"
       - name: Run protocol and reporting suite
         run: python -m pytest -q --ignore=tests/test_study_results.py
       - name: Build and inspect installed wheel
@@ -150,7 +150,7 @@ jobs:
           done
           python -m build --wheel --outdir .ci/wheels .
           python -m pip install .ci/wheels/*.whl
-          python -m pip install 'epsm_studies[workflows,results]' --find-links .ci/wheels
+          python -m pip install 'epsm_studies[dev,workflows,results]' --find-links .ci/wheels
           python -m pip check
       - name: Require installed owners and retain actual source identities
         env:

@@ -173,3 +173,16 @@ epsm-study export outputs/experiment/archive-1 outputs/experiment/summary.csv
 Commands print a JSON receipt to stdout. `--log-level OFF|ERROR|WARNING|INFO|DEBUG`
 controls stderr logging. Failed operations return status 2 without replacing
 existing evidence; a successful inspection can describe an incomplete study.
+
+## Development checks
+
+Install the `dev` extra for the package tests; it includes `jsonschema` so the
+public document-schema checks cannot disappear as optional skipped tests. The
+standalone lane checks envelope persistence/reporting without execution packages.
+The coordinated lane installs `dev,workflows,results` against the pinned platform
+wheels and runs every facade/archive test. Scientific owner or schema dependencies
+missing from that required lane are failures, not evidence of readiness.
+
+Run `python -m pytest -q` and `python -m pytest --doctest-modules src -q`.
+The portable-draft notebook needs Jupyter/nbclient only as development tools and
+runs in a fresh kernel; ordinary archive inspection has no notebook dependency.

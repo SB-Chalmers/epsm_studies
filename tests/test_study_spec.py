@@ -152,7 +152,7 @@ def test_portable_sections_reject_silent_key_coercion_and_overflow(tmp_path):
 
 
 def test_composed_schema_covers_the_single_study_document_and_owner_references():
-    jsonschema = pytest.importorskip("jsonschema")
+    import jsonschema
     pytest.importorskip("epsm_workflows")
     study = Study("Schema", samples=3, seed=4)
     schema = study.schema()
@@ -174,7 +174,7 @@ def test_composed_schema_covers_the_single_study_document_and_owner_references()
 
 
 def test_study_spec_schema_is_dependency_light_and_uses_the_envelope_rules():
-    jsonschema = pytest.importorskip("jsonschema")
+    import jsonschema
     schema = StudySpec.schema()
     jsonschema.Draft202012Validator(schema).validate(StudySpec("Portable", workflow=WORKFLOW).to_dict())
     malformed = StudySpec("Portable", workflow=WORKFLOW).to_dict()

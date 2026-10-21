@@ -14,7 +14,7 @@ license-files = ["LICENSE"]
 [project.optional-dependencies]
 workflows = ["epsm_workflows[epsm]>=0.4.0,<0.5"]
 results = ["numpy>=1.24"]
-dev = ["pytest>=8", "numpy>=1.24"]
+dev = ["pytest>=8", "numpy>=1.24", "jsonschema>=4"]
 
 [project.scripts]
 epsm-study = "epsm_studies.cli:main"
