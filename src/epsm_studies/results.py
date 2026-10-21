@@ -34,13 +34,17 @@ def _checked_ref(root, reference, *, verify=True):
 
 
 def _bundle(root, *, verify_arrays=False):
-    manifest = read_json(root / "manifest.json")
+    manifest = read_json(relative_path(root, "manifest.json"))
+    if not isinstance(manifest, Mapping):
+        raise ValueError("Evaluation bundle manifest must be a mapping")
     if manifest.get("format") != _BUNDLE:
         raise ValueError("Unsupported evaluation bundle format")
     metadata_path = _checked_ref(root, manifest.get("metadata"))
     metadata = read_json(metadata_path)
     if not isinstance(metadata, Mapping):
         raise ValueError("Evaluation metadata must be a mapping")
+    if not isinstance(metadata.get("energy"), Mapping) or not isinstance(metadata.get("lca"), Mapping):
+        raise ValueError("Evaluation metadata needs energy and assessment mappings")
     if metadata.get("id") != manifest.get("evaluation_id"):
         raise ValueError("Evaluation bundle identity differs from metadata")
     arrays = manifest.get("arrays", {})
@@ -74,9 +78,9 @@ def _coverage(metadata, manifest, outputs):
             ok = lca.get("status") == "complete"
         elif name == "delivered_energy":
             ok = bool(energy.get("annual") and not energy.get("requirements")
-                      and energy.get("delivered_by_carrier") is not None
+                      and bool(energy.get("delivered_by_carrier"))
                       and energy.get("diagnostics", {}).get("accepted") is True)
-        elif request.get("resolution") == "hourly":
+        elif request.get("resolution", "hourly") == "hourly":
             hourly = manifest.get("arrays", {}).get("hourly", {}) if manifest else {}
             axis = manifest.get("arrays", {}).get("time_axis", {}) if manifest else {}
             if manifest:
@@ -90,11 +94,19 @@ def _coverage(metadata, manifest, outputs):
             if request.get("annual"):
                 ok = ok and energy.get("annual") is True
         else:
-            ok = name in energy.get("scalars", {}) and energy["scalars"][name] is not None
+            value = energy.get("scalars", {}).get(name)
+            ok = isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
         if unit and name not in {"lca", "delivered_energy"}:
             ok = ok and energy.get("units", {}).get(name) == unit
         available[name] = {"required": request.get("required", True), "available": bool(ok)}
     return available
+
+
+def _validate_producer_coverage(value):
+    if not isinstance(value, Mapping) or any(
+            not isinstance(value.get(key), bool) for key in (
+                "ready", "thermal_complete", "delivery_complete", "lca_complete")):
+        raise ValueError("Producer coverage needs explicit boolean completeness flags")
 
 
 def _entry(index, case, row, execution_root, outputs):
@@ -103,7 +115,7 @@ def _entry(index, case, row, execution_root, outputs):
              "axes": axes, "status": row["status"] if row else "not_run",
              "attempt_id": row["id"] if row else None, "evaluation_id": None,
              "energy_accepted": None, "lca_status": "not_run", "metrics": {},
-             "outputs": {}, "result_complete": False,
+             "outputs": {}, "result_complete": False, "coverage_verified": False,
              "error": {key: value for key, value in (row or {}).get("error", {}).items()
                        if key in {"code", "type", "message"}}}
     if not row or row["status"] != "succeeded":
@@ -114,8 +126,12 @@ def _entry(index, case, row, execution_root, outputs):
     result = row["result"]
     if result.get("format") == _REFERENCE:
         bundle_path = relative_path(execution_root, result.get("path"))
-        if result.get("manifest_sha256") is not None and checksum(bundle_path / "manifest.json") != result["manifest_sha256"]:
-            raise ValueError("Changed evaluation bundle manifest checksum")
+        if result.get("manifest_sha256") is not None:
+            try:
+                _checked_ref(execution_root, {"path": str(Path(result["path"]) / "manifest.json"),
+                                              "sha256": result["manifest_sha256"]})
+            except ValueError as error:
+                raise ValueError("Changed evaluation bundle manifest checksum or path") from error
         manifest, metadata = _bundle(bundle_path, verify_arrays=True)
         if result.get("evaluation_id") is not None and result["evaluation_id"] != metadata["id"]:
             raise ValueError("Evaluation reference identity differs from its bundle")
@@ -128,6 +144,22 @@ def _entry(index, case, row, execution_root, outputs):
     else:
         raise ValueError("Successful case does not contain a supported EPSM evaluation")
     energy, lca = metadata.get("energy", {}), metadata.get("lca", {})
+    simulation = case.get("payload", {}).get("simulation", {})
+    expected_engine = axes.get("engine", simulation.get("engine"))
+    actual_engine = metadata.get("engine", energy.get("engine"))
+    if expected_engine is not None and actual_engine != expected_engine:
+        raise ValueError("Evaluation engine differs from its frozen case")
+    if energy.get("engine") is not None and energy["engine"] != actual_engine:
+        raise ValueError("Evaluation and energy engine identities differ")
+    expected_state = case.get("inputs", {}).get("state_id")
+    if expected_state is not None and metadata.get("state_id") != expected_state:
+        raise ValueError("Evaluation physical state differs from its frozen case")
+    expected_weather = simulation.get("weather", {})
+    if isinstance(expected_weather, Mapping):
+        recorded_weather = metadata.get("weather", {})
+        for key in ("weather_sha256", "calendar_year"):
+            if key in expected_weather and expected_weather[key] != recorded_weather.get(key):
+                raise ValueError("Evaluation weather identity differs from its frozen case")
     entry.update(evaluation_id=metadata.get("id"), energy_accepted=energy.get("diagnostics", {}).get("accepted"),
                  lca_status=lca.get("status", "unrecorded"))
     entry["metrics"] = {**energy.get("scalars", {}), **{key: lca.get(key) for key in (
@@ -135,21 +167,23 @@ def _entry(index, case, row, execution_root, outputs):
     entry["outputs"] = _coverage(metadata, manifest, outputs)
     producer_coverage = result.get("coverage")
     if producer_coverage is not None:
+        _validate_producer_coverage(producer_coverage)
+        entry["coverage_verified"] = True
         entry["producer_coverage"] = producer_coverage
         for name, coverage in entry["outputs"].items():
             if name == "lca":
-                coverage["available"] = bool(producer_coverage.get("lca_complete"))
+                coverage["available"] = coverage["available"] and producer_coverage["lca_complete"]
             elif name == "delivered_energy":
-                coverage["available"] = bool(producer_coverage.get("delivery_complete"))
+                coverage["available"] = coverage["available"] and producer_coverage["delivery_complete"]
             elif name == "space_heating_demand_kwh":
-                coverage["available"] = bool(producer_coverage.get("thermal_complete"))
+                coverage["available"] = coverage["available"] and producer_coverage["thermal_complete"]
             else:
                 issues = [issue for issue in producer_coverage.get("diagnostics", [])
                           if issue.get("field") in {name, "energy.time_axis", "energy.diagnostics"}]
                 coverage["available"] = coverage["available"] and not issues
     entry["result_complete"] = bool(entry["energy_accepted"] is True and all(
         not value["required"] or value["available"] for value in entry["outputs"].values())
-        and (producer_coverage is None or producer_coverage.get("ready") is True))
+        and producer_coverage is not None and producer_coverage.get("ready") is True)
     return entry
 
 
@@ -163,6 +197,53 @@ def _copy_tree(source, destination):
     elif source.is_file():
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
+    else:
+        raise ValueError("Execution evidence must contain regular files and directories")
+
+
+def _validate_index(value):
+    """Check Studies-owned index invariants without loading owner payloads."""
+    if not isinstance(value.get("entries"), list) or not isinstance(value.get("files"), dict):
+        raise ValueError("Study archive needs case entries and a file inventory")
+    for name, fingerprint in value["files"].items():
+        if (not isinstance(name, str) or not name or Path(name).is_absolute()
+                or ".." in Path(name).parts or not isinstance(fingerprint, str)
+                or len(fingerprint) != 64):
+            raise ValueError("Study archive has an invalid relative file inventory")
+    case_ids = []
+    for index, entry in enumerate(value["entries"]):
+        if not isinstance(entry, Mapping) or entry.get("index") != index:
+            raise ValueError("Study archive entries need consecutive planned indices")
+        case_id = entry.get("case_id")
+        if not isinstance(case_id, str) or not case_id:
+            raise ValueError("Study archive entries need case identities")
+        case_ids.append(case_id)
+        if entry.get("status") not in {"succeeded", "failed", "not_run", "running"}:
+            raise ValueError("Study archive entry has an unsupported execution status")
+        if not isinstance(entry.get("axes"), Mapping) or not isinstance(entry.get("outputs"), Mapping):
+            raise ValueError("Study archive entries need axes and output coverage")
+        for output in entry["outputs"].values():
+            if (not isinstance(output, Mapping) or not isinstance(output.get("required"), bool)
+                    or not isinstance(output.get("available"), bool)):
+                raise ValueError("Study archive output coverage needs explicit boolean states")
+        if not isinstance(entry.get("result_complete"), bool):
+            raise ValueError("Study archive completeness must be an explicit boolean")
+        owner = entry.get("producer_coverage")
+        if owner is not None:
+            _validate_producer_coverage(owner)
+        if entry["status"] != "succeeded" and any(output["available"] for output in entry["outputs"].values()):
+            raise ValueError("Output availability requires a successful selected outcome")
+        if entry["result_complete"] and (entry["status"] != "succeeded"
+                or entry.get("energy_accepted") is not True
+                or not isinstance(owner, Mapping) or owner.get("ready") is not True
+                or any(output["required"] and not output["available"] for output in entry["outputs"].values())):
+            raise ValueError("Study archive completeness contradicts its retained output coverage")
+        if "bundle" in entry and str(Path(entry["bundle"]) / "manifest.json") not in value["files"]:
+            raise ValueError("Study archive bundle is absent from its file inventory")
+        if "inline" in entry and entry["inline"] not in value["files"]:
+            raise ValueError("Study archive inline result is absent from its file inventory")
+    if len(case_ids) != len(set(case_ids)):
+        raise ValueError("Study archive has duplicate case identities")
 
 
 class StudyResults:
@@ -177,7 +258,11 @@ class StudyResults:
     def __init__(self, directory, manifest):
         self.directory = Path(directory).resolve()
         self._json = canonical(manifest)
-        self.spec = StudySpec.from_dict(manifest["study"])
+        self._spec = StudySpec.from_dict(manifest["study"])
+
+    @property
+    def spec(self):
+        return self._spec
 
     @property
     def id(self):
@@ -192,19 +277,18 @@ class StudyResults:
     def open(cls, directory):
         """Read a completed archive index; full file verification is explicit."""
         root = Path(directory)
-        if not (root / "manifest.json").is_file():
+        header = relative_path(root, "manifest.json")
+        if not header.is_file():
             raise ValueError("Directory is not a completed study result archive")
-        value = read_json(root / "manifest.json")
+        value = read_json(header)
+        if not isinstance(value, Mapping):
+            raise ValueError("Study archive manifest must be a mapping")
         if value.get("format") != _FORMAT:
             raise ValueError("Unsupported study result archive format")
         identity = value.get("id")
         if identity != digest({k: v for k, v in value.items() if k != "id"}):
             raise ValueError("Study result archive identity differs from its content")
-        if not isinstance(value.get("entries"), list) or not isinstance(value.get("files"), dict):
-            raise ValueError("Study archive needs case entries and a file inventory")
-        case_ids = [entry["case_id"] for entry in value["entries"]]
-        if len(case_ids) != len(set(case_ids)):
-            raise ValueError("Study archive has duplicate case identities")
+        _validate_index(value)
         return cls(root, value)
 
     @classmethod
@@ -251,7 +335,13 @@ class StudyResults:
         for attempt in attempts:
             result = attempt.get("result", {})
             if result.get("format") == _REFERENCE:
-                _bundle(relative_path(source, result.get("path")), verify_arrays=True)
+                retained_bundle = relative_path(source, result.get("path"))
+                if result.get("manifest_sha256") is not None:
+                    _checked_ref(source, {"path": str(Path(result["path"]) / "manifest.json"),
+                                          "sha256": result["manifest_sha256"]})
+                _, retained_metadata = _bundle(retained_bundle, verify_arrays=True)
+                if result.get("evaluation_id") is not None and retained_metadata.get("id") != result["evaluation_id"]:
+                    raise ValueError("Retained attempt evaluation identity differs from its bundle")
         target.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(prefix=f".{target.name}.", dir=target.parent) as temporary:
             staging = Path(temporary)
@@ -259,7 +349,7 @@ class StudyResults:
             execution.mkdir()
             _copy_tree(source / "manifest.json", execution / "manifest.json")
             for name in ("workflow.json", "control.json", "cases", "assets", "attempts", "results", "artifacts", "logs"):
-                if (source / name).exists():
+                if (source / name).exists() or (source / name).is_symlink():
                     _copy_tree(source / name, execution / name)
             if read_results(source, require_success=False) != rows or read_attempts(source) != attempts:
                 raise ValueError("Execution outcomes changed during archive collection; collect again")
@@ -327,6 +417,7 @@ class StudyResults:
                 current["available" if coverage["available"] else "missing"] += 1
         return {"total": len(rows), "succeeded": counts["succeeded"], "failed": counts["failed"],
                 "not_run": counts["not_run"], "running": counts["running"],
+                "unverified_results": sum(row["status"] == "succeeded" and not row.get("producer_coverage") for row in rows),
                 "complete_results": sum(row["result_complete"] for row in rows),
                 "complete": bool(rows) and all(row["result_complete"] for row in rows), "outputs": outputs}
 
@@ -346,8 +437,12 @@ class StudyResults:
             root = relative_path(self.directory, entry["bundle"])
             manifest_name = str(Path(entry["bundle"]) / "manifest.json")
             expected = json.loads(self._json)["files"].get(manifest_name)
-            if expected is None or checksum(root / "manifest.json") != expected:
-                raise ValueError("Changed archived evaluation bundle manifest checksum")
+            if expected is None:
+                raise ValueError("Missing archived evaluation bundle manifest checksum")
+            try:
+                _checked_ref(self.directory, {"path": manifest_name, "sha256": expected})
+            except ValueError as error:
+                raise ValueError("Changed archived evaluation bundle manifest checksum or path") from error
             manifest, metadata = _bundle(root)
             return root, manifest, metadata
         path = relative_path(self.directory, entry["inline"])
@@ -414,6 +509,15 @@ class StudyResults:
         """
         if period not in {"monthly", "annual"}:
             raise ValueError("Energy aggregation period must be monthly or annual")
+        entry = self._entry(case)
+        if entry.get("energy_accepted") is not True:
+            raise ValueError("Energy aggregation requires accepted engine output coverage")
+        owner = entry.get("producer_coverage")
+        if owner is None:
+            raise ValueError("Energy aggregation requires verified producer coverage")
+        if ((signal == "space_heating_demand_kwh" and owner.get("thermal_complete") is not True)
+                or (signal in entry["outputs"] and not entry["outputs"][signal]["available"])):
+            raise ValueError("Requested signal did not pass producer output coverage checks")
         metadata = self.evaluation_metadata(case)
         if metadata["energy"].get("units", {}).get(signal) != "kWh":
             raise ValueError("Temporal energy aggregation requires a kWh signal")
@@ -440,16 +544,22 @@ class StudyResults:
         if metric in impacts:
             assessment = metadata.get("lca", {})
             value = assessment.get(metric)
-            basis = {"assessment": assessment.get("assessment")}
+            basis = {"assessment": assessment.get("assessment"), "engine": metadata.get("engine")}
+            if metric != "material_gwp_kgco2e":
+                basis["calendar_year"] = metadata.get("weather", {}).get("calendar_year")
             unit = "kg CO2e"
         else:
             energy = metadata.get("energy", {})
             value = energy.get("scalars", {}).get(metric)
             unit = energy.get("units", {}).get(metric)
-            basis = {"energy_boundary": energy.get("boundary")}
-            if metric.endswith("_m2"):
-                raise ValueError("Portfolio helpers require absolute metrics, not area-normalized values")
-            if energy.get("diagnostics", {}).get("accepted") is not True:
+            basis = {"energy_boundary": energy.get("boundary"),
+                     "calendar_year": metadata.get("weather", {}).get("calendar_year"),
+                     "engine": metadata.get("engine", energy.get("engine"))}
+            owner = entry.get("producer_coverage")
+            if (energy.get("diagnostics", {}).get("accepted") is not True
+                    or (metric in entry["outputs"] and not entry["outputs"][metric]["available"])
+                    or (metric == "space_heating_demand_kwh" and owner is not None
+                        and owner.get("thermal_complete") is not True)):
                 value = None
         if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)):
             raise ValueError("Summary metrics must be finite numbers or explicit unknown values")
@@ -463,6 +573,8 @@ class StudyResults:
         energy boundaries must agree. A missing result gives ``value=None``;
         ``known_subtotal`` describes only the available selected subjects.
         """
+        if metric.endswith("_m2"):
+            raise ValueError("Portfolio totals require absolute additive metrics, not area-normalized values")
         cases = list(case_ids)
         if not cases or len({self._entry(case)["case_id"] for case in cases}) != len(cases):
             raise ValueError("Select nonempty, distinct cases for a portfolio total")
@@ -476,16 +588,47 @@ class StudyResults:
                 raise ValueError(f"Portfolio total cannot mix {dimension} choices")
         values = [self._metric(case, metric) for case in cases]
         known = [item for item in values if item[0] is not None]
+        if known and any(item[1] not in {"kWh", "kg CO2e"} for item in known):
+            raise ValueError("Portfolio totals require additive kWh or impact metrics")
         if known and (None in {item[1] for item in known} or
                       len({(item[1], canonical(item[2])) for item in known}) != 1):
             raise ValueError("Portfolio metrics have incompatible or missing units/reference boundaries")
         if known and metric.endswith("kgco2e") and known[0][2]["assessment"] is None:
             raise ValueError("Impact totals require recorded assessment boundaries")
-        complete = len(known) == len(cases)
+        verified = all(bool(entry.get("producer_coverage")) for entry in entries)
+        complete = len(known) == len(cases) and verified
         subtotal = math.fsum(item[0] for item in known) if known else None
         return {"metric": metric, "value": subtotal if complete else None,
                 "known_subtotal": subtotal, "unit": known[0][1] if known else None,
-                "selected": len(cases), "available": len(known), "complete": complete,
+                "selected": len(cases), "available": len(known), "complete": complete, "coverage_verified": verified,
+                "case_ids": [entry["case_id"] for entry in entries]}
+
+    def describe(self, metric, *, case_ids):
+        """Describe explicitly selected comparable cases, retaining missing counts.
+
+        Returns count, available/missing counts, min/max and arithmetic mean for
+        the available cases only. No distributions, confidence claims or model
+        selection are inferred. Units, calendar/engine and assessment/energy
+        boundaries must agree; incompatible inputs raise instead of being pooled.
+        """
+        cases = list(case_ids)
+        entries = [self._entry(case) for case in cases]
+        if not cases or len({entry["case_id"] for entry in entries}) != len(entries):
+            raise ValueError("Describe a nonempty selection of distinct cases")
+        observations = [self._metric(case, metric) for case in cases]
+        known = [item for item in observations if item[0] is not None]
+        if known and (any(item[1] is None for item in known)
+                or len({(item[1], canonical(item[2])) for item in known}) != 1):
+            raise ValueError("Descriptive metrics have incompatible units/reference boundaries")
+        numbers = [item[0] for item in known]
+        verified = all(bool(entry.get("producer_coverage")) for entry in entries)
+        return {"metric": metric, "count": len(cases), "available": len(known),
+                "missing": len(cases) - len(known), "min": min(numbers) if numbers else None,
+                "max": max(numbers) if numbers else None,
+                "mean": math.fsum(numbers) / len(numbers) if numbers else None,
+                "unit": known[0][1] if known else None,
+                "complete": len(known) == len(cases) and verified,
+                "coverage_verified": verified, "basis": "available selected cases only",
                 "case_ids": [entry["case_id"] for entry in entries]}
 
     def difference(self, reference, candidate, metric):
@@ -509,7 +652,9 @@ class StudyResults:
         return {"metric": metric, "reference": ref[0], "candidate": cand[0],
                 "difference": delta,
                 "difference_percent": 100 * delta / ref[0] if complete and ref[0] else None,
-                "unit": ref[1] or cand[1], "complete": complete,
+                "unit": ref[1] or cand[1],
+                "complete": complete and all(bool(row.get("producer_coverage")) for row in rows),
+                "coverage_verified": all(bool(row.get("producer_coverage")) for row in rows),
                 "reference_case_id": rows[0]["case_id"], "candidate_case_id": rows[1]["case_id"]}
 
     def compare_engines(self, reference, candidate, *, expected_time_axis,

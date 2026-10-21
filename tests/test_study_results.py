@@ -20,20 +20,21 @@ def _sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def make_bundle(root, *, evaluation_id="evaluation-1", lca_status="complete", values=(1., 2., 3., 4.)):
+def make_bundle(root, *, evaluation_id="evaluation-1", lca_status="complete", values=(1., 2., 3., 4.), annual=False):
     root.mkdir(parents=True)
     (root / "arrays").mkdir()
     signal = "space_heating_demand_kwh"
     np.save(root / "arrays/heating.npy", values, allow_pickle=False)
-    np.save(root / "arrays/time.npy", ["2023-01-31T22", "2023-01-31T23", "2023-02-01T00", "2023-02-01T01"], allow_pickle=False)
+    axis = np.arange("2023-01-01", "2024-01-01", dtype="datetime64[h]").astype("U13") if annual else ["2023-01-31T22", "2023-01-31T23", "2023-02-01T00", "2023-02-01T01"]
+    np.save(root / "arrays/time.npy", axis, allow_pickle=False)
     data = {
         "id": evaluation_id, "state_id": "a" * 64, "energy_id": "b" * 64, "lca_id": "c" * 64,
-        "engine": "epsm_rc", "weather": {"sha256": "d" * 64},
+        "engine": "epsm_rc", "weather": {"sha256": "d" * 64, "calendar_year": 2023},
         "energy": {"engine": "epsm_rc", "run_id": "engine-run", "scalars": {signal: sum(values)},
                    "hourly_signals": [signal], "units": {signal: "kWh"},
                    "diagnostics": {"accepted": True, "physical_inputs_sha256": "e" * 64},
                    "artifacts": {}, "delivered_by_carrier": {"electricity": sum(values)},
-                   "requirements": [], "boundary": "space_heating_and_fans", "annual": False},
+                   "requirements": [], "boundary": "space_heating_and_fans", "annual": annual},
         "lca": {"format": "epsm-lca-result/2", "status": lca_status,
                 "material_gwp_kgco2e": 50. if lca_status == "complete" else None,
                 "operational_gwp_kgco2e": 10. if lca_status == "complete" else None,
@@ -45,7 +46,7 @@ def make_bundle(root, *, evaluation_id="evaluation-1", lca_status="complete", va
     metadata.write_text(json.dumps(data))
     def ref(path):
         return {"path": str(path.relative_to(root)), "sha256": _sha(path),
-                "shape": [4], "dtype": "float64" if path.name == "heating.npy" else "<U13"}
+                "shape": [len(values)], "dtype": "float64" if path.name == "heating.npy" else "<U13"}
     manifest = {"format": "epsm-evaluation-bundle/1", "evaluation_id": evaluation_id,
                 "metadata": {"path": "metadata.json", "sha256": _sha(metadata)},
                 "arrays": {"hourly": {signal: ref(root / "arrays/heating.npy")},
@@ -59,11 +60,18 @@ def fixture_evaluate(payload):
         raise RuntimeError("Declared fixture failure")
     root = Path(payload["_execution"]["directory"])
     path = root / "artifacts" / payload["_execution"]["case_id"] / payload["_execution"]["attempt_id"] / "evaluation"
-    make_bundle(path, evaluation_id=payload["name"], lca_status=payload.get("lca_status", "complete"))
-    return {"format": "epsm-evaluation-reference/1", "path": str(path.relative_to(root))}
+    annual = payload.get("annual", False)
+    make_bundle(path, evaluation_id=payload["name"], lca_status=payload.get("lca_status", "complete"),
+                values=[1.] * 8760 if annual else [1., 2., 3., 4.], annual=annual)
+    reference = {"format": "epsm-evaluation-reference/1", "path": str(path.relative_to(root))}
+    if annual:
+        lca_complete = payload.get("lca_status", "complete") == "complete"
+        reference["coverage"] = {"ready": lca_complete, "thermal_complete": True,
+            "delivery_complete": True, "lca_complete": lca_complete, "diagnostics": []}
+    return reference
 
 
-def prepared(tmp_path, *, partial=False):
+def prepared(tmp_path, *, partial=False, annual=False):
     from epsm_workflows import PreparedEvaluation, prepare
     from epsm_workflows.execution import run_case
     cases = [PreparedEvaluation(payload={"name": "first"}, inputs={"axes": {
@@ -74,6 +82,9 @@ def prepared(tmp_path, *, partial=False):
             PreparedEvaluation(payload={"name": "failed", "fail": True}, inputs={"axes": {"subject_id": "building-3"}}, name="failed"),
             PreparedEvaluation(payload={"name": "pending"}, inputs={"axes": {"subject_id": "building-4"}}, name="pending"),
         ])
+    if annual:
+        for case in cases:
+            case.payload["annual"] = True
     plan = tmp_path / "execution"
     prepare(plan, cases, handler="test_study_results:fixture_evaluate")
     run_case(plan, 0)
@@ -190,13 +201,15 @@ def test_archive_rejects_escaping_bundle_and_incomplete_publication(tmp_path):
 
 
 def test_general_helpers_keep_units_boundaries_and_incomplete_coverage_visible(tmp_path):
-    spec, plan = prepared(tmp_path, partial=True)
+    spec, plan = prepared(tmp_path, partial=True, annual=True)
     results = StudyResults.collect(spec, plan, tmp_path / "archive")
-    assert results.aggregate_energy(0, period="monthly") == {
-        "2023-01": 3., "2023-02": 7.}
-    assert results.aggregate_energy(0, period="annual") == {"2023": 10.}
+    months = results.aggregate_energy(0, period="monthly")
+    assert months["2023-01"] == 744.
+    assert months["2023-02"] == 672.
+    assert sum(months.values()) == 8760.
+    assert results.aggregate_energy(0, period="annual") == {"2023": 8760.}
     totals = results.portfolio_total("space_heating_demand_kwh", case_ids=[0, 1])
-    assert totals["value"] == 20
+    assert totals["value"] == 17520
     assert totals["unit"] == "kWh"
     assert totals["complete"] is True
     incomplete = results.portfolio_total("material_gwp_kgco2e", case_ids=[0, 1])
@@ -296,4 +309,175 @@ def test_explicit_reads_check_the_archived_bundle_manifest_not_only_array_hashes
     manifest = results.directory / entry["bundle"] / "manifest.json"
     manifest.write_text(manifest.read_text() + "\n")
     with pytest.raises(ValueError, match="manifest checksum"):
+        results.hourly(0)
+
+
+def _change_bundle_metadata(plan, index, change):
+    row = json.loads((plan / f"results/{index:06d}.json").read_text())
+    bundle = plan / row["result"]["path"]
+    metadata_path = bundle / "metadata.json"
+    metadata = json.loads(metadata_path.read_text())
+    change(metadata)
+    metadata_path.write_text(json.dumps(metadata))
+    manifest_path = bundle / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest["metadata"]["sha256"] = _sha(metadata_path)
+    manifest_path.write_text(json.dumps(manifest))
+
+
+def test_legacy_structural_availability_never_claims_verified_study_completeness(tmp_path):
+    spec, plan = prepared(tmp_path)
+    result = StudyResults.collect(spec, plan, tmp_path / "archive")
+    assert result.coverage()["outputs"]["space_heating_demand_kwh"]["available"] == 1
+    assert result.coverage()["complete"] is False
+    assert result.coverage()["unverified_results"] == 1
+    assert result.table()[0]["coverage_verified"] is False
+
+
+def test_nonadditive_metrics_and_mixed_calendar_years_cannot_form_portfolio_totals(tmp_path):
+    spec, plan = prepared(tmp_path, partial=True)
+    for index in (0, 1):
+        def add_temperature(data):
+            data["weather"]["calendar_year"] = 2023
+            data["energy"]["scalars"]["maximum_temperature_c"] = 25.
+            data["energy"]["units"]["maximum_temperature_c"] = "C"
+        _change_bundle_metadata(plan, index, add_temperature)
+    results = StudyResults.collect(spec, plan, tmp_path / "archive")
+    with pytest.raises(ValueError, match="additive"):
+        results.portfolio_total("maximum_temperature_c", case_ids=[0, 1])
+    _change_bundle_metadata(plan, 1, lambda data: data["weather"].update(calendar_year=2024))
+    changed = StudyResults.collect(spec, plan, tmp_path / "archive-2")
+    with pytest.raises(ValueError, match="calendar|boundaries"):
+        changed.portfolio_total("space_heating_demand_kwh", case_ids=[0, 1])
+
+
+def test_producer_rejected_heating_is_not_used_for_energy_summaries(tmp_path):
+    spec, plan = prepared(tmp_path)
+    path = plan / "results/000000.json"
+    row = json.loads(path.read_text())
+    row["result"]["coverage"] = {"ready": False, "thermal_complete": False,
+        "delivery_complete": False, "lca_complete": True,
+        "diagnostics": [{"code": "annual_reconciliation", "field": "space_heating_demand_kwh", "severity": "error"}]}
+    from epsm_workflows.records import digest
+    row.pop("record_sha256")
+    row["record_sha256"] = digest(row)
+    path.write_text(json.dumps(row))
+    (plan / "attempts/000000" / f"{row['id']}.json").write_text(json.dumps(row))
+    result = StudyResults.collect(spec, plan, tmp_path / "archive")
+    with pytest.raises(ValueError, match="coverage"):
+        result.aggregate_energy(0)
+    assert result.difference(0, 0, "space_heating_demand_kwh")["difference"] is None
+    assert result.portfolio_total("space_heating_demand_kwh", case_ids=[0])["value"] is None
+    assert result.hourly(0).tolist() == [1., 2., 3., 4.]
+
+
+def test_archive_completion_marker_cannot_be_a_symbolic_link(tmp_path):
+    spec, plan = prepared(tmp_path)
+    archive = tmp_path / "archive"
+    StudyResults.collect(spec, plan, archive)
+    header = archive / "manifest.json"
+    outside = tmp_path / "manifest.json"
+    shutil.move(header, outside)
+    header.symlink_to(outside)
+    with pytest.raises(ValueError, match="symlink"):
+        StudyResults.open(archive)
+
+
+def test_unrecognized_special_files_are_not_silently_dropped(tmp_path):
+    import os
+    if not hasattr(os, "mkfifo"):
+        pytest.skip("POSIX file-type check")
+    spec, plan = prepared(tmp_path)
+    os.mkfifo(plan / "artifacts" / "unfinished-pipe")
+    with pytest.raises(ValueError, match="regular files"):
+        StudyResults.collect(spec, plan, tmp_path / "archive")
+    assert not (tmp_path / "archive").exists()
+
+
+def test_index_cannot_claim_completeness_for_missing_outputs(tmp_path):
+    spec, plan = prepared(tmp_path)
+    archive = tmp_path / "archive"
+    StudyResults.collect(spec, plan, archive)
+    header = archive / "manifest.json"
+    value = json.loads(header.read_text())
+    value["entries"][0]["result_complete"] = True
+    value["entries"][0]["outputs"]["space_heating_demand_kwh"]["available"] = False
+    from epsm_studies._records import digest
+    value.pop("id")
+    value["id"] = digest(value)
+    header.write_text(json.dumps(value))
+    with pytest.raises(ValueError, match="completeness"):
+        StudyResults.open(archive)
+
+
+def test_collected_result_engine_must_match_its_declared_case(tmp_path):
+    spec, plan = prepared(tmp_path)
+    _change_bundle_metadata(plan, 0, lambda data: data.update(engine="energyplus"))
+    with pytest.raises(ValueError, match="engine.*frozen case"):
+        StudyResults.collect(spec, plan, tmp_path / "archive")
+
+
+def test_descriptive_helpers_expose_missing_cases_and_compatible_boundaries(tmp_path):
+    spec, plan = prepared(tmp_path, partial=True, annual=True)
+    result = StudyResults.collect(spec, plan, tmp_path / "archive")
+    summary = result.describe("space_heating_demand_kwh", case_ids=[0, 1, 2, 3])
+    assert summary["count"] == 4 and summary["available"] == 2 and summary["missing"] == 2
+    assert summary["min"] == summary["max"] == summary["mean"] == 8760.
+    assert summary["complete"] is False
+    assert result.describe("space_heating_demand_kwh", case_ids=[0])["complete"] is True
+    _change_bundle_metadata(plan, 1, lambda data: data["energy"].update(boundary="different-delivery-boundary"))
+    changed = StudyResults.collect(spec, plan, tmp_path / "archive-2")
+    with pytest.raises(ValueError, match="boundaries"):
+        changed.describe("space_heating_demand_kwh", case_ids=[0, 1])
+
+
+def test_owner_acceptance_cannot_hide_a_signal_omitted_from_the_saved_bundle(tmp_path):
+    spec, plan = prepared(tmp_path, annual=True)
+    row = json.loads((plan / "results/000000.json").read_text())
+    bundle = plan / row["result"]["path"]
+    _change_bundle_metadata(plan, 0, lambda data: data["energy"].update(hourly_signals=[]))
+    path = bundle / "manifest.json"
+    manifest = json.loads(path.read_text())
+    manifest["arrays"]["hourly"] = {}
+    path.write_text(json.dumps(manifest))
+    results = StudyResults.collect(spec, plan, tmp_path / "archive")
+    assert results.coverage()["complete"] is False
+    assert results.coverage()["outputs"]["space_heating_demand_kwh"]["missing"] == 1
+    with pytest.raises(KeyError, match="not retained"):
+        results.hourly(0)
+
+
+def test_receipt_coverage_flags_must_be_booleans(tmp_path):
+    spec, plan = prepared(tmp_path, annual=True)
+    path = plan / "results/000000.json"
+    row = json.loads(path.read_text())
+    row["result"]["coverage"]["thermal_complete"] = "false"
+    from epsm_workflows.records import digest
+    row.pop("record_sha256")
+    row["record_sha256"] = digest(row)
+    path.write_text(json.dumps(row))
+    (plan / "attempts/000000" / f"{row['id']}.json").write_text(json.dumps(row))
+    with pytest.raises(ValueError, match="coverage.*boolean"):
+        StudyResults.collect(spec, plan, tmp_path / "archive")
+
+
+def test_invalid_archive_header_has_a_public_validation_error(tmp_path):
+    (tmp_path / "manifest.json").write_text("[]")
+    with pytest.raises(ValueError, match="mapping"):
+        StudyResults.open(tmp_path)
+
+
+def test_nonfinite_legacy_array_is_rejected_when_explicitly_read(tmp_path):
+    spec, plan = prepared(tmp_path)
+    row = json.loads((plan / "results/000000.json").read_text())
+    bundle = plan / row["result"]["path"]
+    path = bundle / "arrays/heating.npy"
+    np.save(path, [float("nan"), 2., 3., 4.], allow_pickle=False)
+    manifest_path = bundle / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest["arrays"]["hourly"]["space_heating_demand_kwh"]["sha256"] = _sha(path)
+    manifest_path.write_text(json.dumps(manifest))
+    results = StudyResults.collect(spec, plan, tmp_path / "archive")
+    assert results.coverage()["complete"] is False
+    with pytest.raises(ValueError, match="nonfinite"):
         results.hourly(0)
