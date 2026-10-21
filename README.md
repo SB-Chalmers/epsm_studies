@@ -111,7 +111,7 @@ assert Study.from_dict(study.to_dict()).id == study.id
 The minimal workflow above illustrates the portable envelope; it is not an
 executable experiment. Install `epsm_studies[workflows]` to start a real template,
 configure `.set(...)`, `.vary(...)`, `.add_subject(...)`, `.add_weather(...)` and
-`.add_scenario(...)`, then `.validate()`, `.preview()` and `.prepare(directory)`.
+`.add_scenario(...)`, explicitly `.resolve_inputs(...)` when acquisition was requested, then `.validate()`, `.preview()` and `.prepare(directory)`.
 Workflows owns those scientific and execution rules. Each edit creates an
 independent `study.spec` revision; earlier prepared plans are fixed.
 `study.save(path)` refuses to replace a different specification. `Study.open(path)`
@@ -128,3 +128,8 @@ outcome needs a new archive directory; an identical recollection is reused.
 
 See [the study platform guide](docs/study-platform.md) for complete public APIs,
 result boundaries, supported formats and the `epsm-study` command harnesses.
+
+`Study.schema()` composes one complete study document schema from the Studies
+envelope and Workflows-owned scientific schema. `StudySpec.schema()` remains
+dependency-light. General `describe(metric, case_ids=[...])` summaries retain
+missing counts and require comparable units and boundaries.

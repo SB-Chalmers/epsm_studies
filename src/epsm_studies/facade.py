@@ -47,6 +47,9 @@ class Study:
                 raise ValueError("Supply a StudySpec or a workflow, not both")
             self._spec = name
         else:
+            selected_type = (metadata or {}).get("type", type)
+            if selected_type != "parametric":
+                raise ValueError("Unsupported study type; use parametric and choose its workflow method")
             if workflow is None:
                 workflow = _workflow_type().template(method=method, samples=samples, seed=seed)
             if hasattr(workflow, "to_dict"):
@@ -120,11 +123,11 @@ class Study:
         """Delegate a parameter domain, distribution and baseline to Workflows."""
         return self._edit("vary", binding, **options)
 
-    def add_subject(self, building, **options):
+    def add_subject(self, building=None, **options):
         """Delegate an independent physical subject and optional group assignment."""
         return self._edit("add_subject", building, **options)
 
-    def add_weather(self, weather, **options):
+    def add_weather(self, weather=None, **options):
         """Delegate weather artifacts and explicit subject assignments."""
         return self._edit("add_weather", weather, **options)
 
@@ -133,8 +136,17 @@ class Study:
         return self._edit("add_scenario", name, building, **options)
 
     def schema(self):
-        """Ask Workflows for its public capability/authoring schema."""
-        return self._owner().schema()
+        """Compose the Studies envelope with Workflows' generated typed schema."""
+        return StudySpec.schema(_workflow_type().schema())
+
+    def resolve_inputs(self, *, directory=None):
+        """Explicitly acquire declared inputs through their owners; revise this draft.
+
+        File/provider access occurs only in the delegated resolution operation.
+        Supply an output directory for weather acquisition. A failed resolution
+        leaves this facade's earlier immutable specification unchanged.
+        """
+        return self._edit("resolve_inputs", directory=directory)
 
     def validate(self):
         """Ask Workflows and model owners for authoring/preflight diagnostics."""

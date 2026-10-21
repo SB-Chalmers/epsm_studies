@@ -68,6 +68,7 @@ sys.meta_path.insert(0, Block())
 from epsm_studies import Study
 study = Study.open(sys.argv[1])
 assert study.spec.name == 'Offline'
+assert '$defs' not in study.spec.schema()
 assert study.to_dict()['workflow']['sampling']['count'] == 4
 print(study)
 '''
@@ -148,3 +149,73 @@ def test_portable_sections_reject_silent_key_coercion_and_overflow(tmp_path):
     path.write_text('{"number":1e10000}')
     with pytest.raises(ValueError, match="Nonfinite"):
         Study.open(path)
+
+
+def test_composed_schema_covers_the_single_study_document_and_owner_references():
+    jsonschema = pytest.importorskip("jsonschema")
+    pytest.importorskip("epsm_workflows")
+    study = Study("Schema", samples=3, seed=4)
+    schema = study.schema()
+    jsonschema.Draft202012Validator.check_schema(schema)
+    validator = jsonschema.Draft202012Validator(schema)
+    validator.validate(study.to_dict())
+    malformed = study.to_dict()
+    malformed["format"] = "unknown"
+    assert not validator.is_valid(malformed)
+    malformed = study.to_dict()
+    malformed["workflow"]["sampling"]["samples"] = 0
+    assert not validator.is_valid(malformed)
+    malformed = study.to_dict()
+    malformed["metadata"]["name"] = "   "
+    assert not validator.is_valid(malformed)
+    # A schema request must not mutate the reusable owner schema or its refs.
+    from epsm_workflows import WorkflowSpec
+    assert WorkflowSpec.schema()["properties"]["sampling"]["$ref"].startswith("#/$defs/")
+
+
+def test_study_spec_schema_is_dependency_light_and_uses_the_envelope_rules():
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = StudySpec.schema()
+    jsonschema.Draft202012Validator(schema).validate(StudySpec("Portable", workflow=WORKFLOW).to_dict())
+    malformed = StudySpec("Portable", workflow=WORKFLOW).to_dict()
+    malformed.pop("metadata")
+    assert not jsonschema.Draft202012Validator(schema).is_valid(malformed)
+    with pytest.raises(ValueError, match="sections|field"):
+        StudySpec.from_dict(malformed)
+
+
+def test_source_requests_and_explicit_resolution_delegate_without_positional_objects(monkeypatch):
+    class Owner:
+        def __init__(self, data):
+            self.data = copy.deepcopy(data)
+        @classmethod
+        def from_dict(cls, data):
+            return cls(data)
+        def to_dict(self):
+            return copy.deepcopy(self.data)
+        def add_subject(self, building=None, **options):
+            self.data["subject"] = {"building": building, **options}
+            return self
+        def add_weather(self, weather=None, **options):
+            self.data["weather"] = {"weather": weather, **options}
+            return self
+        def resolve_inputs(self, *, directory=None):
+            self.data["resolved_at"] = directory
+            return self
+    monkeypatch.setitem(sys.modules, "epsm_workflows", types.SimpleNamespace(WorkflowSpec=Owner))
+    study = Study(StudySpec("Requests", workflow=WORKFLOW))
+    initial = study.spec
+    study.add_subject(id="one", source={"kind": "synthetic"})
+    study.add_weather(id="amy", request={"kind": "amy_batch"})
+    assert study.resolve_inputs(directory="declared-output") is study
+    assert initial.workflow == WORKFLOW
+    assert study.spec.workflow["subject"]["building"] is None
+    assert study.spec.workflow["weather"]["request"]["kind"] == "amy_batch"
+    assert study.spec.workflow["resolved_at"] == "declared-output"
+
+
+def test_unknown_authoring_type_is_rejected_but_opaque_saved_studies_still_open():
+    with pytest.raises(ValueError, match="study type"):
+        Study("Wrong", type="unknown", workflow=WORKFLOW)
+    spec = StudySpec("Future", workflow=WORKFLOW, metadata={"type": "future-type"})
+    assert Study.from_dict(spec.to_dict()).spec.metadata["type"] == "future-type"

@@ -32,11 +32,20 @@ results = study.archive("outputs/experiment/plan", "outputs/experiment/archive-1
 ```
 
 Check the Workflows binding schema for the supported parameter names and
-engine combinations. `Study.schema()` returns its configuration schema;
+engine combinations. `Study.schema()` returns one complete document schema for
+metadata, protocol, workflow and reporting, composing the owner's generated typed
+workflow schema with valid local references. `StudySpec.schema()` exports the
+same envelope without importing Workflows and leaves its workflow data opaque.
 Workflows' capability discovery distinguishes available and unsupported options.
-An editable draft can be incomplete. `validate()` and `preview()` expose missing
-inputs before `prepare()` freezes the case matrix. No simulation starts during
-these operations.
+An editable draft can be incomplete. Use `add_subject(id=..., source=...)` and
+`add_weather(id=..., request=...)` for supported unresolved acquisition requests,
+then explicitly call `resolve_inputs(directory=...)`. File/provider access occurs
+only in that delegated resolution step; saving, loading and schema inspection do
+not acquire data. `validate()` and `preview()` expose missing inputs before
+`prepare()` freezes the case matrix. No simulation starts during these operations.
+The currently supported authoring type is `parametric`; its workflow method
+selects LHS, Monte Carlo or comparative templates. Saved opaque study types can
+still be inspected without claiming that this version can execute them.
 
 `study.spec` is immutable. Each authoring edit replaces it with a new revision;
 earlier saved records and prepared plans are independent. An archive rejects a
@@ -95,17 +104,24 @@ or a retained `running` attempt.
 Executor success, engine acceptance, thermal coverage, delivery coverage and LCA
 completeness are separate. Energy remains accessible when its assessment is
 incomplete or failed. Missing impacts remain unknown; they never become zero.
-Modern executor receipts retain EPSM's authoritative output checks. Legacy
-inline results have structural availability information and keep their original
-limitations.
+Modern executor receipts retain EPSM's authoritative output checks. Retained
+signals/units must also be structurally present; a producer acceptance flag cannot
+hide a signal omitted from the saved bundle. Legacy results without those owner
+checks have structural availability information, remain explicitly unverified,
+and cannot make the study appear complete.
 
 General helpers deliberately require explicit choices:
 
-- `aggregate_energy(case, period="monthly"|"annual")` sums a continuous hourly
-  kWh signal; it cannot aggregate temperature or fill missing calendar hours.
+- `aggregate_energy(case, period="monthly"|"annual")` requires verified producer
+  coverage and sums a continuous hourly kWh signal; it cannot aggregate
+  temperature, use rejected outputs or fill missing calendar hours.
 - `portfolio_total(metric, case_ids=[...])` requires one case per identified
-  building, one engine/sample/scenario, compatible units and assessment/energy
-  boundaries. Missing values produce `value=None` and a labeled known subtotal.
+  building, one engine/sample/scenario and compatible calendars and assessment/
+  energy boundaries. Only additive kWh/impact metrics can be totaled. Missing or
+  unverified coverage produces `value=None` and a labeled known subtotal.
+- `describe(metric, case_ids=[...])` returns count, available/missing counts,
+  min/max and mean over explicitly selected comparable cases. Missing cases stay
+  in the counts; incomplete subsets and unverified coverage are labeled.
 - `difference(baseline, candidate, metric)` describes a change for one building
   and engine. A zero baseline has no percentage difference.
 - `compare_engines(reference, candidate, expected_time_axis=...)` applies the
@@ -129,7 +145,8 @@ An archive contains `manifest.json` and a copied `execution/` tree with prepared
 cases, model/weather assets, attempts, selected outcomes, owner evaluation
 bundles and logs. Frozen `workflow.json` and cancellation metadata are retained
 when present. Caches and locks are excluded. The index records checksums and
-relative references. Evaluation bundles use the documented
+relative references, checks collected engine/state/weather identities against
+those declared in the frozen case, and rejects contradictory completeness states. Evaluation bundles use the documented
 `epsm-evaluation-bundle/1` owner format with separate `.npy` signals and calendar.
 Original producer and calculation identities stay unchanged after relocation.
 
