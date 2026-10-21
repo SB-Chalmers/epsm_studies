@@ -1,7 +1,8 @@
 # epsm_studies
 
-Generic EPSM research protocol records and historical study archives.
-Version **0.3.0** adds validated engine-result comparisons and portable reports;
+Portable EPSM study definitions, research protocols and retained result archives.
+Version **0.4.0** adds delegated study authoring, complete result collections,
+general summaries and validated engine-result comparisons;
 see the [release notes](RELEASE_NOTES.md) for its public interface and scope.
 `PaperStudy` records a study setup; reusable designs, optimisation and execution
 belong to `epsm_workflows`. Existing named study implementations are archived
@@ -91,3 +92,45 @@ reset_logging()  # Restore the host application's settings.
 
 EPSM is needed only for this combined configuration, not for ordinary library
 logging. Existing scripts can keep using `logging.basicConfig(level=logging.INFO)`.
+
+## Portable study drafts
+
+`StudySpec` keeps study metadata, protocol and reporting choices around a
+Workflows-owned serialized specification. `Study` provides convenient authoring
+methods that delegate to Workflows. Existing `PaperStudy` records remain supported.
+
+```python
+from epsm_studies import Study, StudySpec
+
+# Existing workflow data can be inspected without installing engines or Workflows.
+spec = StudySpec("Pilot", question="What changes heating?",
+                 workflow={"format": "epsm-workflow/1"})
+study = Study(spec)
+assert Study.from_dict(study.to_dict()).id == study.id
+```
+
+The minimal workflow above illustrates the portable envelope; it is not an
+executable experiment. Install `epsm_studies[workflows]` to start a real template,
+configure `.set(...)`, `.vary(...)`, `.add_subject(...)`, `.add_weather(...)` and
+`.add_scenario(...)`, explicitly `.resolve_inputs(...)` when acquisition was requested, then `.validate()`, `.preview()` and `.prepare(directory)`.
+Workflows owns those scientific and execution rules. Each edit creates an
+independent `study.spec` revision; earlier prepared plans are fixed.
+`study.save(path)` refuses to replace a different specification. `Study.open(path)`
+restores the draft without importing execution packages.
+
+After execution, `study.archive(plan_directory, archive_directory)` publishes a
+portable `StudyResults` snapshot. Every planned case remains visible, including
+failures, missing results and incomplete assessments. Reopen it with
+`StudyResults.open(archive_directory)` without Workflows or engine packages.
+`coverage()`, `table()` and `select(...)` read only its loaded index. Explicit
+`hourly(case, signal)` and `time_axis(case)` operations load individual checked
+NumPy arrays; install `epsm_studies[results]` for these calls. A changed retry
+outcome needs a new archive directory; an identical recollection is reused.
+
+See [the study platform guide](docs/study-platform.md) for complete public APIs,
+result boundaries, supported formats and the `epsm-study` command harnesses.
+
+`Study.schema()` composes one complete study document schema from the Studies
+envelope and Workflows-owned scientific schema. `StudySpec.schema()` remains
+dependency-light. General `describe(metric, case_ids=[...])` summaries retain
+missing counts and require comparable units and boundaries.

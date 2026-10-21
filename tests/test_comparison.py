@@ -126,3 +126,54 @@ def test_report_requires_unique_cases_and_explicit_outcomes(tmp_path):
     with pytest.raises(ValueError, match="explicit error"):
         write_comparison_report(study, [{"case_id": "missing"}], tmp_path,
                                 reference_label="E+", candidate_label="RC")
+
+
+@pytest.mark.parametrize("precision", ["hours", "minutes", "seconds", "datetime", "numpy"])
+def test_calendar_comparison_uses_timestamps_instead_of_string_precision(precision):
+    first, second = result([1, 2, 3, 4]), result([2, 4, 6, 8])
+    if precision == "numpy":
+        np = pytest.importorskip("numpy")
+        first.time_axis = np.asarray(AXIS, dtype="datetime64[h]")
+    elif precision == "datetime":
+        first.time_axis = AXIS
+    else:
+        first.time_axis = [stamp.isoformat(timespec=precision) for stamp in AXIS]
+    second.time_axis = [stamp.isoformat(timespec="minutes") for stamp in AXIS]
+    report = compare(first, second, expected_time_axis=[stamp.isoformat(timespec="seconds") for stamp in AXIS])
+    assert report["hours"] == 4
+    assert report["hourly"][0]["time"] == "2023-01-31T22:00:00"
+    assert report["difference_kwh"] == 10
+
+
+def test_equivalent_explicit_utc_labels_keep_their_timezone_meaning():
+    from datetime import timezone
+    axis = [stamp.replace(tzinfo=timezone.utc) for stamp in AXIS]
+    first, second = result([1, 2, 3, 4]), result([2, 4, 6, 8])
+    first.time_axis = [stamp.isoformat().replace("+00:00", "Z") for stamp in axis]
+    second.time_axis = axis
+    report = compare(first, second, expected_time_axis=axis)
+    assert report["hourly"][0]["time"] == "2023-01-31T22:00:00+00:00"
+    with pytest.raises(ValueError, match="timezone"):
+        compare(first, result([2, 4, 6, 8]), expected_time_axis=axis)
+
+
+@pytest.mark.parametrize("change", ["missing", "duplicate", "mixed_timezone", "changing_offset", "subsecond"])
+def test_calendar_normalization_does_not_hide_inconsistent_or_missing_hours(change):
+    from datetime import timezone
+    candidate = result([2, 4, 6, 8])
+    match = "calendar"
+    if change == "missing":
+        candidate.time_axis = AXIS[:-1]
+    elif change == "duplicate":
+        candidate.time_axis = (AXIS[0], AXIS[1], AXIS[1], AXIS[3])
+    elif change == "mixed_timezone":
+        candidate.time_axis = (AXIS[0].replace(tzinfo=timezone.utc), *AXIS[1:])
+        match = "timezone"
+    elif change == "changing_offset":
+        candidate.time_axis = [stamp.replace(tzinfo=timezone(timedelta(hours=1 if i < 2 else 2)))
+                               for i, stamp in enumerate(AXIS)]
+        match = "timezone"
+    elif change == "subsecond":
+        candidate.time_axis = [stamp + timedelta(microseconds=1) for stamp in AXIS]
+    with pytest.raises(ValueError, match=match):
+        compare(candidate=candidate)

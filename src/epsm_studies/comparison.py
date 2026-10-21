@@ -16,11 +16,20 @@ from epsm_studies._logging import operation as logged_operation
 
 
 def _calendar(values):
-    labels = [v.isoformat() if hasattr(v, "isoformat") else str(v) for v in values]
-    stamps = [datetime.fromisoformat(v) for v in labels]
+    try:
+        labels = [v.isoformat() if hasattr(v, "isoformat") else str(v) for v in values]
+        stamps = [datetime.fromisoformat(value) for value in labels]
+    except (TypeError, ValueError) as error:
+        raise ValueError("Comparison calendar labels must be valid ISO datetimes") from error
+    # EPW results describe local standard time. Mixing naive/aware labels or
+    # changing offsets would silently change that calendar's interpretation.
+    if len({stamp.utcoffset() for stamp in stamps}) > 1:
+        raise ValueError("Comparison calendar must use one consistent timezone convention and fixed offset")
     if not stamps or any(b - a != timedelta(hours=1) for a, b in zip(stamps, stamps[1:])):
         raise ValueError("Expected calendar must be nonempty, continuous and hourly")
-    return labels
+    # Compare parsed timestamps, retaining offsets and subsecond precision. Hour,
+    # minute and second spellings of the same timestamp must compare equally.
+    return [stamp.isoformat() for stamp in stamps]
 
 
 def compare_energy_results(
@@ -33,7 +42,10 @@ def compare_energy_results(
     caller records with snapshot, physical-input and weather SHA256 values. The
     caller must capture each engine's actual inputs; matching labels are not
     evidence by themselves. Supply the complete intended calendar, not a result's
-    observed coverage. Percent differences are undefined for a zero reference.
+    observed coverage. Equivalent ISO hour/minute/second precision is accepted;
+    timezone conventions and fixed offsets must agree. Comparison reports use
+    canonical parsed ISO labels without modifying retained input calendars.
+    Percent differences are undefined for a zero reference.
     No agreement threshold or claim of empirical accuracy is implied.
     Accounting tolerance is 0.1% relative or 0.001 kWh absolute, recorded in output.
     """
@@ -58,7 +70,10 @@ def compare_energy_results(
                 raise ValueError("Result diagnostics disagree with recorded inputs")
         if result.units.get(signal) != "kWh":
             raise ValueError("Comparison signal must have kWh units")
-        if _calendar(result.time_axis) != axis:
+        observed_axis = _calendar(result.time_axis)
+        if observed_axis != axis:
+            if datetime.fromisoformat(observed_axis[0]).utcoffset() != datetime.fromisoformat(axis[0]).utcoffset():
+                raise ValueError("Result calendar uses a different timezone convention from the expected calendar")
             raise ValueError("Result calendar does not cover the complete expected hours")
         values = [float(v) for v in result.hourly[signal]]
         total = float(result.scalars[signal])
