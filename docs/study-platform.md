@@ -128,7 +128,11 @@ General helpers deliberately require explicit choices:
   and engine. A zero baseline has no percentage difference.
 - `compare_engines(reference, candidate, expected_time_axis=...)` applies the
   existing strict shared-input comparator. Supply the intended calendar
-  independently of observed output coverage.
+  independently of observed output coverage. Datetime objects, NumPy hourly
+  labels and equivalent ISO hour/minute/second strings compare as the same
+  timestamps. Naive/aware conventions and fixed UTC offsets must agree; missing
+  or duplicate hours remain errors. Reports use canonical ISO labels while
+  archive calendars retain their original producer representation.
 
 These helpers do not fit models, select a preferred alternative or make claims
 about prediction accuracy. CSV/JSON table exports include failures and unrun cases
