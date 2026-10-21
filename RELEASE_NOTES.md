@@ -1,4 +1,4 @@
-# Release 0.4.0 candidate — portable study authoring and outcomes
+# Release 0.4.0 — portable study authoring and outcomes
 
 `StudySpec` keeps versioned metadata/protocol and reporting choices around the
 Workflows-owned specification. `Study` delegates authoring, preflight, prepared
