@@ -1,3 +1,21 @@
+# Development — portable study authoring and outcomes
+
+`StudySpec` keeps versioned metadata/protocol and reporting choices around the
+Workflows-owned specification. `Study` delegates authoring, preflight, prepared
+local execution and explicit Vera submission; reconstruction needs no execution
+packages. Existing `PaperStudy` and comparison APIs remain supported.
+
+`StudyResults` publishes immutable, relocatable archives of every planned case
+and attempt with owner evaluation bundles, model/weather assets and checksums.
+Metadata inspection is dependency-light; numerical signals load individually.
+Coverage, explicit portfolio totals, baseline/engine differences, temporal energy
+sums and CSV/JSON exports preserve unknown values and incomplete outcomes.
+The `epsm-study` CLI calls the same collection, inspection and export operations.
+
+See [the study platform guide](docs/study-platform.md) for APIs, optional extras,
+portable formats and limitations. These features establish software contracts;
+they do not establish empirical prediction accuracy.
+
 # Studies 0.3.0 — engine comparison reports
 
 The public interface includes `PaperStudy`, `compare_energy_results` and

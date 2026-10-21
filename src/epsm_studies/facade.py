@@ -189,7 +189,10 @@ class Study:
     def resume(self, directory):
         """Clear a local cancellation request without executing or discarding evidence."""
         from epsm_workflows import resume
-        return resume(directory)
+        root = Path(directory)
+        if (root / "workflow.json").exists() and read_json(root / "workflow.json").get("execution", {}).get("executor") == "vera":
+            raise ValueError("Remote resume is not exposed by the Studies facade; use the scheduler explicitly")
+        return resume(root)
 
     def archive(self, execution_directory, directory):
         """Collect verified outcomes into a new portable, immutable result snapshot."""

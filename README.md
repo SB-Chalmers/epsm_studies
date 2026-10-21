@@ -125,3 +125,6 @@ failures, missing results and incomplete assessments. Reopen it with
 `hourly(case, signal)` and `time_axis(case)` operations load individual checked
 NumPy arrays; install `epsm_studies[results]` for these calls. A changed retry
 outcome needs a new archive directory; an identical recollection is reused.
+
+See [the study platform guide](docs/study-platform.md) for complete public APIs,
+result boundaries, supported formats and the `epsm-study` command harnesses.

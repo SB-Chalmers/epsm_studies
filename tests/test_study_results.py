@@ -1,7 +1,6 @@
 """Retained result evidence survives retries, partial failures and relocation."""
 from __future__ import annotations
 
-import copy
 import hashlib
 import json
 from pathlib import Path
@@ -248,3 +247,53 @@ def test_frozen_workflow_link_refuses_attaching_a_changed_draft(tmp_path):
     with pytest.raises(ValueError, match="workflow differs"):
         StudyResults.collect(spec, plan, tmp_path / "archive")
     assert not (tmp_path / "archive").exists()
+
+
+def test_cli_inspection_and_export_use_the_same_archive_api(tmp_path):
+    spec, plan = prepared(tmp_path)
+    archive = tmp_path / "archive"
+    StudyResults.collect(spec, plan, archive)
+    inspected = subprocess.run([sys.executable, "-m", "epsm_studies", "inspect", str(archive), "--verify"],
+                               capture_output=True, text=True)
+    assert inspected.returncode == 0, inspected.stderr
+    assert json.loads(inspected.stdout)["total"] == 1
+    exported = subprocess.run([sys.executable, "-m", "epsm_studies", "export", str(archive), str(tmp_path / "table.csv")],
+                              capture_output=True, text=True)
+    assert exported.returncode == 0, exported.stderr
+    assert "first" in (tmp_path / "table.csv").read_text()
+    rejected = subprocess.run([sys.executable, "-m", "epsm_studies", "export", str(archive), str(tmp_path / "table.csv")],
+                              capture_output=True, text=True)
+    assert rejected.returncode == 2
+    assert "Traceback" not in rejected.stderr
+
+
+def test_bundle_reference_manifest_identity_and_owner_coverage_are_retained(tmp_path):
+    spec, plan = prepared(tmp_path)
+    path = plan / "results/000000.json"
+    row = json.loads(path.read_text())
+    bundle = plan / row["result"]["path"]
+    row["result"].update(manifest_sha256=_sha(bundle / "manifest.json"), evaluation_id="first", coverage={
+        "ready": False, "thermal_complete": False, "delivery_complete": False,
+        "lca_complete": True, "diagnostics": [{"code": "calendar", "field": "energy.time_axis", "severity": "error"}]})
+    from epsm_workflows.records import digest
+    row.pop("record_sha256")
+    row["record_sha256"] = digest(row)
+    path.write_text(json.dumps(row))
+    (plan / "attempts/000000" / f"{row['id']}.json").write_text(json.dumps(row))
+    result = StudyResults.collect(spec, plan, tmp_path / "archive")
+    assert result.coverage()["outputs"]["space_heating_demand_kwh"]["available"] == 0
+    assert result.coverage()["complete"] is False
+    assert result.table()[0]["producer_coverage"]["diagnostics"][0]["code"] == "calendar"
+    (bundle / "manifest.json").write_text((bundle / "manifest.json").read_text() + "\n")
+    with pytest.raises(ValueError, match="manifest checksum"):
+        StudyResults.collect(spec, plan, tmp_path / "archive-2")
+
+
+def test_explicit_reads_check_the_archived_bundle_manifest_not_only_array_hashes(tmp_path):
+    spec, plan = prepared(tmp_path)
+    results = StudyResults.collect(spec, plan, tmp_path / "archive")
+    entry = results.table()[0]
+    manifest = results.directory / entry["bundle"] / "manifest.json"
+    manifest.write_text(manifest.read_text() + "\n")
+    with pytest.raises(ValueError, match="manifest checksum"):
+        results.hourly(0)

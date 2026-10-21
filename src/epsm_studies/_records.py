@@ -9,7 +9,19 @@ from pathlib import Path
 import tempfile
 
 
+def _check_keys(value):
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            raise TypeError("Portable record keys must be strings")
+        for item in value.values():
+            _check_keys(item)
+    elif isinstance(value, (tuple, list)):
+        for item in value:
+            _check_keys(item)
+
+
 def canonical(value):
+    _check_keys(value)
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 

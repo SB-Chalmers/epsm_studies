@@ -139,3 +139,12 @@ def test_run_honors_frozen_worker_and_executor_choices(monkeypatch, tmp_path):
     monkeypatch.setattr(VeraExecutor, "submit", lambda self, path, **kw: calls.append(kw) or {"job_id": "123"})
     assert study.run(tmp_path, executor=executor, submit_options={"partition": "test"}) == {"job_id": "123"}
     assert calls[-2:] == ["stage", {"partition": "test"}]
+
+
+def test_portable_sections_reject_silent_key_coercion_and_overflow(tmp_path):
+    with pytest.raises(TypeError, match="keys must be strings"):
+        StudySpec("Bad keys", workflow=WORKFLOW, metadata={1: "would be silently renamed"})
+    path = tmp_path / "bad.json"
+    path.write_text('{"number":1e10000}')
+    with pytest.raises(ValueError, match="Nonfinite"):
+        Study.open(path)

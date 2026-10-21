@@ -344,6 +344,10 @@ class StudyResults:
             raise ValueError("Case has no successful evaluation; inspect its attempt evidence")
         if "bundle" in entry:
             root = relative_path(self.directory, entry["bundle"])
+            manifest_name = str(Path(entry["bundle"]) / "manifest.json")
+            expected = json.loads(self._json)["files"].get(manifest_name)
+            if expected is None or checksum(root / "manifest.json") != expected:
+                raise ValueError("Changed archived evaluation bundle manifest checksum")
             manifest, metadata = _bundle(root)
             return root, manifest, metadata
         path = relative_path(self.directory, entry["inline"])
