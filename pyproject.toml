@@ -1,12 +1,23 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "epsm_studies"
-version = "0.3.0"
-description = "EPSM research protocol records and historical study archives"
+version = "0.4.0"
+description = "EPSM study authoring, portable outcomes and general reporting"
 requires-python = ">=3.11"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.optional-dependencies]
+workflows = ["epsm_workflows[epsm]>=0.4.0,<0.5"]
+results = ["numpy>=1.24"]
+dev = ["pytest>=8", "numpy>=1.24", "jsonschema>=4"]
+
+[project.scripts]
+epsm-study = "epsm_studies.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

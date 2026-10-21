@@ -2,3 +2,7 @@ prune archive
 prune imports
 include RELEASE_NOTES.md
 recursive-include examples/engine_comparison *.py *.json *.md
+
+recursive-include docs *.md
+include examples/README.md
+include examples/01_portable_study.ipynb
