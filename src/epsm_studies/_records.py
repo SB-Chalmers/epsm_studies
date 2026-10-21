@@ -38,9 +38,17 @@ def _nonfinite(value):
     raise ValueError(f"Nonfinite JSON value: {value}")
 
 
+def _finite_float(value):
+    import math
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError(f"Nonfinite JSON value: {value}")
+    return number
+
+
 def read_json(path):
     with Path(path).open(encoding="utf-8") as stream:
-        return json.load(stream, object_pairs_hook=_unique, parse_constant=_nonfinite)
+        return json.load(stream, object_pairs_hook=_unique, parse_constant=_nonfinite, parse_float=_finite_float)
 
 
 def publish_json(path, value):

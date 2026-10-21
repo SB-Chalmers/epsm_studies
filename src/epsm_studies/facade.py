@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from ._logging import operation
-from ._records import publish_json, read_json, short
+from ._records import publish_json, read_json, short, digest
 from .spec import StudySpec
 
 
@@ -60,6 +60,14 @@ class Study:
     @property
     def spec(self) -> StudySpec:
         return self._spec
+
+    @property
+    def name(self):
+        return self.spec.name
+
+    @property
+    def question(self):
+        return self.spec.question
 
     @property
     def id(self):
@@ -140,11 +148,48 @@ class Study:
         """Freeze independent execution inputs using Workflows' public operation."""
         return self._owner().prepare(directory)
 
-    def run(self, directory, **options):
-        """Run/resume an existing prepared directory using Workflows locally."""
+    def run(self, directory, *, executor=None, submit_options=None, **options):
+        """Delegate execution using the frozen local/Vera selection.
+
+        Local execution uses the frozen worker count unless explicitly overridden
+        and returns Workflows' outcome counts. Vera requires a configured public
+        ``VeraExecutor`` instance; this method stages then submits and returns its
+        receipt. It does not wait or retrieve. Transport credentials and clients
+        are never serialized. Retrieve explicitly before collecting an archive.
+        """
         _workflow_type()
-        from epsm_workflows import run_local
-        return run_local(directory, **options)
+        from epsm_workflows import run_local, validate_plan, VeraExecutor
+        root = Path(directory)
+        plan = validate_plan(root)
+        frozen = read_json(root / "workflow.json") if (root / "workflow.json").exists() else {}
+        expected = plan.get("environment", {}).get("workflow_id")
+        if expected is not None and digest(frozen) != expected:
+            raise ValueError("Retained workflow differs from its frozen plan identity")
+        execution = frozen.get("execution", {})
+        if execution.get("executor", "local") == "vera":
+            if not isinstance(executor, VeraExecutor):
+                raise ValueError("Vera execution requires an explicit configured Workflows VeraExecutor")
+            if options:
+                raise ValueError("Supply Vera scheduler options through submit_options")
+            executor.stage(root)
+            return executor.submit(root, **(submit_options or {}))
+        if executor is not None or submit_options:
+            raise ValueError("The prepared workflow selected local execution")
+        options.setdefault("workers", execution.get("workers", 1))
+        return run_local(root, **options)
+
+    def cancel(self, directory):
+        """Request graceful local cancellation; existing attempts remain retained."""
+        from epsm_workflows import cancel
+        root = Path(directory)
+        if (root / "workflow.json").exists() and read_json(root / "workflow.json").get("execution", {}).get("executor") == "vera":
+            raise ValueError("Remote cancellation is not exposed by the Studies facade; use the scheduler explicitly")
+        return cancel(root)
+
+    def resume(self, directory):
+        """Clear a local cancellation request without executing or discarding evidence."""
+        from epsm_workflows import resume
+        return resume(directory)
 
     def archive(self, execution_directory, directory):
         """Collect verified outcomes into a new portable, immutable result snapshot."""

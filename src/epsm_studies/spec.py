@@ -45,8 +45,8 @@ class StudySpec:
             raise ValueError("A study needs a nonempty name")
         if not isinstance(question, str):
             raise ValueError("The study question must be text")
-        values = {"metadata": metadata or {}, "protocol": protocol or {},
-                  "workflow": workflow, "reporting": reporting or {}}
+        values = {"metadata": {} if metadata is None else metadata, "protocol": {} if protocol is None else protocol,
+                  "workflow": workflow, "reporting": {} if reporting is None else reporting}
         if any(not isinstance(value, Mapping) for value in values.values()):
             raise ValueError("Study sections must be mappings")
         if not isinstance(workflow.get("format"), str) or not workflow["format"]:

@@ -116,3 +116,12 @@ Workflows owns those scientific and execution rules. Each edit creates an
 independent `study.spec` revision; earlier prepared plans are fixed.
 `study.save(path)` refuses to replace a different specification. `Study.open(path)`
 restores the draft without importing execution packages.
+
+After execution, `study.archive(plan_directory, archive_directory)` publishes a
+portable `StudyResults` snapshot. Every planned case remains visible, including
+failures, missing results and incomplete assessments. Reopen it with
+`StudyResults.open(archive_directory)` without Workflows or engine packages.
+`coverage()`, `table()` and `select(...)` read only its loaded index. Explicit
+`hourly(case, signal)` and `time_axis(case)` operations load individual checked
+NumPy arrays; install `epsm_studies[results]` for these calls. A changed retry
+outcome needs a new archive directory; an identical recollection is reused.

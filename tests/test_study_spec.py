@@ -115,3 +115,27 @@ def test_study_json_rejects_duplicate_fields_and_preserves_existing_file(tmp_pat
     with pytest.raises(ValueError, match="Duplicate"):
         Study.open(path)
     assert path.read_text().endswith('"other"}')
+
+
+def test_run_honors_frozen_worker_and_executor_choices(monkeypatch, tmp_path):
+    pytest.importorskip("epsm_workflows", reason="Optional execution integration")
+    from epsm_workflows import VeraExecutor
+    import epsm_workflows
+    from epsm_studies._records import digest
+    workflow = {**WORKFLOW, "execution": {"executor": "local", "workers": 3}}
+    (tmp_path / "workflow.json").write_text(json.dumps(workflow))
+    calls = []
+    monkeypatch.setattr(epsm_workflows, "validate_plan", lambda path: {"environment": {"workflow_id": digest(workflow)}})
+    monkeypatch.setattr(epsm_workflows, "run_local", lambda path, **kw: calls.append((path, kw)) or {"succeeded": 1})
+    study = Study(StudySpec("Run", workflow=WORKFLOW))
+    assert study.run(tmp_path) == {"succeeded": 1}
+    assert calls[-1][1]["workers"] == 3
+    workflow["execution"]["executor"] = "vera"
+    (tmp_path / "workflow.json").write_text(json.dumps(workflow))
+    with pytest.raises(ValueError, match="VeraExecutor"):
+        study.run(tmp_path)
+    executor = VeraExecutor("vera.example", "/campaign")
+    monkeypatch.setattr(VeraExecutor, "stage", lambda self, path: calls.append("stage"))
+    monkeypatch.setattr(VeraExecutor, "submit", lambda self, path, **kw: calls.append(kw) or {"job_id": "123"})
+    assert study.run(tmp_path, executor=executor, submit_options={"partition": "test"}) == {"job_id": "123"}
+    assert calls[-2:] == ["stage", {"partition": "test"}]
