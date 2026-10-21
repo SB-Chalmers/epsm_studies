@@ -1,4 +1,15 @@
-# epsm_studies
+# EPSM Studies
+
+<!-- EPSM introduction: Pocket CAD -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/brand/epsm_studies-dark.png">
+  <img src="docs/assets/brand/epsm_studies.png" width="64" height="64" alt="EPSM Studies — research records">
+</picture>
+
+Record research protocols, compare energy results and keep study evidence and historical archives together.
+
+[Explore the EPSM platform](https://github.com/SB-Chalmers/epsm/blob/main/docs/platform.md)
+<!-- /EPSM introduction -->
 
 Generic EPSM research protocol records and historical study archives.
 Version **0.3.0** adds validated engine-result comparisons and portable reports;
