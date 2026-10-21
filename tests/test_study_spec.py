@@ -1,0 +1,117 @@
+"""A study can be retained and inspected without its execution environment."""
+import copy
+import json
+import subprocess
+import sys
+import types
+
+import pytest
+
+from epsm_studies import Study, StudySpec
+
+
+WORKFLOW = {
+    "format": "epsm-workflow/1",
+    "sampling": {"method": "lhs", "count": 4, "seed": 17},
+    "outputs": [{"name": "space_heating_demand_kwh", "required": True}],
+}
+
+
+def test_study_spec_roundtrip_preserves_owner_workflow_and_copies():
+    workflow = copy.deepcopy(WORKFLOW)
+    spec = StudySpec("Envelope alternatives", question="What changes heating?", workflow=workflow,
+                     metadata={"tags": ["pilot"]}, protocol={"assumptions": ["fixed weather"]},
+                     reporting={"metrics": ["space_heating_demand_kwh"]})
+    identity = spec.id
+    workflow["sampling"]["seed"] = 99
+    spec.workflow["sampling"]["seed"] = 88
+    spec.metadata["tags"].append("changed")
+    assert spec.workflow == WORKFLOW
+    assert spec.metadata["tags"] == ["pilot"]
+    assert StudySpec.from_dict(spec.to_dict()).id == identity
+    changed = spec.to_dict()
+    changed["workflow"]["sampling"]["count"] = 5
+    with pytest.raises(ValueError, match="identity"):
+        StudySpec.from_dict(changed)
+    assert "Envelope alternatives" in repr(spec)
+    assert len(repr(spec)) <= 160
+
+
+@pytest.mark.parametrize("change", [
+    lambda x: x.update(format="epsm-study-spec/99"),
+    lambda x: x.update(reporting={"value": float("nan")}),
+    lambda x: x.update(workflow={"sampling": {}}),
+    lambda x: x.update(unexpected=True),
+])
+def test_study_spec_rejects_bad_stored_data(change):
+    data = StudySpec("Pilot", workflow=WORKFLOW).to_dict()
+    data.pop("id")
+    change(data)
+    with pytest.raises((TypeError, ValueError)):
+        StudySpec.from_dict(data)
+
+
+def test_study_save_and_open_do_not_require_execution_packages(tmp_path):
+    study = Study(StudySpec("Offline", workflow=WORKFLOW))
+    path = study.save(tmp_path / "study.json")
+    study.save(path)
+    assert Study.open(path).spec.id == study.spec.id
+    with pytest.raises(FileExistsError):
+        Study(StudySpec("Other", workflow=WORKFLOW)).save(path)
+    script = r'''
+import importlib.abc, json, sys
+class Block(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname.split('.')[0] in {'epsm', 'epsm_workflows', 'epsm_core', 'epsm_rc', 'numpy'}:
+            raise RuntimeError('Unexpected execution import: ' + fullname)
+sys.meta_path.insert(0, Block())
+from epsm_studies import Study
+study = Study.open(sys.argv[1])
+assert study.spec.name == 'Offline'
+assert study.to_dict()['workflow']['sampling']['count'] == 4
+print(study)
+'''
+    result = subprocess.run([sys.executable, "-c", script, str(path)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+
+
+def test_facade_delegates_edits_and_keeps_earlier_revisions(monkeypatch, tmp_path):
+    class OwnerWorkflow:
+        def __init__(self, data):
+            self.data = copy.deepcopy(data)
+        @classmethod
+        def from_dict(cls, data):
+            return cls(data)
+        @classmethod
+        def template(cls, **options):
+            return cls({"format": "epsm-workflow/1", "options": options})
+        def to_dict(self):
+            return copy.deepcopy(self.data)
+        def set(self, key, value):
+            self.data[key] = value
+            return self
+        def vary(self, key, **options):
+            self.data.setdefault("parameters", {})[key] = options
+            return self
+        def preview(self):
+            return {"cases": self.data.get("count", 0)}
+        def prepare(self, directory):
+            return {"id": "frozen-plan", "data": self.to_dict()}
+    monkeypatch.setitem(sys.modules, "epsm_workflows", types.SimpleNamespace(WorkflowSpec=OwnerWorkflow))
+    study = Study("Pilot", samples=3, seed=4, engines=["epsm_rc"])
+    old = study.spec
+    assert study.set("count", 3).vary("geometry.wwr", min=.1, max=.5) is study
+    frozen = study.prepare(tmp_path / "plan")
+    study.set("count", 5)
+    assert old.id != study.spec.id
+    assert frozen["data"]["count"] == 3
+    assert study.preview() == {"cases": 5}
+    assert study.spec.workflow["engines"] == ["epsm_rc"]
+
+
+def test_study_json_rejects_duplicate_fields_and_preserves_existing_file(tmp_path):
+    path = tmp_path / "study.json"
+    path.write_text('{"format":"epsm-study-spec/1","format":"other"}')
+    with pytest.raises(ValueError, match="Duplicate"):
+        Study.open(path)
+    assert path.read_text().endswith('"other"}')
