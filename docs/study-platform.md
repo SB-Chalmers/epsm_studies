@@ -34,7 +34,9 @@ results = study.archive("outputs/experiment/plan", "outputs/experiment/archive-1
 Check the Workflows binding schema for the supported parameter names and
 engine combinations. `Study.schema()` returns one complete document schema for
 metadata, protocol, workflow and reporting, composing the owner's generated typed
-workflow schema with valid local references. `StudySpec.schema()` exports the
+workflow schema with valid local references and discriminator mappings. The
+`x-epsm-inputs` metadata keeps each independently usable owner input schema's
+own reference root. `StudySpec.schema()` exports the
 same envelope without importing Workflows and leaves its workflow data opaque.
 Workflows' capability discovery distinguishes available and unsupported options.
 An editable draft can be incomplete. Use `add_subject(id=..., source=...)` and

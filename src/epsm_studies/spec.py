@@ -60,7 +60,20 @@ def _rebase_workflow_schema(value):
     if isinstance(value, dict):
         result = {}
         for key, item in value.items():
-            if key in {"$ref", "$dynamicRef"} and isinstance(item, str) and item.startswith("#"):
+            if key == "x-epsm-inputs":
+                # Capability metadata contains independently usable owner schemas,
+                # each with its own local $defs. It is not a subtree evaluated
+                # against the enclosing workflow's schema root.
+                result[key] = deepcopy(item)
+            elif key == "discriminator" and isinstance(item, dict):
+                discriminator = deepcopy(item)
+                if isinstance(discriminator.get("mapping"), dict):
+                    discriminator["mapping"] = {
+                        name: "#/$defs/Workflow" + reference[1:]
+                        if isinstance(reference, str) and reference.startswith("#") else reference
+                        for name, reference in discriminator["mapping"].items()}
+                result[key] = discriminator
+            elif key in {"$ref", "$dynamicRef"} and isinstance(item, str) and item.startswith("#"):
                 result[key] = "#/$defs/Workflow" + item[1:]
             else:
                 result[key] = _rebase_workflow_schema(item)

@@ -219,3 +219,36 @@ def test_unknown_authoring_type_is_rejected_but_opaque_saved_studies_still_open(
         Study("Wrong", type="unknown", workflow=WORKFLOW)
     spec = StudySpec("Future", workflow=WORKFLOW, metadata={"type": "future-type"})
     assert Study.from_dict(spec.to_dict()).spec.metadata["type"] == "future-type"
+
+
+def test_composed_schema_keeps_discriminators_and_standalone_input_schemas_usable():
+    import jsonschema
+    pytest.importorskip("epsm_workflows")
+    from epsm_workflows import WorkflowSpec
+    from epsm_core import Building
+    study = Study("Schema metadata")
+    schema = study.schema()
+    workflow = schema["$defs"]["Workflow"]
+    mappings = []
+    def visit(value):
+        if isinstance(value, dict):
+            if "discriminator" in value:
+                mappings.extend(value["discriminator"].get("mapping", {}).values())
+            for key, item in value.items():
+                if key != "x-epsm-inputs":
+                    visit(item)
+        elif isinstance(value, list):
+            for item in value:
+                visit(item)
+    visit(workflow)
+    assert mappings
+    for reference in mappings:
+        assert reference.startswith("#/$defs/Workflow/")
+        resolved = schema
+        for part in reference[2:].split("/"):
+            resolved = resolved[part.replace("~1", "/").replace("~0", "~")]
+        assert isinstance(resolved, dict)
+    owner_inputs = WorkflowSpec.schema()["x-epsm-inputs"]
+    assert workflow["x-epsm-inputs"] == owner_inputs
+    glazing = Building(preset="illustrative-reference").facade.glazing.model_dump(mode="json")
+    jsonschema.validate(glazing, workflow["x-epsm-inputs"]["facade.glazing"]["schema"])
