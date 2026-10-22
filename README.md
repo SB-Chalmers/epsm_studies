@@ -1,10 +1,20 @@
-# epsm_studies
+# EPSM Studies
+
+<!-- EPSM introduction: Pocket CAD -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/welcome/epsm_studies-dark.png">
+  <img src="docs/assets/welcome/epsm_studies.png" width="160" height="160" alt="EPSM Studies — A study report with one highlighted result bar; experiment documentation and evidence.">
+</picture>
+
+Turn a research question into a study you can revisit. EPSM Studies helps you
+author portable protocols, retain execution results and compare energy outputs.
+Reusable study and reporting tools sit alongside the research evidence and
+historical archives.
+
+**[Explore the EPSM platform →](https://github.com/SB-Chalmers/epsm/blob/main/docs/platform.md)**
+<!-- /EPSM introduction -->
 
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/SB-Chalmers/epsm_studies/actions/workflows/ci.yml) [![Releases](https://img.shields.io/badge/releases-GitHub-181717?logo=github&logoColor=white)](https://github.com/SB-Chalmers/epsm_studies/releases) [![Issues](https://img.shields.io/badge/issues-GitHub-181717?logo=github&logoColor=white)](https://github.com/SB-Chalmers/epsm_studies/issues)
-
-Author portable EPSM studies, record research protocols, retain execution results
-and compare energy outputs. Studies keeps research evidence and historical
-archives alongside reusable study and reporting APIs.
 
 ## Getting started
 
@@ -44,3 +54,25 @@ the [study platform guide](docs/study-platform.md) covers setup and result archi
 ## License
 
 [MIT](LICENSE).
+
+## People and support
+
+Developed at Chalmers University of Technology as part of the EPSM research platform.
+
+**Funding**: Swedish Energy Agency (Project ID: P2024-04053)
+
+**Partners**:
+
+- Lindholmen Science Park AB
+- Sinom AB
+- Stiftelsen Chalmers Industriteknik
+
+**Team**:
+
+- **Lead Developer**: Sanjay Somanath
+- **Principal Investigator**: Alexander Hollberg
+- **Contributors**: Yinan Yu, Dag Wästberg
+
+<p align="center">
+  <img src="docs/assets/welcome/logos.png" width="100%" alt="Chalmers University of Technology, Chalmers Industriteknik, Sinom, Lindholmen Science Park and Swedish Energy Agency logos">
+</p>
