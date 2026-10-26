@@ -28,6 +28,7 @@ import json
 import os
 import shutil
 import sys
+from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -37,7 +38,7 @@ import uddevalla_three_state as shared  # noqa: E402
 
 ROOT = HERE.parents[1]
 OUT = Path(os.environ.get("VALIDATION_OUT", ROOT / "output/catalogue_validation/national"))
-RESULTS = HERE / "results_national"
+RESULTS = Path(os.environ.get("VALIDATION_RESULTS", HERE / "results_national"))
 SERVICE = os.environ.get("EPSM_LAKE", "service=epsm_lake")
 SEED = "catalogue-validation-2026-10-26"
 FRAME_DEPTH = 120  # ordered candidates drawn per cohort before screening
@@ -287,7 +288,9 @@ REASON_CLASSES = (
     ("Near-coincident", "near-coincident footprint vertices"),
     ("Pitched roof on touching", "pitched roof over touching parts"),
     ("adjacency", "nonreciprocal surface adjacency"),
-    ("armup", "EnergyPlus warm-up non-convergence"),
+    ("CheckWarmupConvergence", "EnergyPlus warm-up non-convergence"),
+    ("Very small surface area", "sliver window or surface"),
+    ("FixViewFactors", "incomplete view factors (attic geometry)"),
     ("WetBulb", "EnergyPlus psychrometric non-convergence"),
     ("not_measurement_indicated", "no measured twelve-month period (calculated EPC)"),
     ("measurement_period_not_twelve_months", "no measured twelve-month period (calculated EPC)"),
@@ -325,6 +328,11 @@ def summarize():
                  "reason": reason_class(c["reason"]), "detail": c["reason"].removeprefix("simulation: ")}
                 for c in candidates if not c["kept"]]
     summary = shared.summarize(metas, read_jsonl(OUT / "runs.jsonl"), excluded)
+    # Buildings that failed in this run (rather than being replaced) carry raw errors.
+    for row in summary["excluded"]:
+        if "detail" not in row:
+            row["detail"], row["reason"] = row["reason"], reason_class(row["reason"])
+    summary["exclusion_counts"] = dict(Counter(f"{e['stage']}: {e['reason']}" for e in summary["excluded"]))
     weather = read_jsonl(OUT / "weather.jsonl")
     manifest = {
         "contract": "epsm_data docs/validation.md",

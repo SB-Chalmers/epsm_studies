@@ -66,13 +66,16 @@
 | screen: missing or unresolved height evidence | 52 |
 | screen: EPC dated before construction | 31 |
 | screen: heights do not form whole storeys | 22 |
-| simulation: EnergyPlus warm-up non-convergence | 13 |
 | simulation: Kiva ground floor with holes or disconnected parts | 10 |
+| simulation: EnergyPlus warm-up non-convergence | 10 |
 | screen: other footprint or basement assembly failure | 7 |
 | simulation: near-coincident footprint vertices | 3 |
 | simulation: pitched roof over touching parts | 3 |
-| simulation: EnergyPlus run rejected by acceptance policy | 2 |
+| simulation: sliver window or surface | 2 |
 | screen: near-coincident footprint vertices | 2 |
+| simulation: incomplete view factors (attic geometry) | 1 |
+| simulation: EnergyPlus run rejected by acceptance policy | 1 |
 | screen: measured period outside the AMY years | 1 |
 | simulation: nonreciprocal surface adjacency | 1 |
+| simulation: EnergyPlus psychrometric non-convergence | 1 |
 | screen: pitched roof over touching parts | 1 |

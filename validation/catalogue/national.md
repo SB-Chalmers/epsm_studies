@@ -108,9 +108,12 @@ The by-type, by-carrier and overall rows are in [`tables.md`](results_national/t
 **Platform replacements (32 buildings).** A sampled building that could not produce all
 of its runs was replaced by the next candidate in the same order. Reasons:
 
-- 13 EnergyPlus warm-up non-convergence, mostly in the Advanced state only
 - 10 courtyard or split ground floors that the Kiva ground model rejects
-- 9 other geometry faults
+- 10 EnergyPlus warm-up non-convergence, mostly in the Advanced state only
+- 7 footprint geometry faults: near-coincident vertices, pitched roofs over touching
+  parts, one nonreciprocal adjacency
+- 5 other EnergyPlus acceptance rejections: sliver surfaces, incomplete attic view
+  factors, psychrometric warnings
 
 Replacements cluster in offices SE.05–SE.06 (12) and older schools (8). The sample
 is therefore drawn from buildings the platform can simulate, and courtyard blocks are
@@ -190,7 +193,8 @@ What does not explain the failures:
 **epsm (platform)**
 
 - **P1.** SE.07 without a state. Fixed on `claude/se07-single-state`; this run used it.
-- **P2.** Use the catalogue's ventilation templates and facade WWR (limitation below).
+- **P2.** Use the catalogue's ventilation templates and facade WWR. Done on
+  `claude/catalogue-templates` (`0a58c0c`); see the template rerun below.
 - **P3.** Heat-pump and exhaust-air heat-pump performance, instead of a fixed COP of 3.
 - **P4 (new).** Lake records. Done on `claude/lake-record-runner`: record assembly reads
   GIS-lake schema 2 natively. It gives identical models to the old database for 78 of
@@ -209,15 +213,63 @@ What does not explain the failures:
 - **D4.** The lake has no register construction year for many buildings, for example
   12.7k schools. Those buildings are outside this frame.
 
-## Limitation: platform defaults, not catalogue templates
+## Rerun with the catalogue's own templates
 
-As in the Uddevalla run, the record runner uses its own WWR of 0.20 and its own
-ventilation mapping, with one FTX recovery of 0.7. It does not use epsm_data's
-`facade_assumptions()` (0.18 single-family, 0.24 multifamily, 0.30 office, 0.25 school) or
-the per-archetype ventilation templates, and the Advanced state keeps the observed system
-instead of installing FTX 0.80. This run therefore validates the catalogue's fabric and
-infiltration states inside the platform's facade and ventilation assumptions. Offices and
-the newest eras are where that limitation probably matters most.
+The tables above use the record runner's version-3 defaults: WWR 0.20 for every type,
+a type-default system when the EPC is silent, and one FTX recovery of 0.7 in every era
+and state.
+
+Runner policy version 4 (epsm `claude/catalogue-templates`, `0a58c0c`) uses epsm_data
+instead:
+
+- **Ventilation template:** the EPC-reported system, or the era default when unknown,
+  selects the template. Recovery is 0.60 for SE.04–SE.05 and 0.75 for pre-1976 retrofits
+  and SE.06; Advanced installs FTX 0.80; self-draught is fixed at 0.5 ACH.
+- **Facade WWR:** 0.18 / 0.24 / 0.30 / 0.25 by type, with N/E/S/W ratios applied per
+  facade.
+
+The same 543 buildings, weather and EPC targets were rerun with nothing re-sampled.
+539 completed in both runs. Four failed only under version 4: three Advanced-state
+warm-up failures and one sliver window from a per-facade ratio.
+Results: [`results_national_templates/`](results_national_templates/tables.md).
+
+| Paired, 539 buildings | Platform defaults (v3) | Catalogue templates (v4) |
+| --- | ---: | ---: |
+| Coverage | 44 % | **54 %** |
+| Match | 55 % | 51 % |
+| Existing / Advanced median r | 1.08 / 0.56 | 1.11 / 0.39 |
+| Measured above Existing | 241 | 232 |
+| Measured below Advanced | 90 | 48 |
+| Cohorts meeting both targets (SE.01–SE.06) | 4 | **7** |
+
+| Type | Coverage v3 → v4 | Match v3 → v4 | Existing r v3 → v4 | Measured above range v3 → v4 |
+| --- | ---: | ---: | ---: | ---: |
+| Single-family | 44 → 63 % | 59 → 53 % | 1.33 → 1.36 | 29 → 33 |
+| Multifamily | 48 → 51 % | 60 → 55 % | 0.96 → 0.95 | 77 → 75 |
+| Office | 32 → 39 % | 32 → 35 % | 0.82 → 0.90 | 79 → 72 |
+| School | 51 → 63 % | 67 → 59 % | 1.11 → 1.17 | 56 → 52 |
+
+What this shows:
+
+- **The templates mostly widen the range rather than re-centre it.** Installing FTX 0.80
+  in Advanced lowers that end of the range, so old single-family houses and older schools
+  are now bracketed (measured below range 90 → 48). Existing barely moves (median
+  per-building change 0.996), and match falls slightly because the range is wider.
+- **The dominant failure is not caused by the platform defaults.** Measured heating above
+  even the Existing state is almost unchanged (241 → 232).
+  - Multifamily SE.02–SE.06 are unchanged.
+  - Offices improve only slightly: Existing median r rises from 0.82 to 0.90 with the
+    higher office WWR and the lower recovery for 1986–2005.
+  - This strengthens catalogue issue C2. The newer-era Existing states, and SE.07, are
+    more efficient than the measured stock.
+- **SE.07 gets worse.** FTX 0.80 replaces the runner's 0.7 or self-draught: multifamily
+  SE.07 median r falls from 0.36 to 0.27, and school SE.07 match from 44 % to 6 %.
+- **Fixed 0.5 ACH self-draught raises old single-family Existing.** For SE.01 the median r
+  rises from 1.95 to 2.27, so the Existing state moves further from the measured houses.
+  Coverage still improves because Advanced moves down more.
+
+The version-3 tables above are kept as the baseline. Version 4 is what the catalogue
+contract describes, so later runs should use it.
 
 ## Reproduce
 
