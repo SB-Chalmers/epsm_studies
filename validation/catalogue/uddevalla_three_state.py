@@ -21,12 +21,12 @@ import csv
 import hashlib
 import json
 import os
+import shutil
 import statistics
 import subprocess
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import replace
-from datetime import date
 from pathlib import Path
 
 EPSM_DB = Path(os.environ.get("EPSM_DB_ROOT", Path.home() / "GitHub/epsm_db"))
@@ -101,12 +101,15 @@ def amy_weather():
     return weather
 
 
+def git(path, *args):
+    return subprocess.run(["git", "-C", str(path), *args], capture_output=True, text=True).stdout.strip()
+
+
 def repo_identity(name):
     path = Path.home() / "GitHub" / name
-    git = lambda *a: subprocess.run(["git", "-C", str(path), *a], capture_output=True, text=True).stdout.strip()
-    diff = git("diff", "HEAD")
-    return {"commit": git("rev-parse", "HEAD"), "branch": git("branch", "--show-current"),
-            "dirty_files": len(git("status", "--porcelain").splitlines()),
+    diff = git(path, "diff", "HEAD")
+    return {"commit": git(path, "rev-parse", "HEAD"), "branch": git(path, "branch", "--show-current"),
+            "dirty_files": len(git(path, "status", "--porcelain").splitlines()),
             "diff_sha256": hashlib.sha256(diff.encode()).hexdigest() if diff else None}
 
 
@@ -156,7 +159,11 @@ def allow_single_state_era():
     application.resolve_building_archetype = resolve_with_single_state
 
 
-def run_one(record, target, overrides, state, year, weather_item):
+# EnergyPlus outputs kept when pruning; results are already parsed into these.
+KEPT_OUTPUTS = {"result.json", "diagnostics.json", "building.json", "eplusout.err"}
+
+
+def run_one(record, target, overrides, state, year, weather_item, *, out=None, prune=False, timeout=600):
     from epsm.legacy_records import EPSMBuilding, ModelPolicy
     from sweden_ubem.epc_heating import period_heating_kwh
     from sweden_ubem.weather import WeatherReference
@@ -186,15 +193,21 @@ def run_one(record, target, overrides, state, year, weather_item):
                    atemp_m2=building.spec.load_reference_area_m2,
                    conditioned_area_m2=building.spec.geometry.conditioned_floor_area_m2,
                    quality=receipt.quality)
-        directory = OUT / "simulation" / (state or "single") / bid / str(year)
-        directory.mkdir(parents=True, exist_ok=True)
-        result = building.simulate(directory, energyplus=ENGINE, timeout_seconds=600)
+        directory = (out or OUT) / "simulation" / (state or "single") / bid / str(year)
+        # Only unaccepted runs are scheduled, so an existing directory is a partial leftover.
+        shutil.rmtree(directory, ignore_errors=True)
+        directory.mkdir(parents=True)
+        result = building.simulate(directory, energyplus=ENGINE, timeout_seconds=timeout)
         if not result.diagnostics["accepted"]:
             raise ValueError("EPSM Core rejected simulation")
         row["annual_heating_kwh"] = result.scalars["space_heating_carrier_input_kwh"]
         row["period_piece_heating_kwh"] = period_heating_kwh(
             result.hourly["space_heating_carrier_input_kwh"], year, target.period_start, target.period_end_exclusive)
         row["status"] = "accepted"
+        if prune:
+            for path in directory.iterdir():
+                if path.is_file() and path.name not in KEPT_OUTPUTS:
+                    path.unlink()
     except Exception as error:  # recorded per run; one failure must not stop the panel
         row["error"] = f"{type(error).__name__}: {error}"
     return row
@@ -212,10 +225,11 @@ def classify(r):
     else:
         lo, hi = sorted((r["advanced"], r["existing"]))
         matched = {s: r[s] for s in STATES if abs(r[s] - 1) <= MATCH_TOLERANCE}
-    covered = lo <= 1 <= hi
     selected = min(matched, key=lambda s: abs(matched[s] - 1)) if matched else None
-    # Where the measured value lies relative to the simulated range.
-    position = "inside" if covered else ("below_range" if lo > 1 else "above_range")
+    # Where the measured value lies relative to the simulated range. A single
+    # SE.07 state spans no range, so coverage does not apply to it.
+    position = "inside" if lo <= 1 <= hi else ("below_range" if lo > 1 else "above_range")
+    covered = None if "single" in r else lo <= 1 <= hi
     return covered, selected, position
 
 
@@ -261,7 +275,8 @@ def summarize(buildings_meta, runs, excluded):
             return {"n": 0}
         existing = [b.get("existing_r", b.get("single_r")) for b in group]
         return {"n": n, "small_cohort": n < MIN_COHORT,
-                "coverage_rate": sum(b["covered"] for b in group) / n,
+                "coverage_rate": (sum(b["covered"] for b in ranged) / len(ranged)
+                                  if (ranged := [b for b in group if b["covered"] is not None]) else None),
                 "match_rate": sum(b["matched"] for b in group) / n,
                 "existing_median_r": statistics.median(existing),
                 "advanced_median_r": statistics.median(adv) if (adv := [b["advanced_r"] for b in group if "advanced_r" in b]) else None,
@@ -280,14 +295,21 @@ def summarize(buildings_meta, runs, excluded):
 
 def markdown_tables(summary):
     """Cohort, type, carrier and exclusion tables for the report."""
-    pct = lambda x: f"{100 * x:.0f}%"
-    sel = lambda c: " / ".join(str(c["selected"].get(s, 0)) for s in (*STATES, "single", "none"))
-    pos = lambda c: " / ".join(str(c["position"].get(p, 0)) for p in ("below_range", "inside", "above_range"))
+    def pct(x):
+        return "—" if x is None else f"{100 * x:.0f}%"
+
+    def counts(values, keys):
+        return " / ".join(str(values.get(k, 0)) for k in keys)
+
     head = ("| {} | n | Coverage | Match | Existing median r | Advanced median r | Selected E / S / A / SE.07 / none "
             "| Measured below / inside / above range |\n|---|---:|---:|---:|---:|---:|---:|---:|\n")
-    row = lambda label, c: (f"| {label} | {c['n']}{'*' if c['small_cohort'] else ''} | {pct(c['coverage_rate'])} | "
-                            f"{pct(c['match_rate'])} | {c['existing_median_r']:.2f} | "
-                            f"{'—' if c['advanced_median_r'] is None else format(c['advanced_median_r'], '.2f')} | {sel(c)} | {pos(c)} |\n")
+    def row(label, c):
+        advanced = "—" if c["advanced_median_r"] is None else f"{c['advanced_median_r']:.2f}"
+        return (f"| {label} | {c['n']}{'*' if c['small_cohort'] else ''} | {pct(c['coverage_rate'])} | "
+                f"{pct(c['match_rate'])} | {c['existing_median_r']:.2f} | {advanced} | "
+                f"{counts(c['selected'], (*STATES, 'single', 'none'))} | "
+                f"{counts(c['position'], ('below_range', 'inside', 'above_range'))} |\n")
+
     out = ["## Cohorts (type × era)\n\n", head.format("Cohort")]
     out += [row(f"{c['category']} {c['era']}", c) for c in summary["cohorts"]]
     out += ["\n## By type\n\n", head.format("Type")]
@@ -377,7 +399,8 @@ def main():
         done = {(r["building_id"], r["state"], r["year"]) for r in read_jsonl(runs_path) if r["status"] == "accepted"}
         tasks = [t for t in tasks if (t[0].building_id, t[3], t[4]) not in done]
         print(f"buildings={len(metas)} resumed={len(done)} pending_runs={len(tasks)}", flush=True)
-        with ThreadPoolExecutor(max_workers=args.workers) as pool, runs_path.open("a") as stream:
+        # Processes, not threads: each run spends seconds in Python around EnergyPlus.
+        with ProcessPoolExecutor(max_workers=args.workers) as pool, runs_path.open("a") as stream:
             futures = [pool.submit(run_one, *t) for t in tasks]
             for i, future in enumerate(as_completed(futures), 1):
                 result = future.result()

@@ -1,5 +1,8 @@
 # Catalogue validation: first Uddevalla run
 
+> A national follow-up on the epsm_db GIS lake (543 buildings, 20 per cohort) is in
+> [national.md](national.md). It confirms the patterns below at cohort scale.
+
 26 October 2026. Contract: epsm_data [`docs/validation.md`](https://github.com/SB-Chalmers/epsm_data/blob/codex/lod2-catalogue/docs/validation.md)
 (catalogue `92d776d`). Runner: [`uddevalla_three_state.py`](uddevalla_three_state.py).
 Generated tables: [`results/tables.md`](results/tables.md). Per-building and excluded
@@ -10,7 +13,7 @@ Full summary and manifest: [`results/summary.json`](results/summary.json).
 
 | Panel, 82 buildings | Result | Provisional target |
 | --- | ---: | ---: |
-| Coverage: measured between Advanced and Existing | **44 %** (36) | ≥ 70 % |
+| Coverage: measured between Advanced and Existing | **44 %** (36 of the 81 with a range) | ≥ 70 % |
 | Match: some state within ±20 % | **57 %** (47) | ≥ 50 % |
 | Existing-state median r | 1.06 | reported |
 | Advanced-state median r | 0.53 | reported |
@@ -33,7 +36,8 @@ in epsm_db's 14 October matrix are gone.
 
 ## Cohort table
 
-`*` n < 10. Selected = the closest state within ±20 %; "none" = no state matched.
+`*` n < 10. Selected = the closest state within ±20 %; "none" = no state matched. A single
+SE.07 state spans no range, so coverage is "—" there.
 
 | Cohort | n | Coverage | Match | Existing median r | Advanced median r | Selected E / S / A / SE.07 / none | Measured below / inside / above range |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -59,7 +63,7 @@ in epsm_db's 14 October matrix are gone.
 | school SE.03 | 4* | 100% | 100% | 1.12 | 0.69 | 3 / 1 / 0 / 0 / 0 | 0 / 4 / 0 |
 | school SE.04 | 5* | 20% | 60% | 0.97 | 0.58 | 2 / 1 / 0 / 0 / 2 | 0 / 1 / 4 |
 | school SE.05 | 1* | 0% | 100% | 0.90 | 0.53 | 1 / 0 / 0 / 0 / 0 | 0 / 0 / 1 |
-| school SE.07 | 1* | 0% | 0% | 2.87 | — | 0 / 0 / 0 / 0 / 1 | 1 / 0 / 0 |
+| school SE.07 | 1* | — | 0% | 2.87 | — | 0 / 0 / 0 / 0 / 1 | 1 / 0 / 0 |
 
 By type (n): single-family 17, multifamily 30, office 14, school 21. By-type,
 by-carrier and overall rows are in [`results/tables.md`](results/tables.md). Office
@@ -77,7 +81,7 @@ SE.05 has no comparable building.
 | Model | `epsm.legacy_records.EPSMBuilding.from_record`, default `ModelPolicy()`; only `renovation_state` and epsm_db's existing EPC construction-year rule (3 buildings) are overridden; EPC-reported ventilation as mapped by the runner (73 reported, 9 type default) |
 | Database | epsm_db's PostGIS container, read-only transactions |
 | Code | epsm_data `92d776d` (clean); epsm `76640ac`, epsm_core `586607c`, epsm_db `9511d4a` and epsm_lca `28a9ca9`, each with uncommitted changes from other sessions. These were installed editable; the diff hashes are in the manifest, taken when the summary was written. |
-| Runtime | about 3 h on 10 EnergyPlus workers |
+| Runtime | about 3 h on 10 threads; the runner now uses processes, which are about 60× faster because each run spends seconds in Python around EnergyPlus |
 
 Reproduce from a venv holding those editable installs:
 
