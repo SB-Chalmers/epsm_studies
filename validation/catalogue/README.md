@@ -95,7 +95,8 @@ This changes nothing for other eras. The school runs as `school_se07` with r = 2
 is a geometry review case, not a catalogue result: EPC Atemp is 1,500 m² against 816 m²
 of model geometry, the EPC reports three storeys where the model has one, ventilation
 falls back to the FTX default because the EPC lists both F and FTX, and the heat pump
-COP is assumed. The proper fix belongs in the runner (issue P1 below).
+COP is assumed. The runner itself is fixed on epsm branch `claude/se07-single-state`
+(issue P1 below); the workaround is then a no-op and can be removed once that lands.
 
 ## Systematic cohort failures and suspected causes
 
@@ -154,9 +155,10 @@ neighbouring cohorts to be worth testing on a larger panel.
 
 **epsm (platform runner)**
 
-- **P1. Let SE.07 run without a state.** In `legacy_records.EPSMBuilding.from_record`,
-  default `renovation_state` to `None` for SE.07, or accept `None`, instead of always
-  passing `"existing"`.
+- **P1. Let SE.07 run without a state.** *Fixed on epsm branch `claude/se07-single-state`,
+  not merged.* `EPSMBuilding.from_record` now uses SE.07's single configuration when no
+  `renovation_state` is given, rejects an explicit state for SE.07, and keeps
+  `"existing"` as the default for SE.01–SE.06.
 - **P2. Use the catalogue's ventilation templates and window ratios** (limitation below).
 - **P3. Represent exhaust-air heat pumps and stop using one fixed heat-pump COP** for
   every carrier and type.

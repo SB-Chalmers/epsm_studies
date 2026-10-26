@@ -137,7 +137,8 @@ def allow_single_state_era():
 
     ``EPSMBuilding.from_record`` always passes ``default_state="existing"``,
     which the resolver rejects for SE.07. Until the runner handles this, map that
-    default to the single configuration; every other era is unchanged.
+    default to the single configuration; every other era is unchanged. Fixed in
+    epsm branch ``claude/se07-single-state``; with that runner this is a no-op.
     """
     import epsm.catalogue_application as application
     from epsm_data.classification import era_for_year
