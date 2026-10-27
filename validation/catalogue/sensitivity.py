@@ -12,6 +12,7 @@ are recorded as ``not_applicable`` and keep the baseline value.
     python validation/catalogue/sensitivity.py decided   # the accepted changes only
     python validation/catalogue/sensitivity.py run --only bridges   # accepted changes + TABULA ΔU_tb
     python validation/catalogue/sensitivity.py bridges   # bridges against the accepted changes per type
+    python validation/catalogue/sensitivity.py airing    # Sveby airing allowance against the current model
 
 Set ``VALIDATION_OUT`` to the hold-out output to run ``fitted``, ``compare`` and
 ``decided`` on the hold-out sample.
@@ -406,6 +407,68 @@ def bridges():
             "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], "bridges": new[k]} for k in sorted(new)]}
 
 
+def current_config(entries=None):
+    """Weights and COP per type for the current model: stage 3, accepted bridges and accepted
+    airing. Pass ``entries`` to attach their airing term (needed whenever airing is accepted)."""
+    weights = {c: {"fitted": 1.0} for c, how in ACCEPTED.items() if how == "fitted"}
+    for c in BRIDGES_ACCEPTED:
+        weights[c] = {"bridges": 1.0}  # the bridges run carries the stage-3 changes and COP
+    cop = {c: POLICY_COP if c in weights else HEAT_PUMP_COP for c in ALL_TYPES}
+    for e in entries or ():
+        e["airing"] = dict.fromkeys(e["base"], airing_kwh(e["meta"], cop[e["meta"]["category"]]))
+    for c in AIRING_ACCEPTED:
+        weights[c] = {**weights.get(c, {}), "airing": 1.0}
+    return weights, cop
+
+
+# Revision 2: Sveby Brukarindata bostadshus 2.0 (2024), ch. 5 p. 9: window airing is added to
+# calculated space heating as 4 kWh/m² Atemp per year, times the municipality's Fgeo
+# (BFS 2026:9 Tabell 1, fgeo.json), divided by the heating system's efficiency or COP.
+# Measured heating includes airing. Housing only: Sveby's office guide (SBUF 12116, p. 13)
+# treats airing as negligible, and there is no school guide.
+AIRING_KWH_M2 = 4.0
+AIRING_TYPES = HOUSING
+AIRING_ACCEPTED = ("multi_family",)  # accepted on both samples (calibration_plan.md)
+FUEL_EFFICIENCY = 0.9  # ModelPolicy.fuel_efficiency
+
+
+def airing_kwh(meta, cop):
+    """Airing allowance over the measured period in the model's carrier terms, before the
+    ratio's COP rescale (so that a rescaled heat pump ends at heat / ``cop``)."""
+    import datetime
+
+    if meta["category"] not in AIRING_TYPES:
+        return 0.0
+    fgeo = json.loads((HERE / "fgeo.json").read_text())["fgeo"][meta["municipality_code"]]
+    days = (datetime.date.fromisoformat(meta["period_end_exclusive"]) - datetime.date.fromisoformat(meta["period_start"])).days
+    heat = AIRING_KWH_M2 * fgeo * meta["epc_atemp_m2"] * days / 365
+    carrier = meta["carrier"]
+    if carrier == "heat_pump":
+        return heat / POLICY_COP  # the ratio rescales by POLICY_COP / cop
+    return heat / FUEL_EFFICIENCY if carrier == "fuel" else heat
+
+
+def airing():
+    """The current model against the current model + Sveby airing; acceptance per type."""
+    table, missing = responses(["fitted", "bridges"], drop_incomplete=True)
+    entries = list(table.values())
+    weights, cop = current_config(entries)
+    weights = {c: {k: t for k, t in w.items() if k != "airing"} for c, w in weights.items()}  # before airing
+    base = score(entries, weights, cop)
+    new = score(entries, {c: {**weights.get(c, {}), "airing": 1.0} for c in ALL_TYPES}, cop)
+    types = {}
+    for category in ALL_TYPES:
+        b, f = overall(base, category), overall(new, category)
+        worse = [f"{c} {e}" for (c, e), x in new.items()
+                 if c == category and x["penalty"] - base[c, e]["penalty"] > MATERIAL + 1e-9]
+        types[category] = {"baseline": b, "airing": f, "materially_worse": worse,
+                           "accepted": f["penalty"] < b["penalty"] - 1e-9 and f["above"] <= b["above"]
+                           and f["match"] >= b["match"] and not worse}
+    return {"sample": national.OUT.name, "missing_runs": missing, "baseline": overall(base),
+            "airing": overall(new), "types": types,
+            "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], "airing": new[k]} for k in sorted(new)]}
+
+
 def value_at(category, name, t):
     start, end, _, _ = FIT[category][name]
     return None if start is None else start + t * (end - start)
@@ -432,7 +495,7 @@ def fitted_params(chosen):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges"])
+    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges", "airing"])
     parser.add_argument("--only", nargs="*", help="run names (default: every sensitivity run)")
     parser.add_argument("--params", type=Path, help="parameter JSON for the 'fitted' run")
     parser.add_argument("--workers", type=int, default=12)
@@ -448,11 +511,11 @@ def main():
         for category, t in report["types"].items():
             print(category, t["values"], t["weights"], "\n  base", t["baseline"], "\n  cop ", t["cop_only"], "\n  fit ", t["fitted"])
         return
-    if args.step in ("compare", "decided", "bridges"):
-        report = {"compare": compare, "decided": decided, "bridges": bridges}[args.step]()
+    if args.step in ("compare", "decided", "bridges", "airing"):
+        report = {"compare": compare, "decided": decided, "bridges": bridges, "airing": airing}[args.step]()
         RESULTS.mkdir(parents=True, exist_ok=True)
         (RESULTS / f"{args.step}_{national.OUT.name}.json").write_text(json.dumps(report, indent=1, default=str) + "\n")
-        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges"}[args.step]
+        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges", "airing": "airing"}[args.step]
         print(json.dumps({k: report[k] for k in ("sample", "missing_runs", "baseline", after)}, indent=1))
         for category, t in report["types"].items():
             print(category, "" if args.step == "decided" else "accepted" if t.get("accepted") else "rejected",

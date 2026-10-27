@@ -7,7 +7,7 @@
  },
  "overall": {
   "n": 539,
-  "current": 0.5899814471243042,
+  "current": 0.5955473098330241,
   "one_level": 0.5380333951762524,
   "levels": 0.8886827458256029,
   "scaled": 0.8775510204081632
@@ -22,7 +22,7 @@
   },
   "multi_family": {
    "n": 137,
-   "current": 0.6496350364963503,
+   "current": 0.6715328467153284,
    "one_level": 0.5985401459854015,
    "levels": 0.8832116788321168,
    "scaled": 0.8759124087591241
@@ -47,7 +47,7 @@
    "category": "multi_family",
    "era": "SE.01",
    "n": 20,
-   "current": 18,
+   "current": 16,
    "one_level": 15,
    "levels": 20,
    "scaled": 20,
@@ -57,9 +57,9 @@
     78.795918
    ],
    "factors": {
-    "existing": 0.573326,
-    "standard": 1.536025,
-    "advanced": 3.525424
+    "existing": 0.560329,
+    "standard": 1.481028,
+    "advanced": 2.990271
    }
   },
   {
@@ -76,16 +76,16 @@
     74.505675
    ],
    "factors": {
-    "existing": 0.960133,
-    "standard": 1.236724,
-    "advanced": 5.822713
+    "existing": 0.924824,
+    "standard": 2.229025,
+    "advanced": 1.921065
    }
   },
   {
    "category": "multi_family",
    "era": "SE.03",
    "n": 20,
-   "current": 15,
+   "current": 17,
    "one_level": 13,
    "levels": 20,
    "scaled": 20,
@@ -95,9 +95,9 @@
     75.996912
    ],
    "factors": {
-    "existing": 0.821131,
-    "standard": 0.648049,
-    "advanced": 4.83189
+    "existing": 0.796536,
+    "standard": 0.628959,
+    "advanced": 4.08043
    }
   },
   {
@@ -107,42 +107,42 @@
    "current": 12,
    "one_level": 11,
    "levels": 17,
-   "scaled": 18,
+   "scaled": 17,
    "level_values": [
     154.769054,
     44.935163,
     67.438321
    ],
    "factors": {
-    "existing": 0.526016,
-    "standard": 1.175511,
-    "advanced": 5.017311
+    "existing": 0.588804,
+    "standard": 2.410566,
+    "advanced": 3.187035
    }
   },
   {
    "category": "multi_family",
    "era": "SE.05",
    "n": 19,
-   "current": 12,
+   "current": 14,
    "one_level": 9,
    "levels": 19,
-   "scaled": 18,
+   "scaled": 19,
    "level_values": [
     145.830657,
     84.615385,
     58.625651
    ],
    "factors": {
-    "existing": 0.723677,
-    "standard": 1.348065,
-    "advanced": 1.657395
+    "existing": 0.694078,
+    "standard": 1.387048,
+    "advanced": 1.483968
    }
   },
   {
    "category": "multi_family",
    "era": "SE.06",
    "n": 19,
-   "current": 10,
+   "current": 11,
    "one_level": 9,
    "levels": 16,
    "scaled": 18,
@@ -152,9 +152,9 @@
     33.876429
    ],
    "factors": {
-    "existing": 1.088488,
-    "standard": 0.727878,
-    "advanced": 2.942301
+    "existing": 1.017674,
+    "standard": 0.670271,
+    "advanced": 2.45134
    }
   },
   {
@@ -169,7 +169,7 @@
     46.540254
    ],
    "factors": {
-    "single": 1.40545
+    "single": 1.268535
    }
   },
   {

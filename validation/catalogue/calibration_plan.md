@@ -341,7 +341,8 @@ evidence and passes the same hold-out test. Candidates, in order:
    the heat loss grows as insulation improves, matching the newer-era gap. Tested below
    with the Swedish TABULA ΔU_tb allowance; accepted for offices only.
 2. **As-built airtightness and in-operation FTX recovery for SE.04–SE.07** (#3, #4), from
-   field studies (RISE, Bebo, Energimyndigheten).
+   field studies. Reviewed below: neither supports a change. The Sveby airing allowance
+   found on the way is accepted for multifamily.
 3. **A review of the SE.07 state.** It sits below the stock's 15th percentile, and the
    setpoint change does not fix it.
 4. **Circulation losses (#5)**, once BEN's treatment is confirmed.
@@ -504,9 +505,80 @@ scaled model 88 %.
 4. **The three states add little over a single level** (53 % → 59 %). Their value is in
    spanning renovation scenarios, not in matching more of today's stock.
 
+## Revision 2: as-built airtightness (no change)
+
+Swedish field measurements, converted to operating infiltration with the q50/20 rule per
+envelope area (SBUF 12499, p. 16, eq. 1–2; Sveby background report SBUF 14302,
+pp. 38–39):
+
+| Type, era | Measured | Implied infiltration | Catalogue Existing |
+|---|---|---|---|
+| Multifamily SE.06 | q50 0.3–0.44 L/(s·m²), whole stairwells and one 2014 block (SBUF 12633, pp. 7–9; SBUF 13329, p. 48) | ≈ 0.02–0.03 L/(s·m²) Atemp | 0.10 L/(s·m²) Atemp |
+| Single-family after 2000 | q50 ≈ 0.55 L/(s·m²), n = 65 (Zou 2010, Chalmers, fig. 5.4) | ≈ 0.11 ACH | 0.2 ACH |
+| Offices and schools 2007–2011, no tightness requirement | q50 mean 0.64 L/(s·m²), n = 6 (SBUF 12499, tab. 25, p. 52) | ≈ 0.06 ACH | 0.2 ACH |
+| Single-family before 1988 | n50 4.4–10 h⁻¹ by era (Kronvall & Boman 1993, ELIB, fig. 7) | 0.22–0.5 ACH | 0.2–0.4 ACH |
+
+Envelope area per m² Atemp is taken as about 1.2 for multifamily and non-residential
+buildings and about 2.7 for single-family houses.
+
+For SE.06, the catalogue is already two to five times leakier than the measurements imply.
+For older eras it is consistent with them. There is no Swedish field data for SE.04,
+SE.05 or SE.07 by type, nor for non-residential buildings before 2007. The measured new
+buildings are biased tight: most had tightness requirements.
+
+The stage-3 diagnostic (infiltration × 3) has no evidential basis, so no airtightness
+revision is run. The newer-era gap is not leakage.
+
+## Revision 3: Sveby window-airing allowance (accepted for multifamily)
+
+Sveby *Brukarindata bostadshus 2.0* (2024), ch. 5, p. 9, adds window airing to calculated
+space heating:
+
+- 4 kWh per m² Atemp per year;
+- multiplied by the municipality's geographic factor Fgeo (BFS 2026:9, Tabell 1;
+  `fgeo.json`, 290 municipalities);
+- divided by the heating system's efficiency or COP.
+
+Sveby notes that measured heating includes airing; the model has none. The allowance
+applies to housing only: Sveby's office guide treats airing as negligible (SBUF 12116,
+p. 13), and there is no school guide. It is a post-processing term, so no new simulations
+were needed. It is a fixed absolute amount, so it weighs more in the newer, low-demand
+eras.
+
+| Type | Calibration penalty, above, match | Hold-out penalty, above, match | Decision |
+|---|---|---|---|
+| Multifamily | 2.06 → 1.85; 39 → 36 %; 65 → 67 % | 2.31 → 2.06; 41 → 37 %; 62 → 63 % | **accepted** on both |
+| Single-family | 1.10 → 1.15; 20 → 16 %; 54 → 55 % | 1.40 → 1.40; 26 → 25 %; 54 → 53 % | rejected: neutral; three calibration cohorts slip just past zero penalty |
+
+The current model now matches 60 % on both samples.
+
+## FTX in-use recovery (not run)
+
+The model uses observed-FTX recovery of 0.60 for SE.04–SE.05, 0.75 for SE.06, and 0.80 for
+SE.07 and every Advanced state.
+
+| Evidence | Value |
+|---|---|
+| Well-functioning units, supply-side temperature efficiency | 0.73–0.81 (SBUF 13015, pp. 21–27; Chalmers 2015:03, pp. 46–47) |
+| Expert judgement of recovery that reaches the building | 0.60–0.70 (SP 2011:26, p. 26) |
+| Units in defrost below −5 °C, a minority | 0.30–0.45 (BeBo 2022:03, pp. 11–13; SBUF 14025, p. 63) |
+
+There is no population-level measurement, and no Sveby or Boverket in-use default. The
+model's values sit inside the measured range. A lower value would rest on judgement rather
+than measurement, so, as in stage 3, FTX recovery is not changed. A field survey with
+n > 10 per era would change that.
+
 ## Sources
 
 - TABULA.xlsm, Swedish typology, `delta_U_ThermalBridging`: <https://episcope.eu/fileadmin/tabula/public/calc/TABULA-xlsm_Download.zip>
+- SBUF 12499, *Verklig lufttäthet i stora byggnader* (Blomsterberg & Burke 2012): <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/59aa6327-252a-4476-9412-f726096dadc7/FinalReport/SBUF%2012499%20Slutrapport%20Verklig%20luftt%C3%A4thet%20i%20stora%20byggnader%20-%20M%C3%A4tningar%20och%20ber%C3%A4kningar.pdf>
+- SBUF 13329, *Lufttäthetens förändring i nybyggda hus* (Wahlgren et al. 2020): <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/e87a533f-4a74-4576-b28e-3a72ac7c60a6/FinalReport/SBUF%2013329%20Slutrapport%20Luftt%C3%A4thetens%20f%C3%B6r%C3%A4ndring%20i%20nybyggda%20hus%20-%20orsaker%20och%20konsekvenser%20ver20201117.pdf>
+- Kronvall & Boman (1993), ELIB airtightness, 14th AIVC Conference
+- BFS 2026:9, Tabell 1 (Fgeo per kommun): <https://lagen.nu/bfs/2026:9>
+- SBUF 14025, *Glappet mellan projekterad och uppmätt energiprestanda* (Kempe 2021): <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/5c89c69d-b4e3-4492-bc2d-32b2ec245c8a/FinalReport/SBUF14025%20Slutrapport%20Glappet%20mellan%20projekterad%20och%20uppm%C3%A4tt%20energiprestanda.pdf>
+- SBUF 13015 (Dehlin 2017), passive houses in subarctic climate: <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/75be4309-a303-4285-9f5e-e4c3e85dccfe/FinalReport/SBUF%2013015%20Slutrapport%20Fungerar%20passivhusteknik%20i%20subarktiskt%20klimat%20170615.pdf>
+- SP Rapport 2011:26 (Sikander, Ruud et al.): <https://www.osti.gov/etdeweb/servlets/purl/1026442>
+- BeBo förstudie bostads-FTX (2022): <https://www.bebostad.se/media/6179/f%C3%B6rstudie-slutrapport-bostads-ftx.pdf>
 - Boverket (2010), *Energi i bebyggelsen – tekniska egenskaper och beräkningar* (BETSI): <https://www.boverket.se/globalassets/publikationer/dokument/2011/betsi-energi-i-bebyggelsen.pdf>
 - Teli et al. (2018), *Indoor Temperature Variations in Swedish Households*: <https://research.chalmers.se/en/publication/507928>
 - Sveby, *Brukarindata för energiberäkningar i kontor* (SBUF 12116): <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/AEDE1D22-7286-4702-9BDD-BD658A1B1186/FinalReport/SBUF%2012116%20Slutrapport%20Brukarindata%20f%C3%B6r%20energiber%C3%A4kningar%20i%20kontor.pdf>

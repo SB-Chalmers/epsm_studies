@@ -66,14 +66,9 @@ def matched(values_per_state, factors):
     return sum(any(abs(f / v - 1) <= tol for f, v in zip(factors, values)) for values in zip(*values_per_state))
 
 
-def current_ratios(entry):
-    category = entry["meta"]["category"]
-    accepted = {c: {"fitted": 1.0} for c, how in sensitivity.ACCEPTED.items() if how == "fitted"}
-    for c in sensitivity.BRIDGES_ACCEPTED:
-        accepted[c] = {"bridges": 1.0}  # the bridges run carries the stage-3 changes and COP
-    weights = accepted.get(category, {})
-    cop = sensitivity.POLICY_COP if weights else sensitivity.HEAT_PUMP_COP
-    return sensitivity.ratios(entry, weights, cop)
+def current_ratios(entry, config):
+    weights, cop = config
+    return sensitivity.ratios(entry, weights.get(entry["meta"]["category"], {}), cop)
 
 
 def main():
@@ -84,11 +79,12 @@ def main():
     if args.apply_from:
         chosen = {(r["category"], r["era"]): r for r in json.loads(args.apply_from.read_text())["cohorts"]}
     table, missing = sensitivity.responses(["fitted", "bridges"], drop_incomplete=True)
+    config = sensitivity.current_config(table.values())
     cohorts = {}
     for e in table.values():
         m = e["meta"]
         intensity = m["measured_kwh"] / m["epc_atemp_m2"] * (sensitivity.HEAT_PUMP_COP if m["carrier"] == "heat_pump" else 1)
-        cohorts.setdefault((m["category"], m["era"]), []).append((current_ratios(e), intensity))
+        cohorts.setdefault((m["category"], m["era"]), []).append((current_ratios(e, config), intensity))
     measures = ["current", "one_level", "levels", "scaled"] + (["levels_oos", "scaled_oos"] if chosen else [])
     rows = []
     for (category, era), items in sorted(cohorts.items()):
