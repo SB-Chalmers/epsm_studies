@@ -211,7 +211,9 @@ def responses(names, drop_incomplete=False):
 
 def ratios(entry, weights, cop=POLICY_COP):
     """State ratios at fractions ``weights`` {run: t} of each step; COP rescales heat-pump input."""
-    if isinstance(cop, dict):
+    if callable(cop):
+        cop = cop(entry["meta"])
+    elif isinstance(cop, dict):
         cop = cop.get(entry["meta"]["category"], POLICY_COP)
     scale = POLICY_COP / cop if entry["meta"]["carrier"] == "heat_pump" else 1.0
     measured = entry["meta"]["measured_kwh"]
@@ -473,16 +475,14 @@ def vvc_kwh(meta):
     return term_kwh(meta, VVC_KWH_M2.get(meta["category"], 0.0))
 
 
-def test_term(name, kwh):
-    """The current model against the current model + one post-processing term; acceptance per type."""
+def _current_entries():
     table, missing = responses(["fitted", "bridges"], drop_incomplete=True)
     entries = list(table.values())
     weights, cop = current_config(entries)
-    weights = {c: {k: t for k, t in w.items() if k != name} for c, w in weights.items()}  # before this term
-    for e in entries:
-        e[name] = dict.fromkeys(e["base"], kwh(e["meta"]))
-    base = score(entries, weights, cop)
-    new = score(entries, {c: {**weights.get(c, {}), name: 1.0} for c in ALL_TYPES}, cop)
+    return entries, missing, weights, cop
+
+
+def _accept(base, new, name, missing):
     types = {}
     for category in ALL_TYPES:
         b, f = overall(base, category), overall(new, category)
@@ -494,6 +494,55 @@ def test_term(name, kwh):
     return {"sample": national.OUT.name, "missing_runs": missing, "baseline": overall(base),
             name: overall(new), "types": types,
             "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], name: new[k]} for k in sorted(new)]}
+
+
+def test_term(name, kwh):
+    """The current model against the current model + one post-processing term; acceptance per type."""
+    entries, missing, weights, cop = _current_entries()
+    weights = {c: {k: t for k, t in w.items() if k != name} for c, w in weights.items()}  # before this term
+    for e in entries:
+        e[name] = dict.fromkeys(e["base"], kwh(e["meta"]))
+    base = score(entries, weights, cop)
+    new = score(entries, {c: {**weights.get(c, {}), name: 1.0} for c in ALL_TYPES}, cop)
+    return _accept(base, new, name, missing)
+
+
+# Revision 5: a sourced seasonal performance factor by heat-pump type and building era,
+# replacing the field-average COP 2.75 where the evidence covers newer installations.
+# Ground source in houses built from 2006 (SE.06–SE.07), with the pump installed with the
+# house: German field SPF in new single-family houses 3.9 (WP-Effizienz, 2005–2010) and
+# 4.0 (WP Monitor, 2012–2013). Swedish field SPF 2.7–2.9 covers pumps 7–14 years old
+# (Energimyndigheten 2012–2014), so older eras keep 2.75. Exhaust-air heat pumps: Swedish
+# mean 2.7 (Nowacki, via Hesaraki & Holmberg 2013), the same as 2.75, so no change.
+SPF = {("ground", "SE.06"): 3.9, ("ground", "SE.07"): 3.9}
+SPF_TYPES = ("single_family",)  # the source population
+SPF_ACCEPTED = ()
+
+
+def heat_pump_types():
+    path = HERE / "heat_pump_types.json"
+    return json.loads(path.read_text()).get(national.OUT.name, {}) if path.exists() else {}
+
+
+def with_spf(cop, table, categories):
+    """Per-building COP: the type's COP, rescaled where ``table`` {(pump type, era): SPF}
+    replaces the field-average HEAT_PUMP_COP the current model carries."""
+    types = heat_pump_types()
+
+    def per_building(meta):
+        base = cop.get(meta["category"], POLICY_COP)
+        spf = table.get((types.get(meta["building_id"]), meta["era"])) if meta["category"] in categories else None
+        return base * spf / HEAT_PUMP_COP if spf else base
+    return per_building
+
+
+def test_spf(table=None):
+    """The current model against the current model with ``table`` SPFs; acceptance per type."""
+    table = SPF if table is None else table
+    entries, missing, weights, cop = _current_entries()
+    base = score(entries, weights, cop)
+    new = score(entries, weights, with_spf(cop, table, SPF_TYPES))
+    return _accept(base, new, "spf", missing) | {"spf_table": {f"{k[0]} {k[1]}": v for k, v in table.items()}}
 
 
 def value_at(category, name, t):
@@ -522,7 +571,7 @@ def fitted_params(chosen):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges", "airing", "vvc"])
+    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges", "airing", "vvc", "spf"])
     parser.add_argument("--only", nargs="*", help="run names (default: every sensitivity run)")
     parser.add_argument("--params", type=Path, help="parameter JSON for the 'fitted' run")
     parser.add_argument("--workers", type=int, default=12)
@@ -538,12 +587,12 @@ def main():
         for category, t in report["types"].items():
             print(category, t["values"], t["weights"], "\n  base", t["baseline"], "\n  cop ", t["cop_only"], "\n  fit ", t["fitted"])
         return
-    if args.step in ("compare", "decided", "bridges", "airing", "vvc"):
+    if args.step in ("compare", "decided", "bridges", "airing", "vvc", "spf"):
         report = {"compare": compare, "decided": decided, "bridges": bridges,
-                  "airing": lambda: test_term("airing", airing_kwh), "vvc": lambda: test_term("vvc", vvc_kwh)}[args.step]()
+                  "airing": lambda: test_term("airing", airing_kwh), "vvc": lambda: test_term("vvc", vvc_kwh), "spf": test_spf}[args.step]()
         RESULTS.mkdir(parents=True, exist_ok=True)
         (RESULTS / f"{args.step}_{national.OUT.name}.json").write_text(json.dumps(report, indent=1, default=str) + "\n")
-        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges", "airing": "airing", "vvc": "vvc"}[args.step]
+        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges", "airing": "airing", "vvc": "vvc", "spf": "spf"}[args.step]
         print(json.dumps({k: report[k] for k in ("sample", "missing_runs", "baseline", after)}, indent=1))
         for category, t in report["types"].items():
             print(category, "" if args.step == "decided" else "accepted" if t.get("accepted") else "rejected",

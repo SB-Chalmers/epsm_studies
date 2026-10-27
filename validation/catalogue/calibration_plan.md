@@ -344,16 +344,27 @@ evidence and passes the same hold-out test. Candidates, in order:
    field studies. Reviewed below: neither supports a change. The Sveby airing allowance
    found on the way is accepted for multifamily.
 3. **A review of the SE.07 state.** Reviewed below: no state change; single-family
-   points to heat-pump SPF, the rest to the new-building energy gap.
+   points to heat-pump SPF, the rest to the new-building energy gap. A sourced modern
+   ground-source SPF is rejected (revision 5); exhaust-air pumps have no sourced change.
 4. **Circulation losses (#5).** BEN confirms they are in measured heating; accepted for
    multifamily (revision 4).
 5. **An energy-signature check** if metered monthly or hourly heat is available (district
    heating). The slope against outdoor temperature separates fabric and ventilation loss
    from setpoint and constant losses, which annual EPCs cannot.
 
-The accepted operating changes (the multifamily measured-use profile, office ventilation
-operation, and heat-pump COP) are ready to be proposed to epsm_data and the record runner.
-They are not applied yet.
+None of the accepted changes is in epsm_data or epsm yet. They live in this study
+(`perturbations.py`, `sensitivity.py`) and are proposals:
+
+| Accepted change | Types | Belongs in |
+|---|---|---|
+| Measured-use setpoint and ventilation values (stage 3) | multifamily, office | epsm_data operating profiles and ventilation templates |
+| Thermal-bridge surcharge (revision 1) | office | epsm_data archetype states (`thermal_bridge_uplift_fraction` or adjusted assemblies) |
+| Heat-pump COP 2.75 (stage 3) | all | epsm `ModelPolicy` |
+| Sveby window airing (revision 3) | multifamily | epsm record runner, as an EPC-comparison term |
+| Hot-water circulation losses (revision 4) | multifamily | epsm record runner, as an EPC-comparison term |
+
+Airing and circulation describe what an EPC's measured heating includes, not the
+building, so they belong with the comparison, not in the catalogue.
 
 ## Fabric revision 1: thermal bridges
 
@@ -618,7 +629,7 @@ calibration / hold-out, current model:
 
   The model divides the full heat demand by the field-average COP 2.75 (stage 3, from older
   installations). Modern low-temperature installations likely reach a higher seasonal COP.
-  A test needs a field SPF for post-2015 installations, which is not yet sourced.
+  Revision 5 tests a sourced modern SPF; it is rejected.
 
 **Decision.** No SE.07 state change. A change needs either as-built evidence for new
 buildings by type, or a sourced new-installation heat-pump SPF for single-family houses.
@@ -681,6 +692,60 @@ Both are kept.
 The hold-out ceiling (three levels, out of sample) is 72 % overall and 76 % for
 multifamily.
 
+## Revision 5: modern heat-pump SPF (rejected)
+
+The SE.07 review left single-family over-prediction to the heat-pump COP: the model
+divides every heat-pump building's heat demand by the field average 2.75. The pump type
+comes from each building's selected EPC (`heat_pump_types.py`: the `EgiPump<type>[UPPV]`
+field with the most electricity). Every heat-pump building in both samples has one.
+
+**Single-family SE.06–SE.07 by pump type**, calibration / hold-out (n; median simulated ÷
+measured at Standard, or the single SE.07 state):
+
+| Era | Exhaust air | Ground source | Air–water |
+|---|---|---|---|
+| SE.06 | 10 / 14; 1.18 / 0.99 | 5 / 4; 1.09 / 1.05 | 1 / 1 |
+| SE.07 | 15 / 13; 1.47 / 1.47 | 5 / 6; 1.25 / 1.83 | 0 / 1 |
+
+**Evidence for a seasonal performance factor (SPF) by type:**
+
+- **Exhaust air**, the majority. The Swedish installation mean is 2.7 (Nowacki, cited by
+  Hesaraki & Holmberg 2013, who use it for new Stockholm houses). Energimyndigheten's
+  2013 lab test of variable-speed units gave 2.2–3.0. The EU default is 2.5 (2013/114/EU,
+  colder climate, a conservative floor). None supports a value above 2.75, so exhaust-air
+  over-prediction in SE.07 is not a COP question.
+- **Ground source.** The Swedish field SPF is 2.7–2.9 (20 houses, 2012–2014), measured on
+  pumps 7–14 years old. New single-family houses in Germany measured 3.9 (WP-Effizienz,
+  2005–2010) and 4.0 (WP Monitor, 2012–2013), with the pump installed with the house. The
+  EU default is 3.5. No Swedish field value for new installations was found.
+
+**Test, fixed in advance:** SPF 3.9 for ground-source heat pumps in single-family SE.06–SE.07,
+where the pump was most likely installed with the house; other eras and types keep 2.75.
+EU default 3.5 as a sensitivity.
+
+| SPF 3.9, single-family | Penalty | Above Existing | Match |
+|---|---|---|---|
+| Calibration | 1.10 → 1.25 | 20 → 24 % | 53.6 → 55.0 % |
+| Hold-out | 1.40 → 1.50 | 26 → 29 % | 53.6 → 54.3 % |
+
+| Cohort, calibration / hold-out | Above Existing | Match |
+|---|---|---|
+| SE.06 | 15 → 25 % / 40 → 50 % | 60 → 65 % / 45 → 35 % |
+| SE.07 | 10 → 25 % / 15 → 20 % | 25 → 30 % / 20 → 35 % |
+
+**Rejected on both samples**; hold-out SE.06 is materially worse. SPF 3.5 is also rejected
+on both (calibration penalty 1.10 → 1.20, hold-out 1.40 → 1.50).
+
+**What this shows.** The ground-source houses are not uniformly over-predicted: the
+median is above 1, but enough of them already sit at or below Existing that a higher SPF
+pushes them out of range. The over-prediction is spread across buildings, not a level. The
+larger SE.07 group, exhaust-air houses, has no sourced reason for a higher COP. The
+single-family new-house gap stays open; a building-level heat-pump input (the EPC's pump
+type and installation year) belongs to mode 1, not to the generic archetype.
+
+The pump-type lookup and `with_spf` stay in `sensitivity.py` for later tests. `SPF_ACCEPTED`
+is empty, so the current model is unchanged.
+
 ## Sources
 
 - TABULA.xlsm, Swedish typology, `delta_U_ThermalBridging`: <https://episcope.eu/fileadmin/tabula/public/calc/TABULA-xlsm_Download.zip>
@@ -704,3 +769,9 @@ multifamily.
 - Chalmers (2010) single-family airtightness thesis: <https://publications.lib.chalmers.se/records/fulltext/139940.pdf>
 - SBUF 12633, *Täthetsprovning av byggnader*: <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/5cb6e41e-18e5-4381-95be-2bef41e8139e/FinalReport/SBUF%2012633%20Slutrapport%20T%C3%A4thetsprovning%20av%20byggnader,%20Etapp%202%20Metodutv%C3%A4rdering%20och%20j%C3%A4mf%C3%B6relse%20av%20metoder.pdf>
 - SLU *Delrapport 6* (heat-exchanger efficiencies): <https://stud.epsilon.slu.se/21660/7/Delrapport_6.pdf>
+- Hesaraki & Holmberg (2013), *Energy performance of low temperature heating systems in five new-built Swedish dwellings*, Building and Environment 64, 85–93: <https://www.diva-portal.org/smash/get/diva2:627743/FULLTEXT01.pdf>
+- Energimyndigheten field test of ground-source heat pumps, 2012–2014 (Byggkoll summary): <https://byggkoll.byggtjanst.se/artiklar/2015/november/aldre-bergvarmepumpar-haller-mattet/>
+- Energimyndigheten test of variable-speed exhaust-air heat pumps (Byggkoll, 2013): <https://byggkoll.byggtjanst.se/artiklar/2013/februari/test-av-varvtalsreglerade-franluftsvarmepumpar/>
+- Fraunhofer ISE, WP-Effizienz final report: <https://wp-monitoring.ise.fraunhofer.de/wp-effizienz/download/final_report_wp_effizienz_en.pdf>
+- Fraunhofer ISE, WP Monitor: <https://www.ise.fraunhofer.de/en/research-projects/wp-monitor.html>
+- Commission Decision 2013/114/EU, Annex Table 1 (default SPF): <https://www.legislation.gov.uk/eudn/2013/114/annexes>
