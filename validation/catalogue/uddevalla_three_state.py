@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import dataclasses
 import hashlib
 import json
 import os
@@ -163,7 +164,8 @@ def allow_single_state_era():
 KEPT_OUTPUTS = {"result.json", "diagnostics.json", "building.json", "eplusout.err"}
 
 
-def run_one(record, target, overrides, state, year, weather_item, *, out=None, prune=False, timeout=600):
+def run_one(record, target, overrides, state, year, weather_item, *, out=None, prune=False, timeout=600, transform=None):
+    """One state-year; ``transform(spec, context)`` may replace the spec (stage-3 sensitivity)."""
     from epsm.legacy_records import EPSMBuilding, ModelPolicy
     from sweden_ubem.epc_heating import period_heating_kwh
     from sweden_ubem.weather import WeatherReference
@@ -193,6 +195,12 @@ def run_one(record, target, overrides, state, year, weather_item, *, out=None, p
                    atemp_m2=building.spec.load_reference_area_m2,
                    conditioned_area_m2=building.spec.geometry.conditioned_floor_area_m2,
                    quality=receipt.quality)
+        if transform is not None:
+            spec = transform(building.spec, {"category": record.type.value, "era": assignment["era"], "state": state})
+            if spec is None:
+                row["status"] = "not_applicable"
+                return row
+            building = dataclasses.replace(building, spec=spec)
         directory = (out or OUT) / "simulation" / (state or "single") / bid / str(year)
         # Only unaccepted runs are scheduled, so an existing directory is a partial leftover.
         shutil.rmtree(directory, ignore_errors=True)

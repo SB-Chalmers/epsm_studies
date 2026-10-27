@@ -1,0 +1,26 @@
+{
+ "heat_pump_cop": {
+  "single_family": 2.75,
+  "multi_family": 2.75,
+  "office": 2.75,
+  "school": 2.75
+ },
+ "setpoint_c": {
+  "single_family": 21.13,
+  "multi_family": 23.0
+ },
+ "self_draught_weight": {
+  "single_family": 0.6,
+  "multi_family": 1.0
+ },
+ "self_draught_total_ach": {
+  "single_family": 0.4,
+  "multi_family": 0.39
+ },
+ "vent_flow_factor": {
+  "office": 1.2308
+ },
+ "vent_extra_hours": {
+  "office": 1
+ }
+}

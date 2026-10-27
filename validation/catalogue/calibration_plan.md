@@ -3,8 +3,9 @@
 27 October 2026. Stages 1–2 of the plan agreed after the
 [national run](national.md): fix the targets and the evidence before any parameter is
 changed, then choose a small set of genuinely uncertain parameters with published
-ranges. No catalogue value has been changed. Stage 3 (sensitivity runs and fitting) and
-stage 4 (acceptance on held-out data) follow.
+ranges. Stages 3 (sensitivity runs and fitting) and 4 (acceptance on the hold-out sample)
+are reported in [Stage 3 results](#stage-3-results). No catalogue value has been changed in
+epsm_data; accepted changes are listed there for a sourced catalogue revision.
 
 ## Stage 1 — targets, fixed in advance
 
@@ -53,9 +54,13 @@ were replaced. Results: [`results_national_holdout/`](results_national_holdout/t
 | | Calibration (539) | Hold-out (520) |
 | --- | ---: | ---: |
 | Measured above Existing | 43.0 % | 43.1 % |
-| Measured below Advanced | 8.9 % | 6.3 % |
+| Measured below Advanced (SE.01–SE.06) | 6.1 % | 2.7 % |
 | Match | 51 % | 54 % |
 | Cohorts meeting all three targets | 4 | 5 |
+
+The below-Advanced row first read 8.9 % and 6.3 %. Those figures wrongly counted SE.07
+buildings that measure below the single SE.07 state; SE.07 has no bottom target, so the
+share is taken over SE.01–SE.06 buildings only.
 
 The failure replicates out of sample, and it is one-sided. The bottom tolerance is almost
 met everywhere, while 43 % of buildings in both samples measure above the Existing state,
@@ -194,7 +199,7 @@ calibration sample; the hold-out sample is used only to accept or reject. Every 
   and #5 together cannot bring SE.07 near the stock P15–P85, the SE.07 state itself
   needs a sourced revision.
 
-## Stage 3 preview
+## Stage 3 method
 
 1. One-at-a-time sensitivity runs on the calibration sample: each parameter at the ends
    of its range, about 1.5 h per run with the version-4 runner. This gives each
@@ -207,6 +212,146 @@ calibration sample; the hold-out sample is used only to accept or reject. Every 
 Parameters 1, 2 and 6 belong to operating profiles and templates rather than fabric, so
 they can be tested as runner or profile overrides without editing epsm_data until a
 change is accepted.
+
+## Stage 3 results
+
+28 October 2026. Code: [`sensitivity.py`](sensitivity.py) (runs, fit, comparison) and
+[`perturbations.py`](perturbations.py), which applies each parameter to the assembled model
+before simulation, so epsm and epsm_data are unchanged. Results:
+[`results_sensitivity/`](results_sensitivity/).
+
+### What was run
+
+Each run moved one parameter to the far end of its evidence range, on the same calibration
+buildings, states, years and AMYs as the version-4 baseline. In total there were 4,849
+model-years: 3,365 simulated and 1,484 not applicable (the parameter does not touch that
+building or state), with no failures. The heat-pump COP (#8) scales carrier input exactly,
+so it needed no runs.
+
+| Run | Parameter end | Types | Median change in Existing heating |
+| --- | --- | --- | --- |
+| `setpoint_housing` | multifamily 23.0 °C, single-family 21.9 °C (from 21) | housing | single-family +7 to +8 %; multifamily +15 to +18 %, SE.07 +31 % |
+| `self_draught` | total air change 0.40 (single-family) / 0.39 ACH (multifamily) for topology S, from 0.5 ACH + infiltration (about 0.7–0.8) | housing | −26 % in the S buildings (mostly SE.01–SE.03) |
+| `office_flow` | 1.6 L/(s·m²) (from 1.3) | office | +3 % (SE.01–03), +6 % (SE.04–06), +11 % (SE.07) |
+| `office_hours` | 06–20 (from 07–19) | office | +3 %, +6 %, +15 % |
+| `infiltration_new` (diagnostic) | envelope infiltration ×3, SE.04–SE.07, Existing / single state | all | +32 to +77 % |
+| `ftx_recovery` (diagnostic) | FTX sensible recovery −0.2 | all | +8 to +23 % (SE.01–06), +57 to +74 % (SE.07) |
+
+#5 (circulation losses) was not run until BEN is confirmed. #7 is kept as it is.
+
+### Fit
+
+Within each type, a grid search over the sourced ranges minimises the summed stage-1
+shortfall per cohort (above Existing beyond 15 %, below Advanced beyond 15 %, match below
+50 %). Each building's state results are combined linearly from its responses. Ties go to
+the smallest change. The office ventilation hours are restricted to whole hours.
+
+| Type | Fitted values | At a range end? |
+| --- | --- | --- |
+| multi_family | setpoint 23.0 °C; self-draught at the BETSI 0.39 ACH | setpoint at the top of 22.2–23.0 |
+| single_family | setpoint 21.1 °C; self-draught 60 % of the way to 0.40 ACH | no |
+| office | 1.6 L/(s·m²); 06–20 | both at the top |
+| school | nothing to fit | — |
+| all | heat-pump COP 2.75 (field SPF 2.6–2.9; a refinement, not fitted) | — |
+
+**The linear combination predicts the direct rerun.** On the calibration sample, the fit
+predicted 36.0 % above Existing and 57.3 % match; rerunning the models at the fitted values
+gave 36.4 % and 57.5 %.
+
+### Acceptance on the hold-out sample
+
+The fitted values were rerun on the hold-out sample (1,875 model-years). Four Advanced-state
+runs failed EnergyPlus warm-up convergence. All four had passed at baseline, so the higher
+setpoint in very efficient buildings is the likely trigger. Those four buildings are left
+out of the comparison (n = 516). Rules from stage 1: the type's shortfall must fall, above
+Existing must not rise, match must not fall, and no cohort may get materially worse (its
+shortfall rising by more than two buildings in twenty).
+
+| Change | Hold-out result | Decision |
+| --- | --- | --- |
+| Multifamily setpoint 23.0 °C + measured self-draught | above Existing 56 → 41 %, match 56 → 62 %, no cohort worse | **accepted** |
+| Office ventilation 1.6 L/(s·m²), 06–20 | above Existing 58 → 49 %, match 44 → 48 %; SE.05–SE.06 improve strongly, SE.01–SE.03 lose 10–15 points of match (within the materiality rule) | **accepted**, with the older-era caveat |
+| Single-family setpoint 21.1 °C + 60 % self-draught | shortfall 1.55 → 1.50, but the COP alone gives 1.40; SE.01 and SE.02 lose their targets | **rejected**: no gain beyond the COP |
+| Heat-pump COP 2.75 | single-family above Existing 30 → 26 %; office, school and multifamily neutral to slightly better; single-family SE.01 below Advanced 15 → 25 % (at the materiality limit) | **accepted** as the field-average refinement |
+
+**The accepted changes, both samples** (above Existing / below Advanced SE.01–06 / match /
+cohorts meeting all targets):
+
+| | Calibration before | Calibration after | Hold-out before | Hold-out after |
+| --- | --- | --- | --- | --- |
+| All buildings | 43.0 / 6.1 / 51.2 % / 4 | 36.4 / 6.5 / 56.2 % / 5 | 42.8 / 2.7 / 54.3 % / 5 | 35.7 / 3.6 / 57.0 % / 5 |
+
+Per cohort, as above / below / match, ✓ = meets all targets:
+
+| Cohort | Calibration before | Calibration after | Hold-out before | Hold-out after |
+|---|---|---|---|---|
+| multi_family SE.01 | 5 % / 0 % / 75 % ✓ | 10 % / 0 % / 90 % ✓ | 0 % / 0 % / 70 % ✓ | 10 % / 0 % / 80 % ✓ |
+| multi_family SE.02 | 58 % / 0 % / 79 % | 21 % / 0 % / 95 % | 30 % / 0 % / 85 % | 15 % / 0 % / 95 % ✓ |
+| multi_family SE.03 | 50 % / 0 % / 65 % | 25 % / 0 % / 75 % | 53 % / 0 % / 68 % | 26 % / 0 % / 74 % |
+| multi_family SE.04 | 45 % / 10 % / 55 % | 30 % / 10 % / 60 % | 60 % / 0 % / 55 % | 50 % / 0 % / 50 % |
+| multi_family SE.05 | 58 % / 0 % / 68 % | 37 % / 0 % / 63 % | 75 % / 0 % / 75 % | 30 % / 0 % / 80 % |
+| multi_family SE.06 | 68 % / 0 % / 47 % | 53 % / 0 % / 53 % | 90 % / 0 % / 20 % | 80 % / 0 % / 40 % |
+| multi_family SE.07 | 100 % / — / 0 % | 100 % / — / 20 % | 85 % / — / 20 % | 75 % / — / 15 % |
+| office SE.01 | 20 % / 0 % / 25 % | 15 % / 0 % / 30 % | 20 % / 0 % / 50 % | 15 % / 0 % / 40 % |
+| office SE.02 | 40 % / 5 % / 45 % | 35 % / 5 % / 60 % | 30 % / 5 % / 40 % | 30 % / 5 % / 30 % |
+| office SE.03 | 60 % / 5 % / 40 % | 40 % / 5 % / 45 % | 55 % / 0 % / 60 % | 45 % / 0 % / 45 % |
+| office SE.04 | 65 % / 5 % / 50 % | 55 % / 5 % / 60 % | 47 % / 0 % / 68 % | 37 % / 5 % / 74 % |
+| office SE.05 | 80 % / 0 % / 30 % | 75 % / 0 % / 50 % | 100 % / 0 % / 26 % | 89 % / 0 % / 58 % |
+| office SE.06 | 74 % / 11 % / 32 % | 74 % / 16 % / 21 % | 100 % / 0 % / 21 % | 79 % / 0 % / 42 % |
+| office SE.07 | 100 % / — / 0 % | 100 % / — / 0 % | — | — |
+| school SE.01 | 20 % / 5 % / 60 % | 20 % / 5 % / 60 % | 10 % / 0 % / 50 % ✓ | 10 % / 0 % / 50 % ✓ |
+| school SE.02 | 10 % / 10 % / 75 % ✓ | 10 % / 10 % / 75 % ✓ | 15 % / 10 % / 65 % ✓ | 15 % / 10 % / 65 % ✓ |
+| school SE.03 | 20 % / 0 % / 75 % | 20 % / 0 % / 75 % | 20 % / 5 % / 80 % | 20 % / 5 % / 80 % |
+| school SE.04 | 35 % / 15 % / 85 % | 30 % / 15 % / 90 % | 30 % / 10 % / 70 % | 30 % / 10 % / 70 % |
+| school SE.05 | 35 % / 0 % / 65 % | 35 % / 0 % / 70 % | 25 % / 0 % / 70 % | 25 % / 0 % / 70 % |
+| school SE.06 | 60 % / 10 % / 45 % | 60 % / 10 % / 55 % | 65 % / 5 % / 50 % | 65 % / 5 % / 50 % |
+| school SE.07 | 89 % / — / 6 % | 89 % / — / 6 % | — | — |
+| single_family SE.01 | 0 % / 25 % / 70 % | 0 % / 30 % / 70 % | 5 % / 15 % / 65 % ✓ | 5 % / 25 % / 65 % |
+| single_family SE.02 | 5 % / 5 % / 50 % ✓ | 5 % / 5 % / 50 % ✓ | 10 % / 5 % / 80 % ✓ | 10 % / 10 % / 75 % ✓ |
+| single_family SE.03 | 10 % / 15 % / 50 % ✓ | 10 % / 15 % / 55 % ✓ | 35 % / 0 % / 50 % | 25 % / 0 % / 55 % |
+| single_family SE.04 | 45 % / 10 % / 60 % | 40 % / 10 % / 60 % | 35 % / 5 % / 50 % | 35 % / 5 % / 50 % |
+| single_family SE.05 | 60 % / 5 % / 35 % | 60 % / 5 % / 55 % | 65 % / 0 % / 55 % | 55 % / 0 % / 65 % |
+| single_family SE.06 | 30 % / 10 % / 65 % | 15 % / 10 % / 60 % ✓ | 45 % / 5 % / 45 % | 40 % / 5 % / 45 % |
+| single_family SE.07 | 15 % / — / 40 % | 10 % / — / 25 % | 15 % / — / 20 % | 15 % / — / 20 % |
+
+### What stage 3 establishes
+
+1. **The sourced operating parameters close about a quarter of the gap.** Above Existing
+   falls by 7 points in both samples, to about 36 %, against a target of 15 %. Match rises
+   above 50 % overall, but only 5 cohorts in each sample meet all three targets.
+2. **The fit is pinned to the evidence bounds.** The multifamily setpoint and both office
+   parameters land at the top of their ranges. The remaining gap cannot be closed by
+   operating assumptions without leaving the evidence.
+3. **The gap is an era gradient that operating parameters do not have.** The improvement is
+   largest where the change is largest in kWh (multifamily SE.02–SE.05). Multifamily and
+   office SE.06–SE.07 and every SE.07 cohort stay far above Existing.
+4. **The diagnostic levers fit that pattern.** Tripling envelope leakage in SE.04–SE.07
+   would cut above Existing to 22 %; FTX recovery 0.2 lower in operation, to 27 %. Both act
+   most in the newest eras. They remain weakly sourced, so neither was fitted.
+
+### Next: sourced revisions, not fitting the fabric
+
+Fitting U-values or constructions to EPCs would break the catalogue's purpose. Annual
+heating cannot separate transmission, infiltration, ventilation recovery, setpoint and
+unmodelled losses, so a fitted U-value would absorb the others and overstate the savings of
+envelope renovations. The fabric stays fixed unless a revision comes from independent
+evidence and passes the same hold-out test. Candidates, in order:
+
+1. **Thermal bridges.** TABULA-style U-values often exclude linear bridging. Its share of
+   the heat loss grows as insulation improves, matching the newer-era gap. A sourced
+   per-era Δψ allowance (ISO 14683 defaults, Boverket guidance) is the first test.
+2. **As-built airtightness and in-operation FTX recovery for SE.04–SE.07** (#3, #4), from
+   field studies (RISE, Bebo, Energimyndigheten).
+3. **A review of the SE.07 state.** It sits below the stock's 15th percentile, and the
+   setpoint change does not fix it.
+4. **Circulation losses (#5)**, once BEN's treatment is confirmed.
+5. **An energy-signature check** if metered monthly or hourly heat is available (district
+   heating). The slope against outdoor temperature separates fabric and ventilation loss
+   from setpoint and constant losses, which annual EPCs cannot.
+
+The accepted operating changes (the multifamily measured-use profile, office ventilation
+operation, and heat-pump COP) are ready to be proposed to epsm_data and the record runner.
+They are not applied yet.
 
 ## Sources
 
