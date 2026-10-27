@@ -40,7 +40,7 @@ ROOT = HERE.parents[1]
 OUT = Path(os.environ.get("VALIDATION_OUT", ROOT / "output/catalogue_validation/national"))
 RESULTS = Path(os.environ.get("VALIDATION_RESULTS", HERE / "results_national"))
 SERVICE = os.environ.get("EPSM_LAKE", "service=epsm_lake")
-SEED = "catalogue-validation-2026-10-26"
+SEED = os.environ.get("VALIDATION_SEED", "catalogue-validation-2026-10-26")
 FRAME_DEPTH = 120  # ordered candidates drawn per cohort before screening
 AMY_YEARS = range(2014, 2026)
 ERA_SQL = """CASE WHEN construction_year <= 1960 THEN 'SE.01' WHEN construction_year <= 1975 THEN 'SE.02'
@@ -121,7 +121,7 @@ def screen(record, candidate, placeholder_weather):
     return {"target": target, "overrides": overrides}, None
 
 
-def sample(per_cohort, placeholder_epw, depth=FRAME_DEPTH):
+def sample(per_cohort, placeholder_epw, depth=FRAME_DEPTH, exclude=()):
     """Keep the first passing candidates per cohort; resumable by candidate."""
     from epsm_db import Database
     from sweden_ubem.weather import WeatherReference
@@ -150,7 +150,7 @@ def sample(per_cohort, placeholder_epw, depth=FRAME_DEPTH):
             if kept >= per_cohort:
                 break
             key = (category, era, c["building_id"])
-            if key in seen:
+            if key in seen or c["building_id"] in exclude:
                 continue
             row = {**{k: c[k] for k in ("building_id", "municipality_code", "category", "era", "construction_year", "rank")},
                    "kept": False}
@@ -368,6 +368,8 @@ def main():
     parser.add_argument("step", choices=("sample", "weather", "run", "summarize", "all"))
     parser.add_argument("--per-cohort", type=int, default=20)
     parser.add_argument("--workers", type=int, default=12)
+    parser.add_argument("--exclude-sample", type=Path,
+                        help="candidates.jsonl of another sample whose kept buildings are skipped")
     parser.add_argument("--frame-depth", type=int, default=FRAME_DEPTH,
                         help="Ordered candidates drawn per cohort; deepening keeps earlier screening")
     parser.add_argument("--weather-workers", type=int, default=4)
@@ -379,7 +381,9 @@ def main():
     if args.step in ("sample", "all"):
         if not args.placeholder_epw:
             raise ValueError("Supply --placeholder-epw for screening")
-        sample(args.per_cohort, args.placeholder_epw, args.frame_depth)
+        exclude = ({r["building_id"] for r in latest(read_jsonl(args.exclude_sample)).values() if r["kept"]}
+                   if args.exclude_sample else set())
+        sample(args.per_cohort, args.placeholder_epw, args.frame_depth, exclude)
     if args.step in ("weather", "all"):
         build_weather(args.weather_workers)
     if args.step in ("run", "all"):
