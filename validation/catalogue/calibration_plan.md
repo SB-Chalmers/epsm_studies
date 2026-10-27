@@ -338,8 +338,8 @@ envelope renovations. The fabric stays fixed unless a revision comes from indepe
 evidence and passes the same hold-out test. Candidates, in order:
 
 1. **Thermal bridges.** TABULA-style U-values often exclude linear bridging. Its share of
-   the heat loss grows as insulation improves, matching the newer-era gap. A sourced
-   per-era Δψ allowance (ISO 14683 defaults, Boverket guidance) is the first test.
+   the heat loss grows as insulation improves, matching the newer-era gap. Tested below
+   with the Swedish TABULA ΔU_tb allowance; accepted for offices only.
 2. **As-built airtightness and in-operation FTX recovery for SE.04–SE.07** (#3, #4), from
    field studies (RISE, Bebo, Energimyndigheten).
 3. **A review of the SE.07 state.** It sits below the stock's 15th percentile, and the
@@ -353,8 +353,100 @@ The accepted operating changes (the multifamily measured-use profile, office ven
 operation, and heat-pump COP) are ready to be proposed to epsm_data and the record runner.
 They are not applied yet.
 
+## Fabric revision 1: thermal bridges
+
+The catalogue leaves `thermal_bridge_uplift_fraction` empty in every state, so the model
+has no thermal-bridge loss at all. Its constructions are TABULA's nominal component layers,
+and TABULA itself adds bridging as a separate envelope-wide surcharge ΔU_tb.
+
+### Values, fixed in advance
+
+ΔU_tb in W/(m²K) on the whole envelope area (opaque elements and glazing). Values are
+from TABULA.xlsm, `Calc.Building.Set`, column `delta_U_ThermalBridging`, captured in
+`tests/fixtures/residential_catalogue/tabula_operation.json`. They are the same in all
+three climate zones. Nothing was fitted.
+
+| Era | Multifamily E / S / A | Single-family E / S / A |
+|---|---|---|
+| SE.01, SE.02 | 0.15 / 0.15 / 0.10 | 0.15 / 0.15 / 0.11 |
+| SE.03 | 0.10 / 0.10 / 0.10 | 0.10 / 0.10 / 0.10 |
+| SE.04 | 0.10 / 0.10 / 0.10 | 0.10 / 0.10 / 0.06 |
+| SE.05 | 0.10 / 0.10 / 0.05 | 0.10 / 0.10 / 0.00 |
+| SE.06, SE.07 | 0.05 (assumed) | 0.05 (assumed) |
+
+TABULA has no Swedish type after 2005 and no non-residential types. Two assumptions fill
+the gaps:
+
+- SE.06 and SE.07 take 0.05, the lowest non-zero Swedish TABULA value.
+- Offices and schools take the multifamily value of their era and state.
+
+**Implementation** (`perturbations.thermal_bridge_delta_u`). For each building, the added
+conductance is ΔU_tb × envelope area, taken from the nominal takeoff. It is applied as an
+equivalent-conductivity uplift (core's `bridge_equivalent`) on the wall and top assemblies.
+
+Core's own uplift field applies one fraction to every bridged role, including uninsulated
+basement walls and slabs. The first attempt used that field, and 197 of 1,875 runs were
+infeasible. Putting the surcharge on the above-grade elements keeps the TABULA heat-loss
+budget unchanged, and Kiva does not damp the ground share.
+
+The resulting uplift is 37–90 % on wall and top U, about 15 % of a building's total U·A.
+
+The run sits on top of the stage-3 accepted changes, and is compared against them on both
+samples. Because nothing was fitted, both samples are independent tests, and a type is
+accepted only if it passes the stage-3 rule on both:
+
+- lower penalty;
+- above Existing not higher;
+- match not lower;
+- no cohort materially worse.
+
+### Results
+
+Median response of simulated heating:
+
+| State | Response |
+|---|---|
+| Existing | +11 to +34 % |
+| Standard | +15 to +42 % |
+| Advanced | +9 to +65 %, largest in SE.03–SE.04 |
+
+The same ΔU is a much larger share of a well-insulated envelope's heat loss.
+
+| Sample (n) | Above Existing | Below Advanced | Match | Penalty | Cohorts meeting targets |
+|---|---|---|---|---|---|
+| Calibration (539), accepted stage 3 | 36.4 % | 6.5 % | 56.2 % | 9.17 | 5 |
+| Calibration, + bridges | 24.1 % | 16.8 % | 55.5 % | 7.90 | 8 |
+| Hold-out (516), accepted stage 3 | 35.7 % | 3.6 % | 57.0 % | 6.99 | 5 |
+| Hold-out, + bridges | 23.4 % | 9.0 % | 57.4 % | 4.86 | 5 |
+
+| Type | Calibration penalty, match | Hold-out penalty, match | Decision |
+|---|---|---|---|
+| Office | 3.93 → 2.88, 43 → 55 % | 2.48 → 1.50, 48 → 59 % | **accepted** on both |
+| Multifamily | 2.06 → 1.27, 65 → 62 % | 2.31 → 1.61, 62 → 58 % | rejected: match falls on both |
+| School | 2.08 → 1.66, 62 → 61 % | 0.80 → 0.55, 64 → 59 % | rejected: match falls; SE.03 materially worse on calibration |
+| Single-family | 1.10 → 2.10, 54 → 44 % | 1.40 → 1.20, 54 → 54 % | rejected: calibration penalty doubles; SE.01, SE.03, SE.06 and SE.07 materially worse |
+
+### What this establishes
+
+- **Above Existing.** Bridging closes about a third of the remaining overshoot above
+  Existing in every type, on both samples (36 → 24 %). This is the direction stage 3 left
+  open.
+- **Housing and schools.** Here it overcorrects where the fabric is good or the stock is
+  old. Advanced rises past measured buildings: single-family SE.01 has 60 % below Advanced
+  on calibration. In multifamily SE.01–SE.02, the Existing-to-Advanced spread widens until
+  measured buildings fall between states rather than near one; hold-out match drops from
+  80–95 % to 50–55 %.
+- **What is not supported.** The evidence does not support TABULA's Advanced-state values
+  (0.10 for deep renovations of pre-1985 stock) or a flat allowance for old housing.
+- **What would be overfitting.** Choosing eras or states from these results would be
+  overfitting. A revision needs its own source, for example measured ψ for Swedish
+  renovation details or BBR Um compliance data for SE.06/SE.07.
+- **What changes.** Offices take the TABULA multifamily allowance. Housing and schools
+  keep zero bridging, with the overshoot above Existing recorded as a known bias.
+
 ## Sources
 
+- TABULA.xlsm, Swedish typology, `delta_U_ThermalBridging`: <https://episcope.eu/fileadmin/tabula/public/calc/TABULA-xlsm_Download.zip>
 - Boverket (2010), *Energi i bebyggelsen – tekniska egenskaper och beräkningar* (BETSI): <https://www.boverket.se/globalassets/publikationer/dokument/2011/betsi-energi-i-bebyggelsen.pdf>
 - Teli et al. (2018), *Indoor Temperature Variations in Swedish Households*: <https://research.chalmers.se/en/publication/507928>
 - Sveby, *Brukarindata för energiberäkningar i kontor* (SBUF 12116): <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/AEDE1D22-7286-4702-9BDD-BD658A1B1186/FinalReport/SBUF%2012116%20Slutrapport%20Brukarindata%20f%C3%B6r%20energiber%C3%A4kningar%20i%20kontor.pdf>

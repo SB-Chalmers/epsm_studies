@@ -16,11 +16,16 @@ touches this building and state (the baseline run then stands).
 - ``vent_flow_factor``: {category: factor on the mechanical ventilation rate} (#6)
 - ``vent_extra_hours``: {category: hours added before and after daily operation} (#6)
 - ``heat_pump_cop``: {category: seasonal COP for heat-pump carriers} (#8)
+- ``thermal_bridge_delta_u``: {category: {era: {state: additive envelope ΔU W/(m²K)}}}, the
+  TABULA surcharge on the whole envelope area (glazing included), converted per building
+  to an equivalent-conductivity uplift on the wall and top assemblies (``SE.07`` uses state ``single``)
 """
 
 from __future__ import annotations
 
 INFILTRATION_ERAS = ("SE.04", "SE.05", "SE.06", "SE.07")
+BRIDGED_ROLES = ("wall", "top", "ground", "basement_wall", "basement_ceiling")  # envelope, as epsm_core.compiler
+UPLIFTED_ROLES = ("wall", "top")
 
 
 def _revalidated(model, **changes):
@@ -64,6 +69,27 @@ def _infiltration_ach(airflow, spec):
     return airflow.envelope_infiltration_ach or 0.0
 
 
+def bridge_uplift(spec, delta_u):
+    """Fraction on the nominal wall and top U giving ``delta_u`` times the envelope area.
+
+    Areas are the nominal takeoff (net opaque faces, glazing panes, counted once). The
+    whole surcharge goes to the above-grade wall and top, where the linear bridges sit:
+    core's single uplift on every bridged role is infeasible for uninsulated basement
+    walls and slabs, and Kiva would damp the ground share."""
+    from epsm_core.quantities import quantity_takeoff
+
+    areas = {}
+    for item in quantity_takeoff(spec):
+        if item.area_m2 and item.kind in ("opaque_layer", "glazing"):
+            areas[item.element_id, item.role] = item.area_m2
+    by_role = {}
+    for (_, role), area in areas.items():
+        by_role[role] = by_role.get(role, 0.0) + area
+    envelope = sum(by_role.get(role, 0.0) for role in BRIDGED_ROLES + ("glazing",))
+    conductance = sum(by_role.get(role, 0.0) * getattr(spec.envelope, role).u_value_w_m2k for role in UPLIFTED_ROLES)
+    return delta_u * envelope / conductance
+
+
 def apply(spec, context, params):
     category, era, state = context["category"], context["era"], context["state"]
     airflow, use, changed = spec.airflow, spec.use, False
@@ -96,6 +122,18 @@ def apply(spec, context, params):
     if (cop := value("heat_pump_cop")) is not None and delivery.heating and delivery.heating.carrier == "heat_pump":
         schedule = type(delivery.heating.heat_pump_cop).constant(cop)
         delivery, changed = _revalidated(delivery, heating=_revalidated(delivery.heating, heat_pump_cop=schedule)), True
+    envelope = spec.envelope
+    if (table := value("thermal_bridge_delta_u")) is not None:
+        delta_u = (table.get(era) or {}).get(state or "single")
+        if delta_u:
+            from epsm_core.constructions import bridge_equivalent
+
+            if spec.surface_constructions or envelope.thermal_bridge_uplift_fraction:
+                raise ValueError("Bridge surcharge expects no surface overrides and no catalogue uplift")
+            uplift = bridge_uplift(spec, delta_u)
+            envelope = _revalidated(envelope, **{role: bridge_equivalent(getattr(envelope, role), uplift)
+                                                 for role in UPLIFTED_ROLES})
+            changed = True
     if not changed:
         return None
-    return _revalidated(spec, use=use, airflow=airflow, delivery=delivery)
+    return _revalidated(spec, use=use, airflow=airflow, delivery=delivery, envelope=envelope)

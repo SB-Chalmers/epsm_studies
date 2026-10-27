@@ -1,0 +1,808 @@
+{
+ "sample": "national_templates",
+ "missing_runs": {
+  "fitted": 0,
+  "bridges": 0
+ },
+ "baseline": {
+  "n": 539,
+  "above": 0.36363636363636365,
+  "below": 0.06512605042016807,
+  "match": 0.562152133580705,
+  "penalty": 9.172807017543859,
+  "meets": 5
+ },
+ "bridges": {
+  "n": 539,
+  "above": 0.24118738404452691,
+  "below": 0.16806722689075632,
+  "match": 0.5547309833024119,
+  "penalty": 7.902923976608187,
+  "meets": 8
+ },
+ "types": {
+  "single_family": {
+   "baseline": {
+    "n": 140,
+    "above": 0.2,
+    "below": 0.125,
+    "match": 0.5357142857142857,
+    "penalty": 1.0999999999999999,
+    "meets": 3
+   },
+   "bridges": {
+    "n": 140,
+    "above": 0.12142857142857143,
+    "below": 0.2916666666666667,
+    "match": 0.44285714285714284,
+    "penalty": 2.1,
+    "meets": 0
+   },
+   "materially_worse": [
+    "single_family SE.01",
+    "single_family SE.03",
+    "single_family SE.06",
+    "single_family SE.07"
+   ],
+   "accepted": false
+  },
+  "multi_family": {
+   "baseline": {
+    "n": 137,
+    "above": 0.39416058394160586,
+    "below": 0.017094017094017096,
+    "match": 0.6496350364963503,
+    "penalty": 2.0552631578947365,
+    "meets": 1
+   },
+   "bridges": {
+    "n": 137,
+    "above": 0.24817518248175183,
+    "below": 0.05128205128205128,
+    "match": 0.6204379562043796,
+    "penalty": 1.2710526315789472,
+    "meets": 4
+   },
+   "materially_worse": [],
+   "accepted": false
+  },
+  "office": {
+   "baseline": {
+    "n": 124,
+    "above": 0.5080645161290323,
+    "below": 0.05042016806722689,
+    "match": 0.4274193548387097,
+    "penalty": 3.9342105263157894,
+    "meets": 0
+   },
+   "bridges": {
+    "n": 124,
+    "above": 0.3870967741935484,
+    "below": 0.12605042016806722,
+    "match": 0.5483870967741935,
+    "penalty": 2.876315789473684,
+    "meets": 2
+   },
+   "materially_worse": [],
+   "accepted": true
+  },
+  "school": {
+   "baseline": {
+    "n": 138,
+    "above": 0.3695652173913043,
+    "below": 0.06666666666666667,
+    "match": 0.6231884057971014,
+    "penalty": 2.083333333333333,
+    "meets": 1
+   },
+   "bridges": {
+    "n": 138,
+    "above": 0.2246376811594203,
+    "below": 0.2,
+    "match": 0.6086956521739131,
+    "penalty": 1.6555555555555554,
+    "meets": 2
+   },
+   "materially_worse": [
+    "school SE.03"
+   ],
+   "accepted": false
+  }
+ },
+ "median_response": {
+  "multi_family SE.01 advanced": 0.520551064800383,
+  "multi_family SE.01 existing": 0.1509791628581345,
+  "multi_family SE.01 standard": 0.2661463370728254,
+  "multi_family SE.02 advanced": 0.5189875832693689,
+  "multi_family SE.02 existing": 0.18242256848096705,
+  "multi_family SE.02 standard": 0.2811683991230911,
+  "multi_family SE.03 advanced": 0.6529337032945435,
+  "multi_family SE.03 existing": 0.1706980609266162,
+  "multi_family SE.03 standard": 0.2463961221120634,
+  "multi_family SE.04 advanced": 0.6477522980943078,
+  "multi_family SE.04 existing": 0.21139803197251705,
+  "multi_family SE.04 standard": 0.2827590177010517,
+  "multi_family SE.05 advanced": 0.38355023637452446,
+  "multi_family SE.05 existing": 0.18428881978635325,
+  "multi_family SE.05 standard": 0.2638356105605124,
+  "multi_family SE.06 advanced": 0.2806788748297404,
+  "multi_family SE.06 existing": 0.13316239621193215,
+  "multi_family SE.06 standard": 0.14803137300287372,
+  "multi_family SE.07 single": 0.3063719041694566,
+  "office SE.01 advanced": 0.37065729641730605,
+  "office SE.01 existing": 0.1112917226453729,
+  "office SE.01 standard": 0.27910397928288466,
+  "office SE.02 advanced": 0.3954536068029737,
+  "office SE.02 existing": 0.16762996786826423,
+  "office SE.02 standard": 0.4161688572976501,
+  "office SE.03 advanced": 0.5105707764910297,
+  "office SE.03 existing": 0.15611939566099164,
+  "office SE.03 standard": 0.28271380970518845,
+  "office SE.04 advanced": 0.5531457194185208,
+  "office SE.04 existing": 0.16849552385984912,
+  "office SE.04 standard": 0.2752752913432954,
+  "office SE.05 advanced": 0.3501123737608236,
+  "office SE.05 existing": 0.2239929753091705,
+  "office SE.05 standard": 0.30990184841473467,
+  "office SE.06 advanced": 0.3880355003019049,
+  "office SE.06 existing": 0.19114477138099994,
+  "office SE.06 standard": 0.2189011484056831,
+  "office SE.07 single": 0.39287116966879454,
+  "school SE.01 advanced": 0.3201184315191048,
+  "school SE.01 existing": 0.11373321475481624,
+  "school SE.01 standard": 0.33119437556380094,
+  "school SE.02 advanced": 0.35522930268573094,
+  "school SE.02 existing": 0.20433575812540328,
+  "school SE.02 standard": 0.37824464349497133,
+  "school SE.03 advanced": 0.4365073896168157,
+  "school SE.03 existing": 0.2203707494002063,
+  "school SE.03 standard": 0.30808239765760526,
+  "school SE.04 advanced": 0.4766576227411725,
+  "school SE.04 existing": 0.22521657112044968,
+  "school SE.04 standard": 0.2974785100098678,
+  "school SE.05 advanced": 0.2823784234926945,
+  "school SE.05 existing": 0.24850680890655408,
+  "school SE.05 standard": 0.29335856150351836,
+  "school SE.06 advanced": 0.30205180795344755,
+  "school SE.06 existing": 0.1761069263825772,
+  "school SE.06 standard": 0.19081869884575942,
+  "school SE.07 single": 0.2753850057938412,
+  "single_family SE.01 advanced": 0.41341924598992796,
+  "single_family SE.01 existing": 0.23271448089432845,
+  "single_family SE.01 standard": 0.3144250693782751,
+  "single_family SE.02 advanced": 0.5024533473589206,
+  "single_family SE.02 existing": 0.22482470892808504,
+  "single_family SE.02 standard": 0.3427944626073869,
+  "single_family SE.03 advanced": 0.5952457622457903,
+  "single_family SE.03 existing": 0.24958140360026793,
+  "single_family SE.03 standard": 0.3185626046508838,
+  "single_family SE.04 advanced": 0.45223566758626865,
+  "single_family SE.04 existing": 0.31427747500985337,
+  "single_family SE.04 standard": 0.40074662046813114,
+  "single_family SE.05 advanced": 0.09090909090909083,
+  "single_family SE.05 existing": 0.3392964143545929,
+  "single_family SE.05 standard": 0.4183647002176569,
+  "single_family SE.06 advanced": 0.3962825052440868,
+  "single_family SE.06 existing": 0.2350794394085003,
+  "single_family SE.06 standard": 0.23994302839051107,
+  "single_family SE.07 single": 0.3200161439355065
+ },
+ "cohorts": [
+  {
+   "category": "multi_family",
+   "era": "SE.01",
+   "baseline": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.0,
+    "match": 0.9,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.05,
+    "below": 0.0,
+    "match": 0.7,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.02",
+   "baseline": {
+    "n": 19,
+    "above": 0.21052631578947367,
+    "below": 0.0,
+    "match": 0.9473684210526315,
+    "single": false,
+    "penalty": 0.06052631578947368,
+    "meets": false
+   },
+   "bridges": {
+    "n": 19,
+    "above": 0.10526315789473684,
+    "below": 0.0,
+    "match": 0.9473684210526315,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.03",
+   "baseline": {
+    "n": 20,
+    "above": 0.25,
+    "below": 0.0,
+    "match": 0.75,
+    "single": false,
+    "penalty": 0.1,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.05,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.04",
+   "baseline": {
+    "n": 20,
+    "above": 0.3,
+    "below": 0.1,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.15,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.15,
+    "below": 0.2,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.05000000000000002,
+    "meets": false
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.05",
+   "baseline": {
+    "n": 19,
+    "above": 0.3684210526315789,
+    "below": 0.0,
+    "match": 0.631578947368421,
+    "single": false,
+    "penalty": 0.21842105263157893,
+    "meets": false
+   },
+   "bridges": {
+    "n": 19,
+    "above": 0.10526315789473684,
+    "below": 0.0,
+    "match": 0.631578947368421,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.06",
+   "baseline": {
+    "n": 19,
+    "above": 0.5263157894736842,
+    "below": 0.0,
+    "match": 0.5263157894736842,
+    "single": false,
+    "penalty": 0.37631578947368416,
+    "meets": false
+   },
+   "bridges": {
+    "n": 19,
+    "above": 0.42105263157894735,
+    "below": 0.05263157894736842,
+    "match": 0.6842105263157895,
+    "single": false,
+    "penalty": 0.2710526315789473,
+    "meets": false
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.07",
+   "baseline": {
+    "n": 20,
+    "above": 1.0,
+    "below": 0.0,
+    "match": 0.2,
+    "single": true,
+    "penalty": 1.15,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.8,
+    "below": 0.0,
+    "match": 0.2,
+    "single": true,
+    "penalty": 0.95,
+    "meets": false
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.01",
+   "baseline": {
+    "n": 20,
+    "above": 0.15,
+    "below": 0.0,
+    "match": 0.3,
+    "single": false,
+    "penalty": 0.2,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.1,
+    "match": 0.55,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.02",
+   "baseline": {
+    "n": 20,
+    "above": 0.35,
+    "below": 0.05,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.19999999999999998,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.15,
+    "below": 0.15,
+    "match": 0.7,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.03",
+   "baseline": {
+    "n": 20,
+    "above": 0.4,
+    "below": 0.05,
+    "match": 0.45,
+    "single": false,
+    "penalty": 0.3,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.35,
+    "below": 0.1,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.19999999999999998,
+    "meets": false
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.04",
+   "baseline": {
+    "n": 20,
+    "above": 0.55,
+    "below": 0.05,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.4,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.3,
+    "below": 0.05,
+    "match": 0.65,
+    "single": false,
+    "penalty": 0.15,
+    "meets": false
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.05",
+   "baseline": {
+    "n": 20,
+    "above": 0.75,
+    "below": 0.0,
+    "match": 0.5,
+    "single": false,
+    "penalty": 0.6,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.6,
+    "below": 0.1,
+    "match": 0.5,
+    "single": false,
+    "penalty": 0.44999999999999996,
+    "meets": false
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.06",
+   "baseline": {
+    "n": 19,
+    "above": 0.7368421052631579,
+    "below": 0.15789473684210525,
+    "match": 0.21052631578947367,
+    "single": false,
+    "penalty": 0.8842105263157894,
+    "meets": false
+   },
+   "bridges": {
+    "n": 19,
+    "above": 0.6842105263157895,
+    "below": 0.2631578947368421,
+    "match": 0.42105263157894735,
+    "single": false,
+    "penalty": 0.7263157894736842,
+    "meets": false
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.07",
+   "baseline": {
+    "n": 5,
+    "above": 1.0,
+    "below": 0.0,
+    "match": 0.0,
+    "single": true,
+    "penalty": 1.35,
+    "meets": false
+   },
+   "bridges": {
+    "n": 5,
+    "above": 1.0,
+    "below": 0.0,
+    "match": 0.0,
+    "single": true,
+    "penalty": 1.35,
+    "meets": false
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.01",
+   "baseline": {
+    "n": 20,
+    "above": 0.2,
+    "below": 0.05,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.05000000000000002,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.05,
+    "match": 0.55,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.02",
+   "baseline": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.1,
+    "match": 0.75,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.0,
+    "below": 0.25,
+    "match": 0.75,
+    "single": false,
+    "penalty": 0.1,
+    "meets": false
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.03",
+   "baseline": {
+    "n": 20,
+    "above": 0.2,
+    "below": 0.0,
+    "match": 0.75,
+    "single": false,
+    "penalty": 0.05000000000000002,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.35,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.19999999999999998,
+    "meets": false
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.04",
+   "baseline": {
+    "n": 20,
+    "above": 0.3,
+    "below": 0.15,
+    "match": 0.9,
+    "single": false,
+    "penalty": 0.15,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.05,
+    "below": 0.35,
+    "match": 0.7,
+    "single": false,
+    "penalty": 0.19999999999999998,
+    "meets": false
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.05",
+   "baseline": {
+    "n": 20,
+    "above": 0.35,
+    "below": 0.0,
+    "match": 0.7,
+    "single": false,
+    "penalty": 0.19999999999999998,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.15,
+    "below": 0.05,
+    "match": 0.7,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.06",
+   "baseline": {
+    "n": 20,
+    "above": 0.6,
+    "below": 0.1,
+    "match": 0.55,
+    "single": false,
+    "penalty": 0.44999999999999996,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.4,
+    "below": 0.15,
+    "match": 0.65,
+    "single": false,
+    "penalty": 0.25,
+    "meets": false
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.07",
+   "baseline": {
+    "n": 18,
+    "above": 0.8888888888888888,
+    "below": 0.0,
+    "match": 0.05555555555555555,
+    "single": true,
+    "penalty": 1.1833333333333331,
+    "meets": false
+   },
+   "bridges": {
+    "n": 18,
+    "above": 0.8333333333333334,
+    "below": 0.0,
+    "match": 0.2777777777777778,
+    "single": true,
+    "penalty": 0.9055555555555556,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.01",
+   "baseline": {
+    "n": 20,
+    "above": 0.0,
+    "below": 0.3,
+    "match": 0.7,
+    "single": false,
+    "penalty": 0.15,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.0,
+    "below": 0.6,
+    "match": 0.3,
+    "single": false,
+    "penalty": 0.6499999999999999,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.02",
+   "baseline": {
+    "n": 20,
+    "above": 0.05,
+    "below": 0.05,
+    "match": 0.5,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.0,
+    "below": 0.2,
+    "match": 0.8,
+    "single": false,
+    "penalty": 0.05000000000000002,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.03",
+   "baseline": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.15,
+    "match": 0.55,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.05,
+    "below": 0.4,
+    "match": 0.65,
+    "single": false,
+    "penalty": 0.25,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.04",
+   "baseline": {
+    "n": 20,
+    "above": 0.4,
+    "below": 0.1,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0.25,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.2,
+    "below": 0.2,
+    "match": 0.45,
+    "single": false,
+    "penalty": 0.15000000000000002,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.05",
+   "baseline": {
+    "n": 20,
+    "above": 0.6,
+    "below": 0.05,
+    "match": 0.55,
+    "single": false,
+    "penalty": 0.44999999999999996,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.4,
+    "below": 0.05,
+    "match": 0.45,
+    "single": false,
+    "penalty": 0.3,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.06",
+   "baseline": {
+    "n": 20,
+    "above": 0.15,
+    "below": 0.1,
+    "match": 0.6,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.15,
+    "below": 0.3,
+    "match": 0.35,
+    "single": false,
+    "penalty": 0.30000000000000004,
+    "meets": false
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.07",
+   "baseline": {
+    "n": 20,
+    "above": 0.1,
+    "below": 0.0,
+    "match": 0.25,
+    "single": true,
+    "penalty": 0.25,
+    "meets": false
+   },
+   "bridges": {
+    "n": 20,
+    "above": 0.05,
+    "below": 0.0,
+    "match": 0.1,
+    "single": true,
+    "penalty": 0.4,
+    "meets": false
+   }
+  }
+ ]
+}

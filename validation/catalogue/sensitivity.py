@@ -10,6 +10,8 @@ are recorded as ``not_applicable`` and keep the baseline value.
     python validation/catalogue/sensitivity.py run --only fitted --params results_sensitivity/fitted_params.json
     python validation/catalogue/sensitivity.py compare   # fitted bundle per type against the rules
     python validation/catalogue/sensitivity.py decided   # the accepted changes only
+    python validation/catalogue/sensitivity.py run --only bridges   # accepted changes + TABULA ΔU_tb
+    python validation/catalogue/sensitivity.py bridges   # bridges against the accepted changes per type
 
 Set ``VALIDATION_OUT`` to the hold-out output to run ``fitted``, ``compare`` and
 ``decided`` on the hold-out sample.
@@ -71,7 +73,8 @@ def run(names, workers, timeout, extra_params=None):
     tasks = []
     records = {}
     for name in names:
-        params, types, states = (extra_params, ALL_TYPES, ALL_STATES) if name == "fitted" else RUNS[name]
+        params, types, states = ((extra_params, ALL_TYPES, ALL_STATES) if name == "fitted" else
+                                 (bridge_params(), ALL_TYPES, ALL_STATES) if name == "bridges" else RUNS[name])
         (SENSITIVITY_OUT / name).mkdir(parents=True, exist_ok=True)
         (SENSITIVITY_OUT / name / "params.json").write_text(json.dumps(params, indent=1) + "\n")
         done = {(r["building_id"], r["state"], r["year"]) for r in national.read_jsonl(runs_path(name))
@@ -333,6 +336,76 @@ def compare():
             "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], "fitted": fitted[k]} for k in sorted(fitted)]}
 
 
+# Stage 5, first sourced fabric revision: the Swedish TABULA additive thermal-bridge
+# surcharge ΔU_tb in W/(m²K) on the whole envelope area, per TABULA era (SE.01–SE.05 =
+# TABULA 1–5) and state, from TABULA.xlsm Calc.Building.Set column delta_U_ThermalBridging
+# (tests/fixtures/residential_catalogue/tabula_operation.json; identical in all three zones).
+# TABULA has no SE.06/SE.07 or non-residential types: SE.06/SE.07 take 0.05, the lowest
+# non-zero Swedish TABULA value (MFH 1996–2005 advanced); offices and schools take the
+# multifamily value of their era and state (no TABULA typology; concrete-frame stock).
+_MF = {"SE.01": (0.15, 0.15, 0.10), "SE.02": (0.15, 0.15, 0.10), "SE.03": (0.10, 0.10, 0.10),
+       "SE.04": (0.10, 0.10, 0.10), "SE.05": (0.10, 0.10, 0.05), "SE.06": (0.05, 0.05, 0.05)}
+_SF = {"SE.01": (0.15, 0.15, 0.1105), "SE.02": (0.15, 0.15, 0.1105), "SE.03": (0.10, 0.10, 0.10),
+       "SE.04": (0.10, 0.10, 0.0605), "SE.05": (0.10, 0.10, 0.0), "SE.06": (0.05, 0.05, 0.05)}
+
+
+def _by_state(table):
+    return {era: dict(zip(("existing", "standard", "advanced"), v)) for era, v in table.items()} | {"SE.07": {"single": 0.05}}
+
+
+BRIDGES = {"single_family": _by_state(_SF), "multi_family": _by_state(_MF),
+           "office": _by_state(_MF), "school": _by_state(_MF)}
+
+
+def accepted_params():
+    """The stage-3 accepted changes as ``perturbations.apply`` parameters."""
+    fitted = json.loads((RESULTS / "fitted_params.json").read_text())
+    params = {"heat_pump_cop": fitted["heat_pump_cop"]}
+    for name, values in fitted.items():
+        if name != "heat_pump_cop":
+            kept = {c: v for c, v in values.items() if ACCEPTED.get(c) == "fitted"}
+            if kept:
+                params[name] = kept
+    return params
+
+
+# Accepted on both samples (calibration_plan.md, "Fabric revision 1: thermal bridges").
+BRIDGES_ACCEPTED = ("office",)
+
+
+def bridge_params():
+    return accepted_params() | {"thermal_bridge_delta_u": BRIDGES}
+
+
+def bridges():
+    """Accepted changes against accepted changes + ΔU_tb on this sample; acceptance per type."""
+    table, missing = responses(["fitted", "bridges"], drop_incomplete=True)
+    entries = list(table.values())
+    accepted_weights = {c: {"fitted": 1.0} for c, how in ACCEPTED.items() if how == "fitted"}
+    accepted_cop = {c: POLICY_COP if how == "fitted" else HEAT_PUMP_COP for c, how in ACCEPTED.items()}
+    base = score(entries, accepted_weights, accepted_cop)
+    new = score(entries, dict.fromkeys(ALL_TYPES, {"bridges": 1.0}))  # the run carries the COP
+    types = {}
+    for category in ALL_TYPES:
+        b, f = overall(base, category), overall(new, category)
+        worse = [f"{c} {e}" for (c, e), x in new.items()
+                 if c == category and x["penalty"] - base[c, e]["penalty"] > MATERIAL + 1e-9]
+        types[category] = {"baseline": b, "bridges": f, "materially_worse": worse,
+                           "accepted": f["penalty"] < b["penalty"] - 1e-9 and f["above"] <= b["above"]
+                           and f["match"] >= b["match"] and not worse}
+    response = {}
+    for e in entries:
+        m = e["meta"]
+        for s, d in e["bridges"].items():
+            if e["base"][s]:
+                response.setdefault(f"{m['category']} {m['era']} {s}", []).append(
+                    (e["base"][s] + d) / (e["base"][s] + e["fitted"][s] if m["category"] in accepted_weights else e["base"][s]) - 1)
+    return {"sample": national.OUT.name, "missing_runs": missing, "baseline": overall(base),
+            "bridges": overall(new), "types": types,
+            "median_response": {k: sorted(v)[len(v) // 2] for k, v in sorted(response.items())},
+            "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], "bridges": new[k]} for k in sorted(new)]}
+
+
 def value_at(category, name, t):
     start, end, _, _ = FIT[category][name]
     return None if start is None else start + t * (end - start)
@@ -359,7 +432,7 @@ def fitted_params(chosen):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("step", choices=["run", "fit", "compare", "decided"])
+    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges"])
     parser.add_argument("--only", nargs="*", help="run names (default: every sensitivity run)")
     parser.add_argument("--params", type=Path, help="parameter JSON for the 'fitted' run")
     parser.add_argument("--workers", type=int, default=12)
@@ -375,14 +448,14 @@ def main():
         for category, t in report["types"].items():
             print(category, t["values"], t["weights"], "\n  base", t["baseline"], "\n  cop ", t["cop_only"], "\n  fit ", t["fitted"])
         return
-    if args.step in ("compare", "decided"):
-        report = compare() if args.step == "compare" else decided()
+    if args.step in ("compare", "decided", "bridges"):
+        report = {"compare": compare, "decided": decided, "bridges": bridges}[args.step]()
         RESULTS.mkdir(parents=True, exist_ok=True)
         (RESULTS / f"{args.step}_{national.OUT.name}.json").write_text(json.dumps(report, indent=1, default=str) + "\n")
-        after = "fitted" if args.step == "compare" else "accepted_changes"
+        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges"}[args.step]
         print(json.dumps({k: report[k] for k in ("sample", "missing_runs", "baseline", after)}, indent=1))
         for category, t in report["types"].items():
-            print(category, {"compare": "accepted" if t.get("accepted") else "rejected"}.get(args.step, ""),
+            print(category, "" if args.step == "decided" else "accepted" if t.get("accepted") else "rejected",
                   t.get("materially_worse", ""), "\n  base", t["baseline"], "\n  new ", t[after])
         return
     names = args.only or list(RUNS)
