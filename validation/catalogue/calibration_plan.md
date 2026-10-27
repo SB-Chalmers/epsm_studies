@@ -44,7 +44,58 @@ hold:
 The hold-out uses the same frame, screens, weather method and version-4 runner, with
 buildings drawn in a different seeded order. Office SE.07 and school SE.07 cannot be
 held out, because calibration already took every building in them that passes the
-screens. Hold-out results are added below when the run completes.
+screens.
+
+**Baseline (version-4 runner, before any change), both samples.** The hold-out run
+completed with 520 buildings, 20 in each of 26 cohorts, after two passes: 34 failed runs
+were replaced. Results: [`results_national_holdout/`](results_national_holdout/tables.md).
+
+| | Calibration (539) | Hold-out (520) |
+| --- | ---: | ---: |
+| Measured above Existing | 43.0 % | 43.1 % |
+| Measured below Advanced | 8.9 % | 6.3 % |
+| Match | 51 % | 54 % |
+| Cohorts meeting all three targets | 4 | 5 |
+
+The failure replicates out of sample, and it is one-sided. The bottom tolerance is almost
+met everywhere, while 43 % of buildings in both samples measure above the Existing state,
+in the same cohorts. Stage 3 should therefore test the parameters that raise Existing:
+indoor setpoint, circulation losses, airtightness and office operation. Advanced is not
+the problem.
+
+Per cohort, as above Existing / below Advanced / match (SE.07: above the single state /
+— / match). "Meets targets" means ≤ 15 % / ≤ 15 % / ≥ 50 %.
+
+| Cohort | Calibration n | above / below / match | Hold-out n | above / below / match | Meets targets (cal / hold) |
+|---|---:|---|---:|---|---|
+| single_family SE.01 | 20 | 0 / 25 / 70 % | 20 | 5 / 15 / 65 % | no / yes |
+| single_family SE.02 | 20 | 5 / 5 / 50 % | 20 | 10 / 5 / 80 % | yes / yes |
+| single_family SE.03 | 20 | 10 / 15 / 50 % | 20 | 35 / 0 / 50 % | yes / no |
+| single_family SE.04 | 20 | 45 / 10 / 60 % | 20 | 35 / 5 / 50 % | no / no |
+| single_family SE.05 | 20 | 60 / 5 / 35 % | 20 | 65 / 0 / 55 % | no / no |
+| single_family SE.06 | 20 | 30 / 10 / 65 % | 20 | 45 / 5 / 45 % | no / no |
+| single_family SE.07 | 20 | 15 / — / 40 % | 20 | 15 / — / 20 % | no / no |
+| multi_family SE.01 | 20 | 5 / 0 / 75 % | 20 | 0 / 0 / 70 % | yes / yes |
+| multi_family SE.02 | 19 | 58 / 0 / 79 % | 20 | 30 / 0 / 85 % | no / no |
+| multi_family SE.03 | 20 | 50 / 0 / 65 % | 20 | 55 / 0 / 65 % | no / no |
+| multi_family SE.04 | 20 | 45 / 10 / 55 % | 20 | 60 / 0 / 55 % | no / no |
+| multi_family SE.05 | 19 | 58 / 0 / 68 % | 20 | 75 / 0 / 75 % | no / no |
+| multi_family SE.06 | 19 | 68 / 0 / 47 % | 20 | 90 / 0 / 20 % | no / no |
+| multi_family SE.07 | 20 | 100 / — / 0 % | 20 | 85 / — / 20 % | no / no |
+| office SE.01 | 20 | 20 / 0 / 25 % | 20 | 20 / 0 / 50 % | no / no |
+| office SE.02 | 20 | 40 / 5 / 45 % | 20 | 30 / 5 / 40 % | no / no |
+| office SE.03 | 20 | 60 / 5 / 40 % | 20 | 55 / 0 / 60 % | no / no |
+| office SE.04 | 20 | 65 / 5 / 50 % | 20 | 45 / 0 / 70 % | no / no |
+| office SE.05 | 20 | 80 / 0 / 30 % | 20 | 100 / 0 / 25 % | no / no |
+| office SE.06 | 19 | 74 / 11 / 32 % | 20 | 100 / 0 / 20 % | no / no |
+| office SE.07 | 5 | 100 / — / 0 % | 0 | — | no / — |
+| school SE.01 | 20 | 20 / 5 / 60 % | 20 | 10 / 0 / 50 % | no / yes |
+| school SE.02 | 20 | 10 / 10 / 75 % | 20 | 15 / 10 / 65 % | yes / yes |
+| school SE.03 | 20 | 20 / 0 / 75 % | 20 | 20 / 5 / 80 % | no / no |
+| school SE.04 | 20 | 35 / 15 / 85 % | 20 | 30 / 10 / 70 % | no / no |
+| school SE.05 | 20 | 35 / 0 / 65 % | 20 | 25 / 0 / 70 % | no / no |
+| school SE.06 | 20 | 60 / 10 / 45 % | 20 | 65 / 5 / 50 % | no / no |
+| school SE.07 | 18 | 89 / — / 6 % | 0 | — | no / — |
 
 ### National EPC benchmark
 
