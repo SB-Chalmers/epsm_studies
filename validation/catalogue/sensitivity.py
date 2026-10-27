@@ -13,6 +13,7 @@ are recorded as ``not_applicable`` and keep the baseline value.
     python validation/catalogue/sensitivity.py run --only bridges   # accepted changes + TABULA ΔU_tb
     python validation/catalogue/sensitivity.py bridges   # bridges against the accepted changes per type
     python validation/catalogue/sensitivity.py airing    # Sveby airing allowance against the current model
+    python validation/catalogue/sensitivity.py vvc       # hot-water circulation losses against the current model
 
 Set ``VALIDATION_OUT`` to the hold-out output to run ``fitted``, ``compare`` and
 ``decided`` on the hold-out sample.
@@ -415,9 +416,12 @@ def current_config(entries=None):
         weights[c] = {"bridges": 1.0}  # the bridges run carries the stage-3 changes and COP
     cop = {c: POLICY_COP if c in weights else HEAT_PUMP_COP for c in ALL_TYPES}
     for e in entries or ():
-        e["airing"] = dict.fromkeys(e["base"], airing_kwh(e["meta"], cop[e["meta"]["category"]]))
+        e["airing"] = dict.fromkeys(e["base"], airing_kwh(e["meta"]))
+        e["vvc"] = dict.fromkeys(e["base"], vvc_kwh(e["meta"]))
     for c in AIRING_ACCEPTED:
         weights[c] = {**weights.get(c, {}), "airing": 1.0}
+    for c in VVC_ACCEPTED:
+        weights[c] = {**weights.get(c, {}), "vvc": 1.0}
     return weights, cop
 
 
@@ -432,41 +436,64 @@ AIRING_ACCEPTED = ("multi_family",)  # accepted on both samples (calibration_pla
 FUEL_EFFICIENCY = 0.9  # ModelPolicy.fuel_efficiency
 
 
-def airing_kwh(meta, cop):
-    """Airing allowance over the measured period in the model's carrier terms, before the
-    ratio's COP rescale (so that a rescaled heat pump ends at heat / ``cop``)."""
-    import datetime
-
+def airing_kwh(meta, cop=None):
+    """Sveby airing over the measured period, in the model's carrier terms."""
     if meta["category"] not in AIRING_TYPES:
         return 0.0
     fgeo = json.loads((HERE / "fgeo.json").read_text())["fgeo"][meta["municipality_code"]]
+    return term_kwh(meta, AIRING_KWH_M2 * fgeo)
+
+
+# Revision 4: hot-water circulation (VVC) losses. BEN (BFS 2016:12), allmänt råd to 3 §:
+# circulation losses are included in the building's energy for heating, and delivered hot
+# water is 0.75 of hot water plus circulation, so circulation is a third of delivered hot
+# water; with BEN's normal multifamily hot water of 25 kWh/m² Atemp (tabell 3:1) that is
+# 8.3 kWh/m². New offices: about 3 kWh/m² (Sveby Brukarindata kontor, p. 24). Sveby
+# (bostäder 2.0, p. 12) does not count circulation losses as heat released to the building,
+# so the whole loss is added. Single-family houses rarely have circulation; schools have no
+# source.
+VVC_KWH_M2 = {"multi_family": 25 * (1 / 0.75 - 1), "office": 3.0}
+VVC_ACCEPTED = ("multi_family",)  # accepted on both samples (calibration_plan.md)
+
+
+def term_kwh(meta, kwh_m2):
+    """An annual per-m² Atemp heat term over the measured period, in the model's carrier
+    terms before the ratio's COP rescale."""
+    import datetime
+
     days = (datetime.date.fromisoformat(meta["period_end_exclusive"]) - datetime.date.fromisoformat(meta["period_start"])).days
-    heat = AIRING_KWH_M2 * fgeo * meta["epc_atemp_m2"] * days / 365
+    heat = kwh_m2 * meta["epc_atemp_m2"] * days / 365
     carrier = meta["carrier"]
     if carrier == "heat_pump":
         return heat / POLICY_COP  # the ratio rescales by POLICY_COP / cop
     return heat / FUEL_EFFICIENCY if carrier == "fuel" else heat
 
 
-def airing():
-    """The current model against the current model + Sveby airing; acceptance per type."""
+def vvc_kwh(meta):
+    return term_kwh(meta, VVC_KWH_M2.get(meta["category"], 0.0))
+
+
+def test_term(name, kwh):
+    """The current model against the current model + one post-processing term; acceptance per type."""
     table, missing = responses(["fitted", "bridges"], drop_incomplete=True)
     entries = list(table.values())
     weights, cop = current_config(entries)
-    weights = {c: {k: t for k, t in w.items() if k != "airing"} for c, w in weights.items()}  # before airing
+    weights = {c: {k: t for k, t in w.items() if k != name} for c, w in weights.items()}  # before this term
+    for e in entries:
+        e[name] = dict.fromkeys(e["base"], kwh(e["meta"]))
     base = score(entries, weights, cop)
-    new = score(entries, {c: {**weights.get(c, {}), "airing": 1.0} for c in ALL_TYPES}, cop)
+    new = score(entries, {c: {**weights.get(c, {}), name: 1.0} for c in ALL_TYPES}, cop)
     types = {}
     for category in ALL_TYPES:
         b, f = overall(base, category), overall(new, category)
         worse = [f"{c} {e}" for (c, e), x in new.items()
                  if c == category and x["penalty"] - base[c, e]["penalty"] > MATERIAL + 1e-9]
-        types[category] = {"baseline": b, "airing": f, "materially_worse": worse,
+        types[category] = {"baseline": b, name: f, "materially_worse": worse,
                            "accepted": f["penalty"] < b["penalty"] - 1e-9 and f["above"] <= b["above"]
                            and f["match"] >= b["match"] and not worse}
     return {"sample": national.OUT.name, "missing_runs": missing, "baseline": overall(base),
-            "airing": overall(new), "types": types,
-            "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], "airing": new[k]} for k in sorted(new)]}
+            name: overall(new), "types": types,
+            "cohorts": [{"category": k[0], "era": k[1], "baseline": base[k], name: new[k]} for k in sorted(new)]}
 
 
 def value_at(category, name, t):
@@ -495,7 +522,7 @@ def fitted_params(chosen):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges", "airing"])
+    parser.add_argument("step", choices=["run", "fit", "compare", "decided", "bridges", "airing", "vvc"])
     parser.add_argument("--only", nargs="*", help="run names (default: every sensitivity run)")
     parser.add_argument("--params", type=Path, help="parameter JSON for the 'fitted' run")
     parser.add_argument("--workers", type=int, default=12)
@@ -511,11 +538,12 @@ def main():
         for category, t in report["types"].items():
             print(category, t["values"], t["weights"], "\n  base", t["baseline"], "\n  cop ", t["cop_only"], "\n  fit ", t["fitted"])
         return
-    if args.step in ("compare", "decided", "bridges", "airing"):
-        report = {"compare": compare, "decided": decided, "bridges": bridges, "airing": airing}[args.step]()
+    if args.step in ("compare", "decided", "bridges", "airing", "vvc"):
+        report = {"compare": compare, "decided": decided, "bridges": bridges,
+                  "airing": lambda: test_term("airing", airing_kwh), "vvc": lambda: test_term("vvc", vvc_kwh)}[args.step]()
         RESULTS.mkdir(parents=True, exist_ok=True)
         (RESULTS / f"{args.step}_{national.OUT.name}.json").write_text(json.dumps(report, indent=1, default=str) + "\n")
-        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges", "airing": "airing"}[args.step]
+        after = {"compare": "fitted", "decided": "accepted_changes", "bridges": "bridges", "airing": "airing", "vvc": "vvc"}[args.step]
         print(json.dumps({k: report[k] for k in ("sample", "missing_runs", "baseline", after)}, indent=1))
         for category, t in report["types"].items():
             print(category, "" if args.step == "decided" else "accepted" if t.get("accepted") else "rejected",

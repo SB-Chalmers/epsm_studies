@@ -7,12 +7,12 @@
  },
  "overall": {
   "n": 516,
-  "current": 0.5988372093023255,
+  "current": 0.6104651162790697,
   "one_level": 0.5329457364341085,
   "levels": 0.9166666666666666,
-  "scaled": 0.9282945736434108,
+  "scaled": 0.9341085271317829,
   "levels_oos": 0.7170542635658915,
-  "scaled_oos": 0.6608527131782945
+  "scaled_oos": 0.6937984496124031
  },
  "types": {
   "single_family": {
@@ -26,12 +26,12 @@
   },
   "multi_family": {
    "n": 139,
-   "current": 0.6330935251798561,
+   "current": 0.6762589928057554,
    "one_level": 0.60431654676259,
    "levels": 0.9064748201438849,
-   "scaled": 0.9136690647482014,
+   "scaled": 0.935251798561151,
    "levels_oos": 0.7553956834532374,
-   "scaled_oos": 0.6187050359712231
+   "scaled_oos": 0.7410071942446043
   },
   "office": {
    "n": 117,
@@ -57,7 +57,7 @@
    "category": "multi_family",
    "era": "SE.01",
    "n": 20,
-   "current": 14,
+   "current": 15,
    "one_level": 12,
    "levels": 19,
    "scaled": 20,
@@ -67,18 +67,18 @@
     109.840971
    ],
    "factors": {
-    "existing": 0.602617,
-    "standard": 1.281457,
-    "advanced": 1.645068
+    "existing": 0.754271,
+    "standard": 0.833035,
+    "advanced": 1.415055
    },
    "levels_oos": 18,
-   "scaled_oos": 15
+   "scaled_oos": 18
   },
   {
    "category": "multi_family",
    "era": "SE.02",
    "n": 20,
-   "current": 18,
+   "current": 17,
    "one_level": 17,
    "levels": 20,
    "scaled": 20,
@@ -88,18 +88,18 @@
     77.341817
    ],
    "factors": {
-    "existing": 0.810079,
-    "standard": 1.728613,
-    "advanced": 2.529964
+    "existing": 0.760487,
+    "standard": 1.536837,
+    "advanced": 2.146793
    },
    "levels_oos": 20,
-   "scaled_oos": 11
+   "scaled_oos": 13
   },
   {
    "category": "multi_family",
    "era": "SE.03",
    "n": 19,
-   "current": 16,
+   "current": 15,
    "one_level": 15,
    "levels": 19,
    "scaled": 19,
@@ -109,18 +109,18 @@
     84.015714
    ],
    "factors": {
-    "existing": 0.73873,
-    "standard": 0.805237,
-    "advanced": 3.96129
+    "existing": 0.707916,
+    "standard": 0.712352,
+    "advanced": 2.945227
    },
    "levels_oos": 18,
-   "scaled_oos": 13
+   "scaled_oos": 15
   },
   {
    "category": "multi_family",
    "era": "SE.04",
    "n": 20,
-   "current": 11,
+   "current": 14,
    "one_level": 9,
    "levels": 18,
    "scaled": 19,
@@ -130,9 +130,9 @@
     101.573178
    ],
    "factors": {
-    "existing": 0.910683,
-    "standard": 1.590355,
-    "advanced": 1.762429
+    "existing": 0.816989,
+    "standard": 1.426455,
+    "advanced": 1.414053
    },
    "levels_oos": 11,
    "scaled_oos": 13
@@ -141,7 +141,7 @@
    "category": "multi_family",
    "era": "SE.05",
    "n": 20,
-   "current": 16,
+   "current": 15,
    "one_level": 11,
    "levels": 19,
    "scaled": 20,
@@ -151,18 +151,18 @@
     116.261325
    ],
    "factors": {
-    "existing": 0.787059,
-    "standard": 1.419241,
-    "advanced": 2.25093
+    "existing": 0.622249,
+    "standard": 1.226185,
+    "advanced": 1.495992
    },
    "levels_oos": 14,
-   "scaled_oos": 17
+   "scaled_oos": 19
   },
   {
    "category": "multi_family",
    "era": "SE.06",
    "n": 20,
-   "current": 12,
+   "current": 16,
    "one_level": 9,
    "levels": 20,
    "scaled": 20,
@@ -172,29 +172,29 @@
     79.484679
    ],
    "factors": {
-    "existing": 1.121418,
-    "standard": 0.845112,
-    "advanced": 3.622418
+    "existing": 0.927041,
+    "standard": 0.697668,
+    "advanced": 2.504279
    },
    "levels_oos": 17,
-   "scaled_oos": 15
+   "scaled_oos": 16
   },
   {
    "category": "multi_family",
    "era": "SE.07",
    "n": 20,
-   "current": 1,
+   "current": 2,
    "one_level": 11,
    "levels": 11,
-   "scaled": 9,
+   "scaled": 12,
    "level_values": [
     37.961462
    ],
    "factors": {
-    "single": 2.231538
+    "single": 1.417246
    },
    "levels_oos": 7,
-   "scaled_oos": 2
+   "scaled_oos": 9
   },
   {
    "category": "office",

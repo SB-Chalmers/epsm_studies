@@ -343,9 +343,10 @@ evidence and passes the same hold-out test. Candidates, in order:
 2. **As-built airtightness and in-operation FTX recovery for SE.04–SE.07** (#3, #4), from
    field studies. Reviewed below: neither supports a change. The Sveby airing allowance
    found on the way is accepted for multifamily.
-3. **A review of the SE.07 state.** It sits below the stock's 15th percentile, and the
-   setpoint change does not fix it.
-4. **Circulation losses (#5)**, once BEN's treatment is confirmed.
+3. **A review of the SE.07 state.** Reviewed below: no state change; single-family
+   points to heat-pump SPF, the rest to the new-building energy gap.
+4. **Circulation losses (#5).** BEN confirms they are in measured heating; accepted for
+   multifamily (revision 4).
 5. **An energy-signature check** if metered monthly or hourly heat is available (district
    heating). The slope against outdoor temperature separates fabric and ventilation loss
    from setpoint and constant losses, which annual EPCs cannot.
@@ -568,6 +569,118 @@ model's values sit inside the measured range. A lower value would rest on judgem
 than measurement, so, as in stage 3, FTX recovery is not changed. A field survey with
 n > 10 per era would change that.
 
+## SE.07 review (no state change)
+
+SE.07 has one state, and the catalogue calls it an *explicit representative construction,
+not a verified as-built building*, with no sources. Its inputs are close to passive-house
+level:
+
+| Input | SE.07 | SE.06 |
+|---|---|---|
+| Wall U | 0.09–0.14 W/(m²K) | 0.16–0.20 W/(m²K) |
+| Glazing U | 0.8–0.9 | 1.1–1.5 |
+| Infiltration | about 0.025 L/(s·m²), or 0.05 ACH | — |
+| FTX recovery | 0.80 | — |
+
+The model misses SE.07 in opposite directions by type. Median simulated ÷ measured,
+calibration / hold-out, current model:
+
+| Type | Ratio | Measured | Heating |
+|---|---|---|---|
+| Multifamily | 0.45 / 0.52 | 34–36 kWh/m² | 16 of 20 district heat |
+| Office | 0.38 (n = 5) | 25 kWh/m² | — |
+| School | 0.63 | 45 kWh/m² | — |
+| Single-family | 1.34 / 1.59 | 18–19 kWh/m² electricity | all heat pumps |
+
+**Findings**
+
+- **No component is out of line on its own.** The fabric is at about BBR level. The
+  airtightness agrees with SE.06 field measurements (revision 2), and FTX 0.80 sits at the
+  top of the measured in-use range.
+- **Multifamily, office and school.** SBUF 14025 names the usual new-building gap without a
+  population figure:
+  - FTX defrost and flow imbalance;
+  - circulation and duct losses;
+  - large window and balcony bridges in prefab concrete;
+  - commissioning and control faults;
+  - heat pumps running on auxiliary heat.
+
+  Circulation losses (revision 4) close part of the multifamily gap: SE.07 match goes from
+  20 to 35 % on calibration and from 5 to 10 % on hold-out.
+- **First-year effects are in the target.** Every SE.07 certificate measures the first 0–2
+  operating years. BBR requires that measurement within 24 months of completion, so
+  construction moisture and commissioning are included. They are not an archetype
+  property, and at n = 20 there is no clear age trend.
+- **Single-family has the opposite cause.** All are heat pumps:
+  - 28 of 40 sampled certificates report an exhaust-air heat pump (`EgiPumpFranluftUPPV`)
+    and 11 a ground-source one;
+  - 31 report `VentTypFmed` (exhaust ventilation with heat recovery).
+
+  The model divides the full heat demand by the field-average COP 2.75 (stage 3, from older
+  installations). Modern low-temperature installations likely reach a higher seasonal COP.
+  A test needs a field SPF for post-2015 installations, which is not yet sourced.
+
+**Decision.** No SE.07 state change. A change needs either as-built evidence for new
+buildings by type, or a sourced new-installation heat-pump SPF for single-family houses.
+
+**Runner note.** The record runner maps `VentTypFmed` to plain F. For heat-pump houses this
+changes little: the exhaust air is the heat pump's source, and the full demand is still
+divided by its COP. For a district-heated building with an exhaust-air heat pump, however,
+the recovery is lost.
+
+## Revision 4: hot-water circulation losses (accepted for multifamily)
+
+BEN (BFS 2016:12), general advice to 3 §, says *"Förlusterna för varmvattencirkulation
+inkluderas i byggnadens energianvändning för uppvärmning"*: the measured heating target
+includes circulation losses. BEN also sets delivered hot water as 0.75 × (hot water +
+circulation). With BEN's normal multifamily hot water of 25 kWh/m² Atemp (tabell 3:1),
+circulation is 25 × (1/0.75 − 1) ≈ **8.3 kWh/m² per year**.
+
+For offices, Sveby *Brukarindata kontor* (p. 24) gives about **3 kWh/m²** for new offices.
+Single-family houses rarely have circulation, and schools have no source.
+
+Sveby (bostäder 2.0, p. 12) does not count circulation losses as heat released to the
+building, so the whole loss is added after simulation, divided by the heating system's
+efficiency or COP, with no internal gain credited.
+
+| Type | Calibration penalty, above, match | Hold-out penalty, above, match | Decision |
+|---|---|---|---|
+| Multifamily | 1.85 → 0.92; 36 → 23 %; 67 → 68 % | 2.06 → 1.41; 37 → 25 %; 63 → 68 % | **accepted** on both |
+| Office | 2.88 → 2.73; 39 → 35 %; 54.8 → 54.0 % | 1.50 → 1.11; 36 → 30 %; 59 → 62 % | rejected: calibration match falls by one building |
+
+No multifamily cohort is materially worse. Match by era, calibration / hold-out:
+
+| Era | Calibration | Hold-out |
+|---|---|---|
+| SE.04 | 60 → 55 % | 55 → 70 % |
+| SE.06 | 58 → 74 % | 60 → 80 % |
+| SE.07 | 20 → 35 % | 5 → 10 % |
+
+SE.01–SE.03 change by at most 10 points either way.
+
+**Order matters for airing and circulation.** Airing was tested first and accepted
+(revision 3). Re-tested on top of circulation losses, airing would fail on calibration
+(match 69.3 → 67.9 %, two buildings) and pass on hold-out. Both are accounting terms that
+the measured target includes by definition (Sveby, BEN). The joint change against the
+stage-3 model passes on both samples:
+
+| Sample | Penalty | Above Existing | Match |
+|---|---|---|---|
+| Calibration | 2.06 → 0.92 | 39 → 23 % | 65 → 68 % |
+| Hold-out | 2.31 → 1.41 | 41 → 25 % | 62 → 68 % |
+
+Both are kept.
+
+**Current model**, with stage 3, office bridges, and multifamily airing and circulation:
+
+| Sample | Match | Multifamily |
+|---|---|---|
+| Calibration | 60 % | — |
+| Hold-out | 61 % | 68 % |
+
+The hold-out ceiling (three levels, out of sample) is 72 % overall and 76 % for
+multifamily.
+
 ## Sources
 
 - TABULA.xlsm, Swedish typology, `delta_U_ThermalBridging`: <https://episcope.eu/fileadmin/tabula/public/calc/TABULA-xlsm_Download.zip>
@@ -579,6 +692,7 @@ n > 10 per era would change that.
 - SBUF 13015 (Dehlin 2017), passive houses in subarctic climate: <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/75be4309-a303-4285-9f5e-e4c3e85dccfe/FinalReport/SBUF%2013015%20Slutrapport%20Fungerar%20passivhusteknik%20i%20subarktiskt%20klimat%20170615.pdf>
 - SP Rapport 2011:26 (Sikander, Ruud et al.): <https://www.osti.gov/etdeweb/servlets/purl/1026442>
 - BeBo förstudie bostads-FTX (2022): <https://www.bebostad.se/media/6179/f%C3%B6rstudie-slutrapport-bostads-ftx.pdf>
+- BFS 2016:12 (BEN), Boverkets föreskrifter om fastställande av byggnadens energianvändning vid normalt brukande: <https://lagen.nu/bfs/2016:12>
 - Boverket (2010), *Energi i bebyggelsen – tekniska egenskaper och beräkningar* (BETSI): <https://www.boverket.se/globalassets/publikationer/dokument/2011/betsi-energi-i-bebyggelsen.pdf>
 - Teli et al. (2018), *Indoor Temperature Variations in Swedish Households*: <https://research.chalmers.se/en/publication/507928>
 - Sveby, *Brukarindata för energiberäkningar i kontor* (SBUF 12116): <https://vpp.sbuf.se/Public/Documents/ProjectDocuments/AEDE1D22-7286-4702-9BDD-BD658A1B1186/FinalReport/SBUF%2012116%20Slutrapport%20Brukarindata%20f%C3%B6r%20energiber%C3%A4kningar%20i%20kontor.pdf>

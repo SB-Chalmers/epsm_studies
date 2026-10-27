@@ -6,19 +6,19 @@
  },
  "baseline": {
   "n": 539,
-  "above": 0.3358070500927644,
-  "below": 0.08403361344537816,
-  "match": 0.5899814471243042,
-  "penalty": 8.114912280701754,
-  "meets": 7
+  "above": 0.3098330241187384,
+  "below": 0.0861344537815126,
+  "match": 0.601113172541744,
+  "penalty": 7.48859649122807,
+  "meets": 8
  },
  "airing": {
   "n": 539,
-  "above": 0.3172541743970315,
-  "below": 0.09663865546218488,
-  "match": 0.5992578849721707,
-  "penalty": 7.959649122807018,
-  "meets": 4
+  "above": 0.28385899814471244,
+  "below": 0.09873949579831932,
+  "match": 0.601113172541744,
+  "penalty": 7.025438596491228,
+  "meets": 8
  },
  "types": {
   "single_family": {
@@ -44,22 +44,22 @@
   "multi_family": {
    "baseline": {
     "n": 137,
-    "above": 0.39416058394160586,
-    "below": 0.017094017094017096,
-    "match": 0.6496350364963503,
-    "penalty": 2.0552631578947365,
-    "meets": 1
+    "above": 0.291970802919708,
+    "below": 0.02564102564102564,
+    "match": 0.6934306569343066,
+    "penalty": 1.4289473684210527,
+    "meets": 2
    },
    "airing": {
     "n": 137,
-    "above": 0.35766423357664234,
-    "below": 0.02564102564102564,
-    "match": 0.6715328467153284,
-    "penalty": 1.85,
-    "meets": 1
+    "above": 0.22627737226277372,
+    "below": 0.03418803418803419,
+    "match": 0.6788321167883211,
+    "penalty": 0.9157894736842105,
+    "meets": 5
    },
    "materially_worse": [],
-   "accepted": true
+   "accepted": false
   },
   "office": {
    "baseline": {
@@ -108,9 +108,9 @@
    "era": "SE.01",
    "baseline": {
     "n": 20,
-    "above": 0.1,
+    "above": 0.05,
     "below": 0.0,
-    "match": 0.9,
+    "match": 0.75,
     "single": false,
     "penalty": 0,
     "meets": true
@@ -119,7 +119,7 @@
     "n": 20,
     "above": 0.05,
     "below": 0.0,
-    "match": 0.8,
+    "match": 0.75,
     "single": false,
     "penalty": 0,
     "meets": true
@@ -130,21 +130,21 @@
    "era": "SE.02",
    "baseline": {
     "n": 19,
-    "above": 0.21052631578947367,
+    "above": 0.10526315789473684,
     "below": 0.0,
-    "match": 0.9473684210526315,
+    "match": 1.0,
     "single": false,
-    "penalty": 0.06052631578947368,
-    "meets": false
+    "penalty": 0,
+    "meets": true
    },
    "airing": {
     "n": 19,
-    "above": 0.15789473684210525,
+    "above": 0.10526315789473684,
     "below": 0.0,
     "match": 0.9473684210526315,
     "single": false,
-    "penalty": 0.00789473684210526,
-    "meets": false
+    "penalty": 0,
+    "meets": true
    }
   },
   {
@@ -154,19 +154,19 @@
     "n": 20,
     "above": 0.25,
     "below": 0.0,
-    "match": 0.75,
+    "match": 0.9,
     "single": false,
     "penalty": 0.1,
     "meets": false
    },
    "airing": {
     "n": 20,
-    "above": 0.25,
+    "above": 0.15,
     "below": 0.0,
-    "match": 0.85,
+    "match": 0.75,
     "single": false,
-    "penalty": 0.1,
-    "meets": false
+    "penalty": 0,
+    "meets": true
    }
   },
   {
@@ -174,21 +174,21 @@
    "era": "SE.04",
    "baseline": {
     "n": 20,
-    "above": 0.3,
+    "above": 0.2,
     "below": 0.1,
     "match": 0.6,
     "single": false,
-    "penalty": 0.15,
+    "penalty": 0.05000000000000002,
     "meets": false
    },
    "airing": {
     "n": 20,
-    "above": 0.3,
-    "below": 0.1,
-    "match": 0.6,
+    "above": 0.1,
+    "below": 0.15,
+    "match": 0.55,
     "single": false,
-    "penalty": 0.15,
-    "meets": false
+    "penalty": 0,
+    "meets": true
    }
   },
   {
@@ -196,9 +196,31 @@
    "era": "SE.05",
    "baseline": {
     "n": 19,
-    "above": 0.3684210526315789,
+    "above": 0.21052631578947367,
     "below": 0.0,
-    "match": 0.631578947368421,
+    "match": 0.6842105263157895,
+    "single": false,
+    "penalty": 0.06052631578947368,
+    "meets": false
+   },
+   "airing": {
+    "n": 19,
+    "above": 0.10526315789473684,
+    "below": 0.0,
+    "match": 0.6842105263157895,
+    "single": false,
+    "penalty": 0,
+    "meets": true
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.06",
+   "baseline": {
+    "n": 19,
+    "above": 0.3684210526315789,
+    "below": 0.05263157894736842,
+    "match": 0.7368421052631579,
     "single": false,
     "penalty": 0.21842105263157893,
     "meets": false
@@ -206,7 +228,7 @@
    "airing": {
     "n": 19,
     "above": 0.3157894736842105,
-    "below": 0.0,
+    "below": 0.05263157894736842,
     "match": 0.7368421052631579,
     "single": false,
     "penalty": 0.16578947368421051,
@@ -215,45 +237,23 @@
   },
   {
    "category": "multi_family",
-   "era": "SE.06",
-   "baseline": {
-    "n": 19,
-    "above": 0.5263157894736842,
-    "below": 0.0,
-    "match": 0.5263157894736842,
-    "single": false,
-    "penalty": 0.37631578947368416,
-    "meets": false
-   },
-   "airing": {
-    "n": 19,
-    "above": 0.5263157894736842,
-    "below": 0.05263157894736842,
-    "match": 0.5789473684210527,
-    "single": false,
-    "penalty": 0.37631578947368416,
-    "meets": false
-   }
-  },
-  {
-   "category": "multi_family",
    "era": "SE.07",
    "baseline": {
     "n": 20,
-    "above": 1.0,
+    "above": 0.85,
     "below": 0.0,
     "match": 0.2,
     "single": true,
-    "penalty": 1.15,
+    "penalty": 1.0,
     "meets": false
    },
    "airing": {
     "n": 20,
-    "above": 0.9,
+    "above": 0.75,
     "below": 0.0,
-    "match": 0.2,
+    "match": 0.35,
     "single": true,
-    "penalty": 1.05,
+    "penalty": 0.75,
     "meets": false
    }
   },

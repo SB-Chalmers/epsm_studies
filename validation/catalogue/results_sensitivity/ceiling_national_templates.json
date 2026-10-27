@@ -7,10 +7,10 @@
  },
  "overall": {
   "n": 539,
-  "current": 0.5955473098330241,
+  "current": 0.5974025974025974,
   "one_level": 0.5380333951762524,
   "levels": 0.8886827458256029,
-  "scaled": 0.8775510204081632
+  "scaled": 0.8812615955473099
  },
  "types": {
   "single_family": {
@@ -22,10 +22,10 @@
   },
   "multi_family": {
    "n": 137,
-   "current": 0.6715328467153284,
+   "current": 0.6788321167883211,
    "one_level": 0.5985401459854015,
    "levels": 0.8832116788321168,
-   "scaled": 0.8759124087591241
+   "scaled": 0.8905109489051095
   },
   "office": {
    "n": 124,
@@ -47,7 +47,7 @@
    "category": "multi_family",
    "era": "SE.01",
    "n": 20,
-   "current": 16,
+   "current": 15,
    "one_level": 15,
    "levels": 20,
    "scaled": 20,
@@ -57,9 +57,9 @@
     78.795918
    ],
    "factors": {
-    "existing": 0.560329,
-    "standard": 1.481028,
-    "advanced": 2.990271
+    "existing": 0.535059,
+    "standard": 1.198264,
+    "advanced": 2.266711
    }
   },
   {
@@ -76,16 +76,16 @@
     74.505675
    ],
    "factors": {
-    "existing": 0.924824,
-    "standard": 2.229025,
-    "advanced": 1.921065
+    "existing": 0.864604,
+    "standard": 1.086413,
+    "advanced": 2.947842
    }
   },
   {
    "category": "multi_family",
    "era": "SE.03",
    "n": 20,
-   "current": 17,
+   "current": 15,
    "one_level": 13,
    "levels": 20,
    "scaled": 20,
@@ -95,16 +95,16 @@
     75.996912
    ],
    "factors": {
-    "existing": 0.796536,
-    "standard": 0.628959,
-    "advanced": 4.08043
+    "existing": 0.957909,
+    "standard": 0.986321,
+    "advanced": 1.301004
    }
   },
   {
    "category": "multi_family",
    "era": "SE.04",
    "n": 20,
-   "current": 12,
+   "current": 11,
    "one_level": 11,
    "levels": 17,
    "scaled": 17,
@@ -114,16 +114,16 @@
     67.438321
    ],
    "factors": {
-    "existing": 0.588804,
-    "standard": 2.410566,
-    "advanced": 3.187035
+    "existing": 0.530839,
+    "standard": 1.985556,
+    "advanced": 2.286545
    }
   },
   {
    "category": "multi_family",
    "era": "SE.05",
    "n": 19,
-   "current": 14,
+   "current": 13,
    "one_level": 9,
    "levels": 19,
    "scaled": 19,
@@ -133,16 +133,16 @@
     58.625651
    ],
    "factors": {
-    "existing": 0.694078,
-    "standard": 1.387048,
-    "advanced": 1.483968
+    "existing": 0.580492,
+    "standard": 1.15693,
+    "advanced": 1.238519
    }
   },
   {
    "category": "multi_family",
    "era": "SE.06",
    "n": 19,
-   "current": 11,
+   "current": 14,
    "one_level": 9,
    "levels": 16,
    "scaled": 18,
@@ -152,24 +152,24 @@
     33.876429
    ],
    "factors": {
-    "existing": 1.017674,
-    "standard": 0.670271,
-    "advanced": 2.45134
+    "existing": 1.096578,
+    "standard": 0.75444,
+    "advanced": 2.983906
    }
   },
   {
    "category": "multi_family",
    "era": "SE.07",
    "n": 20,
-   "current": 4,
+   "current": 7,
    "one_level": 10,
    "levels": 10,
-   "scaled": 7,
+   "scaled": 9,
    "level_values": [
     46.540254
    ],
    "factors": {
-    "single": 1.268535
+    "single": 1.270501
    }
   },
   {

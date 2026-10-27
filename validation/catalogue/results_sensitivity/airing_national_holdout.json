@@ -6,19 +6,19 @@
  },
  "baseline": {
   "n": 516,
-  "above": 0.32751937984496127,
+  "above": 0.29457364341085274,
   "below": 0.04201680672268908,
-  "match": 0.5949612403100775,
-  "penalty": 6.010526315789473,
-  "meets": 5
+  "match": 0.6065891472868217,
+  "penalty": 5.3578947368421055,
+  "meets": 6
  },
  "airing": {
   "n": 516,
-  "above": 0.312015503875969,
-  "below": 0.04831932773109244,
-  "match": 0.5968992248062015,
-  "penalty": 5.760526315789474,
-  "meets": 5
+  "above": 0.2810077519379845,
+  "below": 0.052521008403361345,
+  "match": 0.6085271317829457,
+  "penalty": 5.1078947368421055,
+  "meets": 6
  },
  "types": {
   "single_family": {
@@ -44,19 +44,19 @@
   "multi_family": {
    "baseline": {
     "n": 139,
-    "above": 0.41007194244604317,
+    "above": 0.28776978417266186,
     "below": 0.0,
-    "match": 0.6187050359712231,
-    "penalty": 2.313157894736842,
-    "meets": 2
+    "match": 0.6618705035971223,
+    "penalty": 1.6605263157894736,
+    "meets": 3
    },
    "airing": {
     "n": 139,
-    "above": 0.3669064748201439,
-    "below": 0.0,
-    "match": 0.6330935251798561,
-    "penalty": 2.0631578947368423,
-    "meets": 2
+    "above": 0.2517985611510791,
+    "below": 0.01680672268907563,
+    "match": 0.6762589928057554,
+    "penalty": 1.4105263157894736,
+    "meets": 3
    },
    "materially_worse": [],
    "accepted": true
@@ -108,18 +108,18 @@
    "era": "SE.01",
    "baseline": {
     "n": 20,
-    "above": 0.1,
+    "above": 0.0,
     "below": 0.0,
-    "match": 0.8,
+    "match": 0.7,
     "single": false,
     "penalty": 0,
     "meets": true
    },
    "airing": {
     "n": 20,
-    "above": 0.05,
+    "above": 0.0,
     "below": 0.0,
-    "match": 0.7,
+    "match": 0.75,
     "single": false,
     "penalty": 0,
     "meets": true
@@ -130,18 +130,18 @@
    "era": "SE.02",
    "baseline": {
     "n": 20,
-    "above": 0.15,
+    "above": 0.05,
     "below": 0.0,
-    "match": 0.95,
+    "match": 0.9,
     "single": false,
     "penalty": 0,
     "meets": true
    },
    "airing": {
     "n": 20,
-    "above": 0.15,
+    "above": 0.05,
     "below": 0.0,
-    "match": 0.9,
+    "match": 0.85,
     "single": false,
     "penalty": 0,
     "meets": true
@@ -152,20 +152,20 @@
    "era": "SE.03",
    "baseline": {
     "n": 19,
-    "above": 0.2631578947368421,
+    "above": 0.21052631578947367,
     "below": 0.0,
-    "match": 0.7368421052631579,
+    "match": 0.7894736842105263,
     "single": false,
-    "penalty": 0.1131578947368421,
+    "penalty": 0.06052631578947368,
     "meets": false
    },
    "airing": {
     "n": 19,
-    "above": 0.2631578947368421,
-    "below": 0.0,
-    "match": 0.8421052631578947,
+    "above": 0.21052631578947367,
+    "below": 0.05263157894736842,
+    "match": 0.7894736842105263,
     "single": false,
-    "penalty": 0.1131578947368421,
+    "penalty": 0.06052631578947368,
     "meets": false
    }
   },
@@ -174,20 +174,20 @@
    "era": "SE.04",
    "baseline": {
     "n": 20,
-    "above": 0.5,
+    "above": 0.35,
     "below": 0.0,
-    "match": 0.5,
+    "match": 0.7,
     "single": false,
-    "penalty": 0.35,
+    "penalty": 0.19999999999999998,
     "meets": false
    },
    "airing": {
     "n": 20,
-    "above": 0.4,
+    "above": 0.3,
     "below": 0.0,
-    "match": 0.55,
+    "match": 0.7,
     "single": false,
-    "penalty": 0.25,
+    "penalty": 0.15,
     "meets": false
    }
   },
@@ -196,21 +196,21 @@
    "era": "SE.05",
    "baseline": {
     "n": 20,
-    "above": 0.3,
+    "above": 0.15,
     "below": 0.0,
     "match": 0.8,
     "single": false,
-    "penalty": 0.15,
-    "meets": false
+    "penalty": 0,
+    "meets": true
    },
    "airing": {
     "n": 20,
-    "above": 0.2,
+    "above": 0.1,
     "below": 0.0,
-    "match": 0.8,
+    "match": 0.75,
     "single": false,
-    "penalty": 0.05000000000000002,
-    "meets": false
+    "penalty": 0,
+    "meets": true
    }
   },
   {
@@ -218,20 +218,20 @@
    "era": "SE.06",
    "baseline": {
     "n": 20,
-    "above": 0.8,
+    "above": 0.55,
     "below": 0.0,
-    "match": 0.4,
+    "match": 0.7,
     "single": false,
-    "penalty": 0.75,
+    "penalty": 0.4,
     "meets": false
    },
    "airing": {
     "n": 20,
-    "above": 0.75,
-    "below": 0.0,
-    "match": 0.6,
+    "above": 0.4,
+    "below": 0.05,
+    "match": 0.8,
     "single": false,
-    "penalty": 0.6,
+    "penalty": 0.25,
     "meets": false
    }
   },
@@ -240,20 +240,20 @@
    "era": "SE.07",
    "baseline": {
     "n": 20,
-    "above": 0.75,
+    "above": 0.7,
     "below": 0.0,
-    "match": 0.15,
+    "match": 0.05,
     "single": true,
-    "penalty": 0.95,
+    "penalty": 1.0,
     "meets": false
    },
    "airing": {
     "n": 20,
-    "above": 0.75,
+    "above": 0.7,
     "below": 0.0,
-    "match": 0.05,
+    "match": 0.1,
     "single": true,
-    "penalty": 1.05,
+    "penalty": 0.95,
     "meets": false
    }
   },
