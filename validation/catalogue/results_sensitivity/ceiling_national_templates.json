@@ -1,0 +1,563 @@
+{
+ "sample": "national_templates",
+ "applied_from": "",
+ "missing_runs": {
+  "fitted": 0,
+  "bridges": 0
+ },
+ "overall": {
+  "n": 539,
+  "current": 0.5899814471243042,
+  "one_level": 0.5380333951762524,
+  "levels": 0.8886827458256029,
+  "scaled": 0.8775510204081632
+ },
+ "types": {
+  "single_family": {
+   "n": 140,
+   "current": 0.5357142857142857,
+   "one_level": 0.5642857142857143,
+   "levels": 0.8928571428571429,
+   "scaled": 0.8928571428571429
+  },
+  "multi_family": {
+   "n": 137,
+   "current": 0.6496350364963503,
+   "one_level": 0.5985401459854015,
+   "levels": 0.8832116788321168,
+   "scaled": 0.8759124087591241
+  },
+  "office": {
+   "n": 124,
+   "current": 0.5483870967741935,
+   "one_level": 0.4435483870967742,
+   "levels": 0.8870967741935484,
+   "scaled": 0.8387096774193549
+  },
+  "school": {
+   "n": 138,
+   "current": 0.6231884057971014,
+   "one_level": 0.5362318840579711,
+   "levels": 0.8913043478260869,
+   "scaled": 0.8985507246376812
+  }
+ },
+ "cohorts": [
+  {
+   "category": "multi_family",
+   "era": "SE.01",
+   "n": 20,
+   "current": 18,
+   "one_level": 15,
+   "levels": 20,
+   "scaled": 20,
+   "level_values": [
+    110.161302,
+    132.366,
+    78.795918
+   ],
+   "factors": {
+    "existing": 0.573326,
+    "standard": 1.536025,
+    "advanced": 3.525424
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.02",
+   "n": 19,
+   "current": 18,
+   "one_level": 15,
+   "levels": 19,
+   "scaled": 19,
+   "level_values": [
+    110.651171,
+    149.533592,
+    74.505675
+   ],
+   "factors": {
+    "existing": 0.960133,
+    "standard": 1.236724,
+    "advanced": 5.822713
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.03",
+   "n": 20,
+   "current": 15,
+   "one_level": 13,
+   "levels": 20,
+   "scaled": 20,
+   "level_values": [
+    101.78326,
+    40.691585,
+    75.996912
+   ],
+   "factors": {
+    "existing": 0.821131,
+    "standard": 0.648049,
+    "advanced": 4.83189
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.04",
+   "n": 20,
+   "current": 12,
+   "one_level": 11,
+   "levels": 17,
+   "scaled": 18,
+   "level_values": [
+    154.769054,
+    44.935163,
+    67.438321
+   ],
+   "factors": {
+    "existing": 0.526016,
+    "standard": 1.175511,
+    "advanced": 5.017311
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.05",
+   "n": 19,
+   "current": 12,
+   "one_level": 9,
+   "levels": 19,
+   "scaled": 18,
+   "level_values": [
+    145.830657,
+    84.615385,
+    58.625651
+   ],
+   "factors": {
+    "existing": 0.723677,
+    "standard": 1.348065,
+    "advanced": 1.657395
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.06",
+   "n": 19,
+   "current": 10,
+   "one_level": 9,
+   "levels": 16,
+   "scaled": 18,
+   "level_values": [
+    85.281818,
+    55.439601,
+    33.876429
+   ],
+   "factors": {
+    "existing": 1.088488,
+    "standard": 0.727878,
+    "advanced": 2.942301
+   }
+  },
+  {
+   "category": "multi_family",
+   "era": "SE.07",
+   "n": 20,
+   "current": 4,
+   "one_level": 10,
+   "levels": 10,
+   "scaled": 7,
+   "level_values": [
+    46.540254
+   ],
+   "factors": {
+    "single": 1.40545
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.01",
+   "n": 20,
+   "current": 11,
+   "one_level": 10,
+   "levels": 19,
+   "scaled": 18,
+   "level_values": [
+    72.557429,
+    210.630682,
+    115.10227
+   ],
+   "factors": {
+    "existing": 0.313651,
+    "standard": 1.744015,
+    "advanced": 1.528279
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.02",
+   "n": 20,
+   "current": 14,
+   "one_level": 10,
+   "levels": 18,
+   "scaled": 17,
+   "level_values": [
+    74.230859,
+    113.349256,
+    45.572605
+   ],
+   "factors": {
+    "existing": 1.037489,
+    "standard": 0.808244,
+    "advanced": 1.674396
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.03",
+   "n": 20,
+   "current": 12,
+   "one_level": 9,
+   "levels": 20,
+   "scaled": 18,
+   "level_values": [
+    134.308151,
+    52.692537,
+    85.431126
+   ],
+   "factors": {
+    "existing": 1.347114,
+    "standard": 0.995722,
+    "advanced": 2.292686
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.04",
+   "n": 20,
+   "current": 13,
+   "one_level": 9,
+   "levels": 17,
+   "scaled": 18,
+   "level_values": [
+    77.783769,
+    127.010251,
+    46.095805
+   ],
+   "factors": {
+    "existing": 1.091463,
+    "standard": 2.338493,
+    "advanced": 1.440472
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.05",
+   "n": 20,
+   "current": 10,
+   "one_level": 8,
+   "levels": 18,
+   "scaled": 16,
+   "level_values": [
+    66.894198,
+    103.135478,
+    40.372978
+   ],
+   "factors": {
+    "existing": 1.066076,
+    "standard": 0.842968,
+    "advanced": 5.813861
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.06",
+   "n": 19,
+   "current": 8,
+   "one_level": 6,
+   "levels": 15,
+   "scaled": 15,
+   "level_values": [
+    73.067657,
+    112.98,
+    43.410495
+   ],
+   "factors": {
+    "existing": 0.762062,
+    "standard": 2.592361,
+    "advanced": 2.424818
+   }
+  },
+  {
+   "category": "office",
+   "era": "SE.07",
+   "n": 5,
+   "current": 0,
+   "one_level": 3,
+   "levels": 3,
+   "scaled": 2,
+   "level_values": [
+    54.987541
+   ],
+   "factors": {
+    "single": 3.131918
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.01",
+   "n": 20,
+   "current": 12,
+   "one_level": 13,
+   "levels": 19,
+   "scaled": 18,
+   "level_values": [
+    80.786026,
+    117.027758,
+    225.610598
+   ],
+   "factors": {
+    "existing": 0.941364,
+    "standard": 1.234185,
+    "advanced": 2.620368
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.02",
+   "n": 20,
+   "current": 15,
+   "one_level": 11,
+   "levels": 19,
+   "scaled": 20,
+   "level_values": [
+    165.524571,
+    113.451354,
+    78.663161
+   ],
+   "factors": {
+    "existing": 0.926712,
+    "standard": 0.867575,
+    "advanced": 1.801882
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.03",
+   "n": 20,
+   "current": 15,
+   "one_level": 11,
+   "levels": 19,
+   "scaled": 20,
+   "level_values": [
+    68.099024,
+    90.96518,
+    141.408791
+   ],
+   "factors": {
+    "existing": 0.638314,
+    "standard": 1.966841,
+    "advanced": 1.690525
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.04",
+   "n": 20,
+   "current": 18,
+   "one_level": 10,
+   "levels": 20,
+   "scaled": 19,
+   "level_values": [
+    106.875393,
+    167.834942,
+    58.380488
+   ],
+   "factors": {
+    "existing": 0.816357,
+    "standard": 1.606938,
+    "advanced": 1.015579
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.05",
+   "n": 20,
+   "current": 14,
+   "one_level": 8,
+   "levels": 19,
+   "scaled": 20,
+   "level_values": [
+    46.108437,
+    69.128926,
+    107.146868
+   ],
+   "factors": {
+    "existing": 0.631362,
+    "standard": 1.163725,
+    "advanced": 3.548087
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.06",
+   "n": 20,
+   "current": 11,
+   "one_level": 10,
+   "levels": 16,
+   "scaled": 16,
+   "level_values": [
+    35.246557,
+    65.697047,
+    110.032941
+   ],
+   "factors": {
+    "existing": 2.823132,
+    "standard": 1.425378,
+    "advanced": 1.701598
+   }
+  },
+  {
+   "category": "school",
+   "era": "SE.07",
+   "n": 18,
+   "current": 1,
+   "one_level": 11,
+   "levels": 11,
+   "scaled": 11,
+   "level_values": [
+    42.653542
+   ],
+   "factors": {
+    "single": 1.619309
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.01",
+   "n": 20,
+   "current": 14,
+   "one_level": 12,
+   "levels": 20,
+   "scaled": 19,
+   "level_values": [
+    60.586118,
+    111.013216,
+    181.224742
+   ],
+   "factors": {
+    "existing": 0.270129,
+    "standard": 0.644271,
+    "advanced": 2.269935
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.02",
+   "n": 20,
+   "current": 10,
+   "one_level": 13,
+   "levels": 19,
+   "scaled": 20,
+   "level_values": [
+    89.260976,
+    143.241758,
+    70.512821
+   ],
+   "factors": {
+    "existing": 0.879279,
+    "standard": 0.775451,
+    "advanced": 0.994371
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.03",
+   "n": 20,
+   "current": 11,
+   "one_level": 11,
+   "levels": 19,
+   "scaled": 18,
+   "level_values": [
+    128.938983,
+    73.711111,
+    54.744231
+   ],
+   "factors": {
+    "existing": 0.480782,
+    "standard": 1.106276,
+    "advanced": 0.618589
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.04",
+   "n": 20,
+   "current": 12,
+   "one_level": 11,
+   "levels": 18,
+   "scaled": 19,
+   "level_values": [
+    45.008824,
+    167.331193,
+    119.056667
+   ],
+   "factors": {
+    "existing": 0.913152,
+    "standard": 0.651553,
+    "advanced": 4.844396
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.05",
+   "n": 20,
+   "current": 11,
+   "one_level": 10,
+   "levels": 19,
+   "scaled": 18,
+   "level_values": [
+    152.869825,
+    58.822034,
+    87.083333
+   ],
+   "factors": {
+    "existing": 1.46594,
+    "standard": 1.025998,
+    "advanced": 3.458155
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.06",
+   "n": 20,
+   "current": 12,
+   "one_level": 9,
+   "levels": 17,
+   "scaled": 18,
+   "level_values": [
+    79.109589,
+    125.650345,
+    53.263158
+   ],
+   "factors": {
+    "existing": 0.540705,
+    "standard": 0.866409,
+    "advanced": 3.97548
+   }
+  },
+  {
+   "category": "single_family",
+   "era": "SE.07",
+   "n": 20,
+   "current": 5,
+   "one_level": 13,
+   "levels": 13,
+   "scaled": 13,
+   "level_values": [
+    47.836134
+   ],
+   "factors": {
+    "single": 0.740566
+   }
+  }
+ ]
+}

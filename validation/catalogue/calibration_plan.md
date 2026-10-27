@@ -444,6 +444,55 @@ The same ΔU is a much larger share of a well-insulated envelope's heat loss.
 - **What changes.** Offices take the TABULA multifamily allowance. Housing and schools
   keep zero bridging, with the overshoot above Existing recorded as a known bias.
 
+## How much better can match get?
+
+`ceiling.py` scores the current model (stage-3 changes, plus office bridges) against two
+oracles that see the measured values. A building matches when one state is within ±20 %
+of the measured value.
+
+- **One level.** The best single fixed intensity per cohort. It shows how much of a
+  cohort one state can cover at all.
+- **Three levels.** The best three fixed intensities per cohort (one for SE.07). It shows
+  how good an archetype without building-specific variation can be.
+- **Scaled model.** The current simulations, with each state multiplied by its own
+  per-cohort factor. It shows how far re-tuning the archetypes alone could go.
+
+On the same buildings the oracles are chosen on, the ceilings look high, about 90 %. With
+20 buildings per cohort, though, that is mostly the oracle fitting noise. The honest
+ceiling places the levels and factors on the calibration sample, then scores them on the
+hold-out:
+
+| Hold-out (516) | Current | One level | Three levels, in sample | Three levels, out of sample | Scaled model, out of sample |
+|---|---|---|---|---|---|
+| All | 59 % | 53 % | 92 % | 72 % | 67 % |
+| Single-family | 54 % | 49 % | 91 % | 64 % | 66 % |
+| Multifamily | 62 % | 60 % | 91 % | 76 % | 66 % |
+| Office | 59 % | 53 % | 91 % | 71 % | 68 % |
+| School | 64 % | 50 % | 94 % | 77 % | 70 % |
+
+Calibration-sample values, in sample: current 59 %, one level 54 %, three levels 89 %,
+scaled model 88 %.
+
+### What the ceiling shows
+
+1. **The realistic headroom is about 8–13 points of match**, not 30. Archetypes fitted
+   with full knowledge of 539 measured buildings reach 67–72 % on new ones; we are at
+   59 % without fitting. Each cohort's out-of-sample figure is noisy (about ±10 points at
+   n = 20); the type and overall figures are firmer.
+2. **The headroom is concentrated in the newest eras.** SE.07 matches 15–20 % against
+   35–55 % out of sample, and SE.06 multifamily 40 % against 85 %. In SE.01–SE.03 the
+   current model is already at or above the fitted ceiling. Those cohorts have nothing left
+   to gain, so any further revision should target SE.04–SE.07. That is where airtightness,
+   FTX recovery and the SE.07 state act; bridges and setpoint act everywhere.
+3. **The model's building-to-building variation does not yet help match.** A fixed
+   intensity per state matches new buildings as well as a re-scaled model does, or better
+   (72 % against 67 %). Within a cohort, measured differences are driven by things the
+   archetype does not know: use, renovation history, operation. Building-specific inputs
+   from the record (ventilation type, heat recovery, renovation status) are the way past
+   the archetype ceiling, not finer archetype parameters.
+4. **The three states add little over a single level** (53 % → 59 %). Their value is in
+   spanning renovation scenarios, not in matching more of today's stock.
+
 ## Sources
 
 - TABULA.xlsm, Swedish typology, `delta_U_ThermalBridging`: <https://episcope.eu/fileadmin/tabula/public/calc/TABULA-xlsm_Download.zip>
