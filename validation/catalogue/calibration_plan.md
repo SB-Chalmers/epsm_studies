@@ -479,11 +479,22 @@ scaled model 88 %.
    with full knowledge of 539 measured buildings reach 67–72 % on new ones; we are at
    59 % without fitting. Each cohort's out-of-sample figure is noisy (about ±10 points at
    n = 20); the type and overall figures are firmer.
-2. **The headroom is concentrated in the newest eras.** SE.07 matches 15–20 % against
-   35–55 % out of sample, and SE.06 multifamily 40 % against 85 %. In SE.01–SE.03 the
-   current model is already at or above the fitted ceiling. Those cohorts have nothing left
-   to gain, so any further revision should target SE.04–SE.07. That is where airtightness,
-   FTX recovery and the SE.07 state act; bridges and setpoint act everywhere.
+2. **The headroom sits at both ends of the era range.** Hold-out match, current against
+   three levels out of sample:
+
+   | Era | Current | Out of sample | Gap |
+   |---|---|---|---|
+   | SE.01 | 58 % | 82 % | +25 |
+   | SE.02 | 75 % | 85 % | +10 |
+   | SE.03 | 67 % | 78 % | +11 |
+   | SE.04 | 62 % | 56 % | −6 |
+   | SE.05 | 71 % | 71 % | 0 |
+   | SE.06 | 46 % | 71 % | +25 |
+   | SE.07 | 18 % | 45 % | +28 |
+
+   SE.04–SE.05 have nothing left to gain from archetype revisions. SE.06–SE.07 are where
+   airtightness, FTX recovery and the SE.07 state act. SE.01 is mostly office SE.01 (35 %
+   against 80 %) together with the pre-1960 housing that bridging over-heated.
 3. **The model's building-to-building variation does not yet help match.** A fixed
    intensity per state matches new buildings as well as a re-scaled model does, or better
    (72 % against 67 %). Within a cohort, measured differences are driven by things the
