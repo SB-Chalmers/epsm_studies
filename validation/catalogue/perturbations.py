@@ -7,7 +7,7 @@ touches this building and state (the baseline run then stands).
 
 ``params`` keys (all optional):
 
-- ``setpoint_c``: {category: heating setpoint °C} (#1; housing only in the plan)
+- ``setpoint_c``: {category: heating setpoint °C, or {era: °C}} (#1; housing only in the plan)
 - ``self_draught_total_ach``: {category: natural + envelope air change for topology S} (#2),
   reached by the fraction ``self_draught_weight`` {category: 0–1} of the step (default 1)
 - ``infiltration_factor``: {category: factor on envelope infiltration} for the eras in
@@ -97,7 +97,9 @@ def apply(spec, context, params):
     def value(name):
         return (params.get(name) or {}).get(category)
 
-    if (target := value("setpoint_c")) is not None:
+    if isinstance(target := value("setpoint_c"), dict):
+        target = target.get(era)
+    if target is not None:
         current = use.heating_setpoint.values[0]
         if any(v != current for v in use.heating_setpoint.values):
             raise ValueError("Non-constant heating setpoint")

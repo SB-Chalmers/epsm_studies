@@ -4,8 +4,8 @@
 [national run](national.md): fix the targets and the evidence before any parameter is
 changed, then choose a small set of genuinely uncertain parameters with published
 ranges. Stages 3 (sensitivity runs and fitting) and 4 (acceptance on the hold-out sample)
-are reported in [Stage 3 results](#stage-3-results). No catalogue value has been changed in
-epsm_data; accepted changes are listed there for a sourced catalogue revision.
+are reported in [Stage 3 results](#stage-3-results). [Round 2](#round-2-sourced-templates-for-the-catalogue-28-october)
+settles the values that went into epsm_data on the `codex/lod2-catalogue` branch.
 
 ## Stage 1 — targets, fixed in advance
 
@@ -745,6 +745,107 @@ type and installation year) belongs to mode 1, not to the generic archetype.
 
 The pump-type lookup and `with_spf` stay in `sensitivity.py` for later tests. `SPF_ACCEPTED`
 is empty, so the current model is unchanged.
+
+## Round 2: sourced templates for the catalogue (28 October)
+
+Code: [`round2.py`](round2.py). Results: [`results_round2/`](results_round2/). Four questions
+left open by the revisions above, each fixed before scoring. Direct runs used the
+baseline's exact environment (epsm_data `92d776d`, epsm `0a58c0c`, epsm_core `586607c` with
+the same diff hash, epsm_db `db58f8a`), so only the tested value differs.
+
+### 1. Setpoint by era, not one fitted value
+
+Stage 3 fitted multifamily at 23.0 °C, the top of BETSI's range. BETSI reports the measured
+mean by construction year (Boverket 2010, table 3.3 p. 62 and table 3.6 p. 66):
+
+| BETSI class | Era | Single-family °C | Multifamily °C |
+| --- | --- | ---: | ---: |
+| -1960 | SE.01 | 20.8 | 22.2 |
+| 1961–75 | SE.02 | 21.3 | 22.6 |
+| 1976–85 | SE.03 | 21.7 | 22.5 |
+| 1986–95 | SE.04 | 21.4 | 22.4 |
+| 1996–2005 | SE.05 | 21.9 | 23.0 |
+
+SE.06 and SE.07 take the newest class (the stock mean as a sensitivity). Multifamily per-era
+values were rerun directly on both samples (888 model-years, none failed), against the
+current model with 23.0 °C:
+
+| Sample | Penalty | Above Existing | Match | Cohorts meeting targets |
+| --- | --- | --- | --- | --- |
+| Calibration | 0.92 → 1.02 | 23 → 24 % | 67.9 → 70.1 % | 5 → 4 |
+| Hold-out | 1.41 → 1.46 | 25 → 26 % | 67.6 → 68.3 % | 3 → 3 |
+
+The difference is two buildings on calibration (multifamily SE.03 above Existing) and one on
+hold-out (SE.04). By the stage-1 rule the per-era table is not an improvement on 23.0 °C; it
+is also not measurably worse, and 23.0 °C contradicts BETSI for every class before 1996.
+**Decision: the catalogue takes BETSI by era.** When the sample cannot separate two values,
+the sourced one is kept over the one fitted to the range edge.
+
+Single-family per-era values, estimated linearly from the stage-3 setpoint run on
+calibration, leave the penalty unchanged (1.10 → 1.10) and drop the cohorts meeting targets
+from 3 to 0; with the BETSI 0.40 ACH self-draught as well, single-family SE.02 gets materially
+worse. **Not adopted.** Section 4 explains why single-family should not be judged on
+operation yet.
+
+### 2. Hot-water basis for circulation losses
+
+Revision 4 derived 8.3 kWh/m² from BEN's 25 kWh/m², while the simulation's Sveby profile
+uses 21. epsm_data already separates the two purposes: `select_dhw_profile(...,
+purpose="epc_normal_use")` returns BEN's 25 for EPC comparisons. Circulation on the Sveby
+basis (7.0 kWh/m²) also passes on both samples but scores slightly lower (calibration
+penalty 1.03 against 0.92). **Kept at 8.3 kWh/m²**, the catalogue's EPC-comparison basis.
+
+### 3. School window airing
+
+epsm_data's school profile records Sveby *Brukarindata undervisning* 1.0 table 2.2: 4 kWh/m²
+of airing added in post-processing. The stock-wide review above had missed it.
+
+| Sample | Penalty | Above Existing | Match |
+| --- | --- | --- | --- |
+| Calibration | 2.08 → 1.67 | 37 → 31 % | 62.3 → 60.9 % |
+| Hold-out | 0.80 → 0.65 | 28 → 22 % | 64.2 → 64.2 % |
+
+Match falls by two buildings on calibration, so **not accepted** by the rule, although it
+passes on hold-out and per m² on both samples. It is a definitional accounting term, like
+multifamily airing; it should be retested once the geometry fix in section 4 lands.
+
+### 4. Single-family overprediction follows the area mismatch
+
+The national run found no difference between buildings inside and outside the 0.75–1.25
+Atemp/geometry screen, pooled over all types. Within single-family cohorts the relation is
+strong: Existing r correlates with EPC Atemp ÷ model conditioned area at −0.38 to −0.60 in
+SE.02–SE.06, and the median house conditions about a third more floor than its EPC heats.
+Scaling each ratio by that factor (heating per m² of each side's own area):
+
+| Existing median r, calibration | SE.01 | SE.02 | SE.03 | SE.04 | SE.05 | SE.06 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Single-family, total | 2.27 | 1.73 | 1.84 | 1.09 | 0.80 | 1.13 |
+| Single-family, per m² | 1.62 | 1.35 | 1.63 | 0.79 | 0.67 | 0.98 |
+| Multifamily, total | 1.36 | 0.97 | 1.07 | 1.16 | 0.95 | 0.80 |
+| Multifamily, per m² | 0.99 | 0.79 | 0.90 | 0.89 | 0.80 | 0.64 |
+
+Two consequences:
+
+- **Old single-family overprediction is largely geometric.** Per m², about half of it
+  disappears. The model's storey count or conditioned attic and basement exceed what the
+  EPC heats (issue D1). Operating or fabric changes for old houses should wait for that fix.
+- **The other types are more underpredicted than the totals show.** The accepted changes
+  that raise Existing still pass per m² on both samples (all buildings: penalty 16.6 → 11.9
+  calibration, 15.5 → 10.4 hold-out), so their direction holds; the remaining newer-era gap
+  is larger than the total-energy tables suggest.
+
+### Going into epsm_data
+
+| Change | Catalogue form |
+| --- | --- |
+| Multifamily setpoint, BETSI by era | `select_operating_profile(..., standard="measured", era=...)` |
+| Multifamily self-draught 0.39 ACH total | measured-use ventilation note; the consumer subtracts infiltration |
+| Office ventilation 1.6 L/(s·m²), 06–20 | measured-use office profile |
+| Office thermal bridges (revision 1) | `envelope_performance.thermal_bridge_delta_u_w_m2k` |
+| Observed SE.03 FTX at 0.60 (issue C1) | `ventilation_templates.json` |
+
+Heat-pump COP 2.75, multifamily airing and circulation stay with the platform's EPC
+comparison, as described in epsm_data `docs/validation.md`.
 
 ## Sources
 

@@ -1,0 +1,1448 @@
+{
+ "sample": "national_templates",
+ "missing_runs": {
+  "fitted": 0,
+  "bridges": 0,
+  "betsi": 0
+ },
+ "total": {
+  "sample": "national_templates",
+  "missing_runs": {},
+  "baseline": {
+   "n": 539,
+   "above": 0.29313543599257885,
+   "below": 0.08823529411764706,
+   "match": 0.5974025974025974,
+   "penalty": 6.9754385964912275,
+   "meets": 11
+  },
+  "betsi": {
+   "n": 539,
+   "above": 0.29684601113172543,
+   "below": 0.08823529411764706,
+   "match": 0.6029684601113172,
+   "penalty": 7.075438596491228,
+   "meets": 10
+  },
+  "types": {
+   "single_family": {
+    "baseline": {
+     "n": 140,
+     "above": 0.2,
+     "below": 0.125,
+     "match": 0.5357142857142857,
+     "penalty": 1.0999999999999999,
+     "meets": 3
+    },
+    "betsi": {
+     "n": 140,
+     "above": 0.2,
+     "below": 0.125,
+     "match": 0.5357142857142857,
+     "penalty": 1.0999999999999999,
+     "meets": 3
+    },
+    "materially_worse": [],
+    "accepted": false
+   },
+   "multi_family": {
+    "baseline": {
+     "n": 137,
+     "above": 0.22627737226277372,
+     "below": 0.03418803418803419,
+     "match": 0.6788321167883211,
+     "penalty": 0.9157894736842105,
+     "meets": 5
+    },
+    "betsi": {
+     "n": 137,
+     "above": 0.24087591240875914,
+     "below": 0.03418803418803419,
+     "match": 0.7007299270072993,
+     "penalty": 1.0157894736842106,
+     "meets": 4
+    },
+    "materially_worse": [],
+    "accepted": false
+   },
+   "office": {
+    "baseline": {
+     "n": 124,
+     "above": 0.3870967741935484,
+     "below": 0.12605042016806722,
+     "match": 0.5483870967741935,
+     "penalty": 2.876315789473684,
+     "meets": 2
+    },
+    "betsi": {
+     "n": 124,
+     "above": 0.3870967741935484,
+     "below": 0.12605042016806722,
+     "match": 0.5483870967741935,
+     "penalty": 2.876315789473684,
+     "meets": 2
+    },
+    "materially_worse": [],
+    "accepted": false
+   },
+   "school": {
+    "baseline": {
+     "n": 138,
+     "above": 0.3695652173913043,
+     "below": 0.06666666666666667,
+     "match": 0.6231884057971014,
+     "penalty": 2.083333333333333,
+     "meets": 1
+    },
+    "betsi": {
+     "n": 138,
+     "above": 0.3695652173913043,
+     "below": 0.06666666666666667,
+     "match": 0.6231884057971014,
+     "penalty": 2.083333333333333,
+     "meets": 1
+    },
+    "materially_worse": [],
+    "accepted": false
+   }
+  },
+  "cohorts": [
+   {
+    "category": "multi_family",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.05,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.05,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.02",
+    "baseline": {
+     "n": 19,
+     "above": 0.10526315789473684,
+     "below": 0.0,
+     "match": 0.9473684210526315,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.10526315789473684,
+     "below": 0.0,
+     "match": 1.0,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.25,
+     "below": 0.0,
+     "match": 0.9,
+     "single": false,
+     "penalty": 0.1,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.15,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.15,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.05",
+    "baseline": {
+     "n": 19,
+     "above": 0.10526315789473684,
+     "below": 0.0,
+     "match": 0.6842105263157895,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.10526315789473684,
+     "below": 0.0,
+     "match": 0.6842105263157895,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.06",
+    "baseline": {
+     "n": 19,
+     "above": 0.3157894736842105,
+     "below": 0.05263157894736842,
+     "match": 0.7368421052631579,
+     "single": false,
+     "penalty": 0.16578947368421051,
+     "meets": false
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.3157894736842105,
+     "below": 0.05263157894736842,
+     "match": 0.7368421052631579,
+     "single": false,
+     "penalty": 0.16578947368421051,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.07",
+    "baseline": {
+     "n": 20,
+     "above": 0.75,
+     "below": 0.0,
+     "match": 0.35,
+     "single": true,
+     "penalty": 0.75,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.75,
+     "below": 0.0,
+     "match": 0.35,
+     "single": true,
+     "penalty": 0.75,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.1,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.1,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.02",
+    "baseline": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.15,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.15,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.1,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.1,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.3,
+     "below": 0.05,
+     "match": 0.65,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.3,
+     "below": 0.05,
+     "match": 0.65,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.05",
+    "baseline": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.1,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.1,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.06",
+    "baseline": {
+     "n": 19,
+     "above": 0.6842105263157895,
+     "below": 0.2631578947368421,
+     "match": 0.42105263157894735,
+     "single": false,
+     "penalty": 0.7263157894736842,
+     "meets": false
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.6842105263157895,
+     "below": 0.2631578947368421,
+     "match": 0.42105263157894735,
+     "single": false,
+     "penalty": 0.7263157894736842,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.07",
+    "baseline": {
+     "n": 5,
+     "above": 1.0,
+     "below": 0.0,
+     "match": 0.0,
+     "single": true,
+     "penalty": 1.35,
+     "meets": false
+    },
+    "betsi": {
+     "n": 5,
+     "above": 1.0,
+     "below": 0.0,
+     "match": 0.0,
+     "single": true,
+     "penalty": 1.35,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.2,
+     "below": 0.05,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.05000000000000002,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.2,
+     "below": 0.05,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.05000000000000002,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.02",
+    "baseline": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.1,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.1,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.2,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0.05000000000000002,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.2,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0.05000000000000002,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.3,
+     "below": 0.15,
+     "match": 0.9,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.3,
+     "below": 0.15,
+     "match": 0.9,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.05",
+    "baseline": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.06",
+    "baseline": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.1,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.1,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.07",
+    "baseline": {
+     "n": 18,
+     "above": 0.8888888888888888,
+     "below": 0.0,
+     "match": 0.05555555555555555,
+     "single": true,
+     "penalty": 1.1833333333333331,
+     "meets": false
+    },
+    "betsi": {
+     "n": 18,
+     "above": 0.8888888888888888,
+     "below": 0.0,
+     "match": 0.05555555555555555,
+     "single": true,
+     "penalty": 1.1833333333333331,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.0,
+     "below": 0.3,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.0,
+     "below": 0.3,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.02",
+    "baseline": {
+     "n": 20,
+     "above": 0.05,
+     "below": 0.05,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.05,
+     "below": 0.05,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.15,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.15,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.4,
+     "below": 0.1,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.25,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.4,
+     "below": 0.1,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.25,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.05",
+    "baseline": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.05,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.05,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.06",
+    "baseline": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.1,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.1,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.07",
+    "baseline": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.0,
+     "match": 0.25,
+     "single": true,
+     "penalty": 0.25,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.1,
+     "below": 0.0,
+     "match": 0.25,
+     "single": true,
+     "penalty": 0.25,
+     "meets": false
+    }
+   }
+  ]
+ },
+ "per_area": {
+  "sample": "national_templates",
+  "missing_runs": {},
+  "baseline": {
+   "n": 539,
+   "above": 0.47866419294990725,
+   "below": 0.03361344537815126,
+   "match": 0.5250463821892394,
+   "penalty": 11.921637426900585,
+   "meets": 2
+  },
+  "betsi": {
+   "n": 539,
+   "above": 0.4805194805194805,
+   "below": 0.03361344537815126,
+   "match": 0.5250463821892394,
+   "penalty": 11.971637426900585,
+   "meets": 2
+  },
+  "types": {
+   "single_family": {
+    "baseline": {
+     "n": 140,
+     "above": 0.4357142857142857,
+     "below": 0.041666666666666664,
+     "match": 0.5357142857142857,
+     "penalty": 2.4499999999999997,
+     "meets": 2
+    },
+    "betsi": {
+     "n": 140,
+     "above": 0.4357142857142857,
+     "below": 0.041666666666666664,
+     "match": 0.5357142857142857,
+     "penalty": 2.4499999999999997,
+     "meets": 2
+    },
+    "materially_worse": [],
+    "accepted": false
+   },
+   "multi_family": {
+    "baseline": {
+     "n": 137,
+     "above": 0.4306569343065693,
+     "below": 0.02564102564102564,
+     "match": 0.6058394160583942,
+     "penalty": 2.2263157894736842,
+     "meets": 0
+    },
+    "betsi": {
+     "n": 137,
+     "above": 0.43795620437956206,
+     "below": 0.02564102564102564,
+     "match": 0.6058394160583942,
+     "penalty": 2.276315789473684,
+     "meets": 0
+    },
+    "materially_worse": [],
+    "accepted": false
+   },
+   "office": {
+    "baseline": {
+     "n": 124,
+     "above": 0.5080645161290323,
+     "below": 0.05042016806722689,
+     "match": 0.43548387096774194,
+     "penalty": 3.93421052631579,
+     "meets": 0
+    },
+    "betsi": {
+     "n": 124,
+     "above": 0.5080645161290323,
+     "below": 0.05042016806722689,
+     "match": 0.43548387096774194,
+     "penalty": 3.93421052631579,
+     "meets": 0
+    },
+    "materially_worse": [],
+    "accepted": false
+   },
+   "school": {
+    "baseline": {
+     "n": 138,
+     "above": 0.5434782608695652,
+     "below": 0.016666666666666666,
+     "match": 0.5144927536231884,
+     "penalty": 3.311111111111111,
+     "meets": 0
+    },
+    "betsi": {
+     "n": 138,
+     "above": 0.5434782608695652,
+     "below": 0.016666666666666666,
+     "match": 0.5144927536231884,
+     "penalty": 3.311111111111111,
+     "meets": 0
+    },
+    "materially_worse": [],
+    "accepted": false
+   }
+  },
+  "cohorts": [
+   {
+    "category": "multi_family",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.4,
+     "below": 0.0,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.25,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.02",
+    "baseline": {
+     "n": 19,
+     "above": 0.42105263157894735,
+     "below": 0.0,
+     "match": 0.8947368421052632,
+     "single": false,
+     "penalty": 0.2710526315789473,
+     "meets": false
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.42105263157894735,
+     "below": 0.0,
+     "match": 0.8421052631578947,
+     "single": false,
+     "penalty": 0.2710526315789473,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.65,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.65,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.3,
+     "below": 0.1,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.3,
+     "below": 0.1,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.15,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.05",
+    "baseline": {
+     "n": 19,
+     "above": 0.47368421052631576,
+     "below": 0.0,
+     "match": 0.631578947368421,
+     "single": false,
+     "penalty": 0.3236842105263158,
+     "meets": false
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.47368421052631576,
+     "below": 0.0,
+     "match": 0.631578947368421,
+     "single": false,
+     "penalty": 0.3236842105263158,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.06",
+    "baseline": {
+     "n": 19,
+     "above": 0.631578947368421,
+     "below": 0.05263157894736842,
+     "match": 0.631578947368421,
+     "single": false,
+     "penalty": 0.481578947368421,
+     "meets": false
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.631578947368421,
+     "below": 0.05263157894736842,
+     "match": 0.631578947368421,
+     "single": false,
+     "penalty": 0.481578947368421,
+     "meets": false
+    }
+   },
+   {
+    "category": "multi_family",
+    "era": "SE.07",
+    "baseline": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.25,
+     "single": true,
+     "penalty": 0.55,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.25,
+     "single": true,
+     "penalty": 0.55,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.25,
+     "below": 0.0,
+     "match": 0.65,
+     "single": false,
+     "penalty": 0.1,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.25,
+     "below": 0.0,
+     "match": 0.65,
+     "single": false,
+     "penalty": 0.1,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.02",
+    "baseline": {
+     "n": 20,
+     "above": 0.25,
+     "below": 0.15,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.1,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.25,
+     "below": 0.15,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.1,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.55,
+     "below": 0.05,
+     "match": 0.35,
+     "single": false,
+     "penalty": 0.55,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.55,
+     "below": 0.05,
+     "match": 0.35,
+     "single": false,
+     "penalty": 0.55,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.05",
+    "baseline": {
+     "n": 20,
+     "above": 0.65,
+     "below": 0.0,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.5,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.65,
+     "below": 0.0,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0.5,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.06",
+    "baseline": {
+     "n": 19,
+     "above": 0.7894736842105263,
+     "below": 0.10526315789473684,
+     "match": 0.10526315789473684,
+     "single": false,
+     "penalty": 1.0342105263157895,
+     "meets": false
+    },
+    "betsi": {
+     "n": 19,
+     "above": 0.7894736842105263,
+     "below": 0.10526315789473684,
+     "match": 0.10526315789473684,
+     "single": false,
+     "penalty": 1.0342105263157895,
+     "meets": false
+    }
+   },
+   {
+    "category": "office",
+    "era": "SE.07",
+    "baseline": {
+     "n": 5,
+     "above": 1.0,
+     "below": 0.0,
+     "match": 0.0,
+     "single": true,
+     "penalty": 1.35,
+     "meets": false
+    },
+    "betsi": {
+     "n": 5,
+     "above": 1.0,
+     "below": 0.0,
+     "match": 0.0,
+     "single": true,
+     "penalty": 1.35,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.3,
+     "single": false,
+     "penalty": 0.5,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.3,
+     "single": false,
+     "penalty": 0.5,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.02",
+    "baseline": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.75,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.35,
+     "below": 0.0,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.19999999999999998,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.0,
+     "match": 0.6,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.05",
+    "baseline": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.0,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.6,
+     "below": 0.0,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.44999999999999996,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.06",
+    "baseline": {
+     "n": 20,
+     "above": 0.75,
+     "below": 0.1,
+     "match": 0.4,
+     "single": false,
+     "penalty": 0.7,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.75,
+     "below": 0.1,
+     "match": 0.4,
+     "single": false,
+     "penalty": 0.7,
+     "meets": false
+    }
+   },
+   {
+    "category": "school",
+    "era": "SE.07",
+    "baseline": {
+     "n": 18,
+     "above": 0.8888888888888888,
+     "below": 0.0,
+     "match": 0.2777777777777778,
+     "single": true,
+     "penalty": 0.961111111111111,
+     "meets": false
+    },
+    "betsi": {
+     "n": 18,
+     "above": 0.8888888888888888,
+     "below": 0.0,
+     "match": 0.2777777777777778,
+     "single": true,
+     "penalty": 0.961111111111111,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.01",
+    "baseline": {
+     "n": 20,
+     "above": 0.2,
+     "below": 0.1,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.05000000000000002,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.2,
+     "below": 0.1,
+     "match": 0.7,
+     "single": false,
+     "penalty": 0.05000000000000002,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.02",
+    "baseline": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.0,
+     "match": 0.9,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.0,
+     "match": 0.9,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.03",
+    "baseline": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.1,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.15,
+     "below": 0.1,
+     "match": 0.5,
+     "single": false,
+     "penalty": 0,
+     "meets": true
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.04",
+    "baseline": {
+     "n": 20,
+     "above": 0.7,
+     "below": 0.0,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.5499999999999999,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.7,
+     "below": 0.0,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.5499999999999999,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.05",
+    "baseline": {
+     "n": 20,
+     "above": 0.7,
+     "below": 0.0,
+     "match": 0.35,
+     "single": false,
+     "penalty": 0.7,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.7,
+     "below": 0.0,
+     "match": 0.35,
+     "single": false,
+     "penalty": 0.7,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.06",
+    "baseline": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.05,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.45,
+     "below": 0.05,
+     "match": 0.55,
+     "single": false,
+     "penalty": 0.30000000000000004,
+     "meets": false
+    }
+   },
+   {
+    "category": "single_family",
+    "era": "SE.07",
+    "baseline": {
+     "n": 20,
+     "above": 0.7,
+     "below": 0.0,
+     "match": 0.2,
+     "single": true,
+     "penalty": 0.8499999999999999,
+     "meets": false
+    },
+    "betsi": {
+     "n": 20,
+     "above": 0.7,
+     "below": 0.0,
+     "match": 0.2,
+     "single": true,
+     "penalty": 0.8499999999999999,
+     "meets": false
+    }
+   }
+  ]
+ }
+}
