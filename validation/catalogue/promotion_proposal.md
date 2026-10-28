@@ -29,7 +29,7 @@ there.
 | --- | --- | --- | --- |
 | Measured-use setpoint by era, office ventilation | epsm_data `measured_use_v1` | epsm selects it for existing-stock runs | data landed (68a42cd); **selection missing** |
 | Self-draught total 0.39 ACH, net of infiltration | epsm_data `measured_use_v1` | epsm_core, when converting the profile (it knows infiltration and volume) | data landed; **netting missing** |
-| Office thermal-bridge ΔU | epsm_data `envelope_performance` | epsm adapters pass it; epsm_core applies it; epsm_rc reads Core's per-role uplift | **done on branches** `claude/bridge-delta-u`: epsm_core abde98a, epsm_rc 33fadc3, epsm a15cb5e (not pushed) |
+| Office thermal-bridge ΔU | epsm_data `envelope_performance` | epsm adapters pass it; epsm_core applies it; epsm_rc reads Core's per-role uplift | **in review:** SB-Chalmers/epsm_core#64, SB-Chalmers/epsm_rc#80, SB-Chalmers/epsm#38 (stacked on `codex/lod2-catalogue`) |
 | Observed SE.03 FTX at 0.60 | epsm_data ventilation templates | epsm (template choice) | landed (0b508f6) |
 | Heat-pump seasonal COP 2.75 | **epsm_data**, as a sourced heating-delivery template | epsm selects; epsm_core converts | hard-coded in epsm `ModelPolicy` (3.0) |
 | EPC observed systems (ventilation type, carrier, pump type) | **epsm_db**, as interpreted observations | epsm maps them to a template | done twice: in epsm `legacy_records` and in my study scripts |
