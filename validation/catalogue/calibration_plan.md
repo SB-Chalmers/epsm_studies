@@ -634,10 +634,9 @@ calibration / hold-out, current model:
 **Decision.** No SE.07 state change. A change needs either as-built evidence for new
 buildings by type, or a sourced new-installation heat-pump SPF for single-family houses.
 
-**Runner note.** The record runner maps `VentTypFmed` to plain F. For heat-pump houses this
-changes little: the exhaust air is the heat pump's source, and the full demand is still
-divided by its COP. For a district-heated building with an exhaust-air heat pump, however,
-the recovery is lost.
+**Runner note.** The record runner mapped `VentTypFmed` to plain F. For heat-pump houses
+that is right: the exhaust air is the heat pump's source, and the full demand is divided by
+its COP. Without a heat-pump carrier the recovery was lost; fixed below.
 
 ## Revision 4: hot-water circulation losses (accepted for multifamily)
 
@@ -687,10 +686,37 @@ Both are kept.
 | Sample | Match | Multifamily |
 |---|---|---|
 | Calibration | 60 % | — |
-| Hold-out | 61 % | 68 % |
+| Hold-out | 61 % (61.4 % after the `VentTypFmed` fix) | 68 % |
 
 The hold-out ceiling (three levels, out of sample) is 72 % overall and 76 % for
 multifamily.
+
+## Runner fix: exhaust ventilation with recovery (`VentTypFmed`)
+
+`VentTypFmed` is the EPC's "F med återvinning", exhaust ventilation with heat recovery,
+which in practice is an exhaust-air heat pump. In both samples, 106 of 1,063 buildings
+report it:
+
+| Case | Calibration | Hold-out | Model before | Model now |
+|---|---|---|---|---|
+| Heat-pump heating, `VentTypFmed` alone | 49 | 51 | F, COP | F, COP (unchanged) |
+| With FTX or self-draught also reported | 5 | 3 | type default (conflict) | unchanged |
+| No heat-pump heating, `VentTypFmed` alone | 0 | 2 | F | FTX, observed-FTX effectiveness |
+
+Buildings with district heating and an exhaust-air heat pump are mostly absent: the
+measured target excludes mixed carriers, so the pump's electricity must be unreported
+(probably counted as property electricity) for one to enter the sample. In that case the
+recovered heat lowers the measured heating, which F missed. The runner
+(epsm-lake 72096f8) now models those buildings as FTX at the catalogue's observed-FTX
+effectiveness for the era. It also reads F plus `VentTypFmed` as `VentTypFmed` rather than
+a conflict.
+
+The two hold-out houses (single-family SE.04, one on district heat and one on direct
+electricity) were re-simulated. Their Standard ratio went from 1.33 / 1.20 to 0.96 / 0.92,
+and both now match. Hold-out match is 61.0 → 61.4 % (single-family 53.6 → 55.0 %). Penalty
+and above-Existing are unchanged, and calibration is unaffected. The two buildings' stage-3
+and bridge sensitivity runs still use the old mapping; the current model does not use them
+for single-family.
 
 ## Revision 5: modern heat-pump SPF (rejected)
 
