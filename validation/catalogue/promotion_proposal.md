@@ -29,7 +29,7 @@ there.
 | --- | --- | --- | --- |
 | Measured-use setpoint by era, office ventilation | epsm_data `measured_use_v1` | epsm selects it for existing-stock runs | data landed (68a42cd); **selection missing** |
 | Self-draught total 0.39 ACH, net of infiltration | epsm_data `measured_use_v1` | epsm_core, when converting the profile (it knows infiltration and volume) | data landed; **netting missing** |
-| Office thermal-bridge ΔU | epsm_data `envelope_performance` | epsm adapters pass it; epsm_core applies it | data landed (2d3cabc); **silently dropped today** |
+| Office thermal-bridge ΔU | epsm_data `envelope_performance` | epsm adapters pass it; epsm_core applies it; epsm_rc reads Core's per-role uplift | **done on branches** `claude/bridge-delta-u`: epsm_core abde98a, epsm_rc 33fadc3, epsm a15cb5e (not pushed) |
 | Observed SE.03 FTX at 0.60 | epsm_data ventilation templates | epsm (template choice) | landed (0b508f6) |
 | Heat-pump seasonal COP 2.75 | **epsm_data**, as a sourced heating-delivery template | epsm selects; epsm_core converts | hard-coded in epsm `ModelPolicy` (3.0) |
 | EPC observed systems (ventilation type, carrier, pump type) | **epsm_db**, as interpreted observations | epsm maps them to a template | done twice: in epsm `legacy_records` and in my study scripts |
@@ -153,11 +153,31 @@ there.
 - epsm_lca: inherits the delivered energy, so item 1 makes its B6 input sourced.
 - epsm_studio, epsm_viewer.
 
+## Done: the office thermal bridges (items 4 and 6)
+
+Three local branches named `claude/bridge-delta-u`, none pushed. Each branch needs the Core one.
+
+| Repository | Commit | Change |
+| --- | --- | --- |
+| epsm_core | abde98a | `EnvelopeSpec` and `Building` get `thermal_bridge_delta_u_w_m2k`; the new `epsm_core.bridges.thermal_bridge_uplifts` turns it into one uplift on wall and top; the compiler uses it. The spec rejects both representations at once, and `assign_inputs` keeps the newly assigned one. An unset field is left out of serialization and snapshots, so existing identities are unchanged. |
+| epsm_rc | 33fadc3 | Reads the same per-role uplifts. Before, one fraction was applied to every opaque conductance. |
+| epsm | a15cb5e | Forwards the field on the maintained route (`apply_archetype`) and the record route. On the record route, `core_inputs` had set no bridge field at all. |
+
+**Checks:**
+
+- **New tests pass:** 5 in Core, 1 in RC, 2 in epsm.
+- **Full suites:** the same failures before and after (Core 17, RC 1, epsm 31). All of them also fail on the unmodified commits.
+- **RC:** the surcharge adds exactly ΔU × envelope area to the opaque conductance.
+- **End to end:** one calibration office per era, all states, on the record runner (`claude/catalogue-templates` plus the cherry-picked fd3804e). The heating the platform adds matches the study's perturbation to a ratio of 0.994 overall, and 0.89–1.00 per building-state, with two exceptions:
+  - SE.03 Existing and Standard (1.26–1.29) also pick up epsm_data 0b508f6, the SE.03 FTX mapping, which postdates the baseline runs.
+  - Core leaves same-zone internal walls out of the envelope area. The study's takeoff-based version counted them in both the envelope area and the conductance.
+
+**Before merging:** another session has uncommitted work in the main epsm_core and epsm checkouts, the generic category and basement-floor roles. It touches the same files: `building.py`, `building_adapter.py`, `catalogue_application.py`, `catalogue_release.py` and `test_lod2_handoff.py`. Expect conflicts to resolve when both land.
+
 ## Order
 
-1. **First, an independent fix: item 6 alone.** The office bridges are in the catalogue
-   but never reach a model.
-2. **Then items 1–5:** sources and physics.
+1. **Items 4 and 6 are done** (above).
+2. **Then items 1–3 and 5:** sources and physics.
 3. **Then 7–9:** assembly.
 4. **Then 10–11:** comparison.
 5. **Last, 12:** rerun this study on the landed code and reproduce to within one building
