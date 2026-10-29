@@ -1,3 +1,9 @@
+# Release 0.5.0 — the Workflows 0.5 cohort (29 October 2026)
+
+Compatibility release. The `workflows` extra now requires Workflows 0.5.0
+(`epsm_workflows[epsm]>=0.5.0,<0.6`), which carries Core 0.9.0, Data 0.7.0 and
+EPSM 0.5.0. Study authoring, result archives and comparison APIs are unchanged.
+
 # Release 0.4.0 — portable study authoring and outcomes
 
 `StudySpec` keeps versioned metadata/protocol and reporting choices around the
