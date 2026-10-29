@@ -8,7 +8,7 @@ from .facade import Study
 from .results import StudyResults
 from .comparison import compare_energy_results, write_comparison_report
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 __all__ = ["Study", "StudySpec", "StudyResults", "PaperStudy", "compare_energy_results", "write_comparison_report"]
 
 # A library emits no output until its host selects handlers.
