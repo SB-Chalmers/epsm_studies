@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "epsm_studies"
-version = "0.4.0"
+version = "0.5.0"
 description = "EPSM study authoring, portable outcomes and general reporting"
 requires-python = ">=3.11"
 readme = "README.md"
@@ -12,7 +12,7 @@ license = "MIT"
 license-files = ["LICENSE"]
 
 [project.optional-dependencies]
-workflows = ["epsm_workflows[epsm]>=0.4.0,<0.5"]
+workflows = ["epsm_workflows[epsm]>=0.5.0,<0.6"]
 results = ["numpy>=1.24"]
 dev = ["pytest>=8", "numpy>=1.24", "jsonschema>=4"]
 
