@@ -1,3 +1,12 @@
+# Release 0.5.1 — open sibling bounds and RC 0.12 settings (13 November 2026)
+
+The `workflows` extra declares only a lower bound (`epsm_workflows[epsm]>=0.5.0`),
+as the other in-house packages do; EPSM's supported manifest selects the exact
+combination. The engine-comparison fixture names the former `epsm_rc_5r1c_v1`
+choices (`iso13790_5r1c`, `constant_shgc`, `hour_start`, recovery `always`)
+instead of `policy_version`, which RC 0.12.0 deprecates, so the comparison keeps
+its 5R1C physics.
+
 # Release 0.5.0 — the Workflows 0.5 cohort (29 October 2026)
 
 Compatibility release. The `workflows` extra now requires Workflows 0.5.0
