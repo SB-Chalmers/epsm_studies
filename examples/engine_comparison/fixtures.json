@@ -15,7 +15,10 @@
   "equipment_heat_fraction_schedule": [0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8,0.5,0.8],
   "lighting_gain_w_m2": 1,
   "rc_settings": {
-    "policy_version": "epsm_rc_5r1c_v1",
+    "thermal_model": "iso13790_5r1c",
+    "window_optics": "constant_shgc",
+    "solar_time": "hour_start",
+    "heat_recovery": "always",
     "airflow_policy": "sensible_only_unlimited_supply",
     "self_shadowing_policy": "ignore"
   },
